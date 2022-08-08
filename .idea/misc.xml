@@ -8,7 +8,10 @@
         <entry key="app/src/main/res/layout/fragment_menu.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_onboarding.xml" value="0.13055555555555556" />
         <entry key="app/src/main/res/layout/fragment_payment.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_payment_editor.xml" value="0.2359375" />
+        <entry key="app/src/main/res/layout/fragment_payments_list.xml" value="0.2359375" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_payment.xml" value="0.25" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.1" />
       </map>
     </option>

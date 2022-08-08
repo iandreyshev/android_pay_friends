@@ -9,7 +9,11 @@
         android:id="@+id/paymentListDest"
         android:name="ru.iandreyshev.stale.ui.paymentsList.PaymentListFragment"
         android:label="PaymentListFragment"
-        tools:layout="@layout/fragment_payments_list" />
+        tools:layout="@layout/fragment_payments_list" >
+        <action
+            android:id="@+id/action_paymentListDest_to_nav_payment_editor"
+            app:destination="@id/nav_payment_editor" />
+    </fragment>
 
     <fragment
         android:id="@+id/archiveDest"
@@ -21,5 +25,6 @@
         android:id="@+id/settingsDest"
         android:name="ru.iandreyshev.stale.ui.settings.SettingsFragment"
         android:label="SettingsFragment" />
+    <include app:graph="@navigation/nav_payment_editor" />
 
 </navigation>

@@ -1,12 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_main"
-    app:startDestination="@id/menuFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_menu"
+    app:startDestination="@id/paymentListDest">
 
     <fragment
-        android:id="@+id/menuFragment"
-        android:name="ru.iandreyshev.stale.ui.menu.MenuFragment"
-        android:label="MenuFragment" />
+        android:id="@+id/paymentListDest"
+        android:name="ru.iandreyshev.stale.ui.paymentsList.PaymentListFragment"
+        android:label="PaymentListFragment"
+        tools:layout="@layout/fragment_payments_list" >
+        <action
+            android:id="@+id/action_paymentListDest_to_nav_payment_editor"
+            app:destination="@id/nav_payment_editor" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/archiveDest"
+        android:name="ru.iandreyshev.stale.ui.paymentsList.PaymentListFragment"
+        android:label="ArchiveFragment"
+        tools:layout="@layout/fragment_payments_list" />
+
+    <fragment
+        android:id="@+id/settingsDest"
+        android:name="ru.iandreyshev.stale.ui.settings.SettingsFragment"
+        android:label="SettingsFragment" />
+
+    <include app:graph="@navigation/nav_payment_editor" />
 
 </navigation>

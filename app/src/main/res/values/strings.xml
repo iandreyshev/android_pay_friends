@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Stale</string>
+
+    <string name="menu_item_payments_title">Расчеты</string>
+    <string name="menu_item_archive_title">Архив</string>
+    <string name="menu_item_settings_title">Настройки</string>
+</resources>

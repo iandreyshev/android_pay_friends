@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/paymentListDest"
+        android:title="@string/menu_item_payments_title" />
+    <item
+        android:id="@+id/archiveDest"
+        android:title="@string/menu_item_archive_title" />
+    <item
+        android:id="@+id/settingsDest"
+        android:title="@string/menu_item_settings_title" />
+</menu>

@@ -7,7 +7,7 @@
     android:layout_marginHorizontal="16dp"
     android:layout_marginTop="8dp"
     app:cardCornerRadius="8dp"
-    app:cardElevation="8dp">
+    app:cardElevation="12dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contentLayout"
@@ -28,6 +28,15 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Поездка в Сочи" />
 
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/optionsButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            tools:text="15 июля 2022" />
+
         <Button
             android:id="@+id/addTransactionButton"
             android:layout_width="wrap_content"
@@ -35,16 +44,17 @@
             android:layout_marginTop="8dp"
             android:text="Добавить оплату"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/optionsButton" />
+            app:layout_constraintTop_toBottomOf="@id/date" />
 
-        <Button
+        <ImageButton
             android:id="@+id/optionsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:text="+"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_more_vert_24" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.171875" />
+        <entry key="app/src/main/res/drawable/background_payments_list_empty_view.xml" value="0.1025" />
+        <entry key="app/src/main/res/drawable/ic_baseline_airplanemode_active_24.xml" value="0.1705" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_menu.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_onboarding.xml" value="0.13055555555555556" />
@@ -12,7 +14,7 @@
         <entry key="app/src/main/res/layout/fragment_payments_list.xml" value="0.2359375" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_payment.xml" value="0.25" />
-        <entry key="app/src/main/res/menu/menu_main.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/menu_main.xml" value="0.25" />
       </map>
     </option>
   </component>

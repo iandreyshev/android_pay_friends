@@ -2,11 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/paymentListDest"
-        android:title="@string/menu_item_payments_title" />
+        android:icon="@drawable/ic_baseline_send_24"
+        android:title="@string/menu_item_active_payments_title" />
     <item
         android:id="@+id/archiveDest"
-        android:title="@string/menu_item_archive_title" />
+        android:icon="@drawable/ic_baseline_flag_24"
+        android:title="@string/menu_item_completed_payments_title" />
     <item
         android:id="@+id/settingsDest"
+        android:icon="@drawable/ic_baseline_settings_24"
         android:title="@string/menu_item_settings_title" />
 </menu>

@@ -13,4 +13,10 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="DarkProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
+        <item name="indicatorColor">#3F9A3F</item>
+        <item name="indicatorSize">56dp</item>
+        <item name="trackThickness">3dp</item>
+    </style>
 </resources>

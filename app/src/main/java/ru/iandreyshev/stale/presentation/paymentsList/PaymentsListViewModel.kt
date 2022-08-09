@@ -1,20 +1,22 @@
 package ru.iandreyshev.stale.presentation.paymentsList
 
-import ru.iandreyshev.stale.domain.payment.Payment
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import ru.iandreyshev.stale.domain.payment.PaymentId
+import ru.iandreyshev.stale.domain.payment.PaymentsStorage
 import ru.iandreyshev.stale.presentation.utils.SingleStateViewModel
 
-class PaymentsListViewModel : SingleStateViewModel<State, Event>(
+class PaymentsListViewModel(
+    storage: PaymentsStorage
+) : SingleStateViewModel<State, Event>(
     initialState = State.default()
 ) {
 
     init {
-        modifyState {
-            copy(payments = listOf(
-                Payment(PaymentId("0"), "Поездка в Сочи"),
-                Payment(PaymentId("0"), "Гуляли по Нижнему новгороду")
-            ))
-        }
+        storage.observe()
+            .onEach { modifyState { copy(payments = it) } }
+            .launchIn(viewModelScope)
     }
 
     fun onOpenPayment(id: PaymentId) {
@@ -23,8 +25,12 @@ class PaymentsListViewModel : SingleStateViewModel<State, Event>(
     fun onAddTransaction(id: PaymentId) {
     }
 
-    fun onEditPayment(id: PaymentId?) {
-        event(NavigateToPaymentEditor())
+    fun onNewPayment() {
+        event(Event.NavigateToPaymentEditor())
+    }
+
+    fun onEditPayment(id: PaymentId) {
+        event(Event.NavigateToPaymentEditor(id))
     }
 
     fun onArchivePayment(id: PaymentId) {

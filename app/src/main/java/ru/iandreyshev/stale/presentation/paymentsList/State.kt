@@ -10,7 +10,7 @@ data class State(
     companion object {
         fun default() = State(
             payments = listOf(),
-            isLoading = true
+            isLoading = false
         )
     }
 

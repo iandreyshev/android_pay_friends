@@ -9,10 +9,16 @@
         android:id="@+id/paymentListDest"
         android:name="ru.iandreyshev.stale.ui.paymentsList.PaymentListFragment"
         android:label="PaymentListFragment"
-        tools:layout="@layout/fragment_payments_list" >
+        tools:layout="@layout/fragment_payments_list">
         <action
-            android:id="@+id/action_paymentListDest_to_nav_payment_editor"
-            app:destination="@id/nav_payment_editor" />
+            android:id="@+id/action_paymentListDest_to_paymentEditorFragment"
+            app:destination="@id/paymentEditorFragment" />
+        <action
+            android:id="@+id/action_paymentListDest_to_transactionEditorFragment"
+            app:destination="@id/transactionEditorFragment" />
+        <action
+            android:id="@+id/action_paymentListDest_to_paymentFragment"
+            app:destination="@id/paymentFragment" />
     </fragment>
 
     <fragment
@@ -26,6 +32,30 @@
         android:name="ru.iandreyshev.stale.ui.settings.SettingsFragment"
         android:label="SettingsFragment" />
 
-    <include app:graph="@navigation/nav_payment_editor" />
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="ru.iandreyshev.stale.ui.payment.PaymentFragment"
+        android:label="PaymentFragment">
+        <argument
+            android:name="paymentId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/transactionEditorFragment"
+        android:name="ru.iandreyshev.stale.ui.transactionEditor.TransactionEditorFragment"
+        android:label="TransactionEditorFragment">
+        <argument
+            android:name="paymentId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentEditorFragment"
+        android:name="ru.iandreyshev.stale.ui.paymentEditor.PaymentEditorFragment"
+        android:label="PaymentEditorFragment">
+        <argument
+            android:name="paymentId"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 
 </navigation>

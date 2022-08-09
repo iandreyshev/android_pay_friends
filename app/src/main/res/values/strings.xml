@@ -7,4 +7,8 @@
 
     <string name="payments_list_empty_view_text">У вас ещё нет рассчетов</string>
     <string name="payments_list_empty_view_button">Начать</string>
+
+    <string name="payment_option_complete_title">Завершить</string>
+    <string name="payment_option_edit_title">Редактировать</string>
+    <string name="payment_option_delete_title">Удалить</string>
 </resources>

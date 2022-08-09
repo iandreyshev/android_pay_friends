@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/paymentOptionComplete"
+        android:title="@string/payment_option_complete_title" />
+    <item
+        android:id="@+id/paymentOptionEdit"
+        android:title="@string/payment_option_edit_title" />
+    <item
+        android:id="@+id/paymentOptionDelete"
+        android:title="@string/payment_option_delete_title" />
+</menu>

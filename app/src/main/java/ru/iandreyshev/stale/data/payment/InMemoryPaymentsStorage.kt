@@ -2,9 +2,9 @@ package ru.iandreyshev.stale.data.payment
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import ru.iandreyshev.stale.domain.payment.Payment
-import ru.iandreyshev.stale.domain.payment.PaymentId
-import ru.iandreyshev.stale.domain.payment.PaymentsStorage
+import ru.iandreyshev.stale.domain.core.Payment
+import ru.iandreyshev.stale.domain.core.PaymentId
+import ru.iandreyshev.stale.domain.payments.PaymentsStorage
 import kotlin.random.Random
 
 class InMemoryPaymentsStorage : PaymentsStorage {

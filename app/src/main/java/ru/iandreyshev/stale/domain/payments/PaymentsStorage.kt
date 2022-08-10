@@ -1,6 +1,8 @@
-package ru.iandreyshev.stale.domain.payment
+package ru.iandreyshev.stale.domain.payments
 
 import kotlinx.coroutines.flow.Flow
+import ru.iandreyshev.stale.domain.core.Payment
+import ru.iandreyshev.stale.domain.core.PaymentId
 
 interface PaymentsStorage {
     suspend fun save(payment: Payment): Payment

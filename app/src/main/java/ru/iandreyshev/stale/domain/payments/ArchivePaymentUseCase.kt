@@ -1,4 +1,6 @@
-package ru.iandreyshev.stale.domain.payment
+package ru.iandreyshev.stale.domain.payments
+
+import ru.iandreyshev.stale.domain.core.PaymentId
 
 class ArchivePaymentUseCase(
     private val storage: PaymentsStorage

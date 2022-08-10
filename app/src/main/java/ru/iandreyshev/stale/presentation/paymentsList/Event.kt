@@ -1,6 +1,6 @@
 package ru.iandreyshev.stale.presentation.paymentsList
 
-import ru.iandreyshev.stale.domain.payment.PaymentId
+import ru.iandreyshev.stale.domain.core.PaymentId
 
 sealed interface Event {
     data class NavigateToPayment(val id: PaymentId) : Event

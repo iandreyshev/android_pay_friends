@@ -4,21 +4,22 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import ru.iandreyshev.stale.domain.payment.ArchivePaymentUseCase
-import ru.iandreyshev.stale.domain.payment.Payment
-import ru.iandreyshev.stale.domain.payment.PaymentId
-import ru.iandreyshev.stale.domain.payment.PaymentsStorage
+import ru.iandreyshev.stale.domain.core.PaymentId
+import ru.iandreyshev.stale.domain.payments.ArchivePaymentUseCase
+import ru.iandreyshev.stale.domain.payments.GetPaymentsListUseCase
+import ru.iandreyshev.stale.domain.payments.PaymentsStorage
 import ru.iandreyshev.stale.presentation.utils.SingleStateViewModel
 
 class PaymentsListViewModel(
     private val storage: PaymentsStorage,
-    private val archivePayment: ArchivePaymentUseCase
+    private val archivePayment: ArchivePaymentUseCase,
+    getList: GetPaymentsListUseCase,
 ) : SingleStateViewModel<State, Event>(
     initialState = State.default()
 ) {
 
     init {
-        storage.observe()
+        getList()
             .onEach { modifyState { copy(payments = it) } }
             .launchIn(viewModelScope)
     }

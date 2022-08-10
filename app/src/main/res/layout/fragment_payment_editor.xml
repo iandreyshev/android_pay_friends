@@ -13,8 +13,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:menu="@menu/menu_payment_editor"
             app:navigationIcon="@drawable/ic_baseline_close_24"
             app:title="@string/payment_editor_title" />
 
@@ -32,12 +34,13 @@
         app:layout_constraintTop_toBottomOf="@id/appBarLayout" />
 
     <EditText
-        android:id="@+id/titleField"
+        android:id="@+id/nameField"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/step_16"
         android:layout_marginTop="@dimen/step_4"
         android:background="@null"
+        android:hint="@string/payment_editor_name_field_hint"
         android:paddingVertical="@dimen/step_4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,9 +53,21 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/step_16"
         android:layout_marginTop="@dimen/step_8"
-        android:text="@string/payment_editor_name_title"
+        android:text="@string/payment_editor_members_field_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleField" />
+        app:layout_constraintTop_toBottomOf="@id/nameField" />
+
+    <EditText
+        android:id="@+id/membersField"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/step_16"
+        android:layout_marginTop="@dimen/step_4"
+        android:background="@null"
+        android:hint="@string/payment_editor_members_field_hint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/participantsFieldTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,34 +5,30 @@ import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import ru.iandreyshev.stale.App
 import ru.iandreyshev.stale.R
 import ru.iandreyshev.stale.databinding.FragmentPaymentsListBinding
-import ru.iandreyshev.stale.domain.payment.ArchivePaymentUseCase
-import ru.iandreyshev.stale.domain.payment.PaymentId
+import ru.iandreyshev.stale.domain.core.PaymentId
+import ru.iandreyshev.stale.domain.payments.ArchivePaymentUseCase
+import ru.iandreyshev.stale.domain.payments.GetPaymentsListUseCase
 import ru.iandreyshev.stale.presentation.paymentsList.Event
 import ru.iandreyshev.stale.presentation.paymentsList.PaymentsListViewModel
 import ru.iandreyshev.stale.presentation.paymentsList.State
 import ru.iandreyshev.stale.ui.utils.dismissOnDestroy
 import ru.iandreyshev.stale.ui.utils.uiLazy
 import ru.iandreyshev.stale.ui.utils.viewBindings
+import ru.iandreyshev.stale.ui.utils.viewModelFactory
 
 class PaymentListFragment : Fragment(R.layout.fragment_payments_list) {
 
     private val mBinding by viewBindings(FragmentPaymentsListBinding::bind)
-    private val mViewModel by viewModels<PaymentsListViewModel> {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return PaymentsListViewModel(
-                    storage = App.storage,
-                    archivePayment = ArchivePaymentUseCase(storage = App.storage)
-                ) as T
-            }
-        }
+    private val mViewModel by viewModelFactory {
+        PaymentsListViewModel(
+            storage = App.storage,
+            archivePayment = ArchivePaymentUseCase(storage = App.storage),
+            getList = GetPaymentsListUseCase(storage = App.storage)
+        )
     }
     private val mAdapter by uiLazy {
         PaymentsAdapter(
@@ -89,15 +85,15 @@ class PaymentListFragment : Fragment(R.layout.fragment_payments_list) {
         when (event) {
             is Event.NavigateToPayment ->
                 PaymentListFragmentDirections
-                    .actionPaymentListDestToPaymentFragment(event.id.value)
+                    .actionOpenPayment(event.id.value)
                     .let(mNavController::navigate)
             is Event.NavigateToPaymentEditor ->
                 PaymentListFragmentDirections
-                    .actionPaymentListDestToPaymentEditorFragment(event.id?.value)
+                    .actionEditPayment(event.id?.value)
                     .let(mNavController::navigate)
             is Event.NavigateToTransactionEditor ->
                 PaymentListFragmentDirections
-                    .actionPaymentListDestToTransactionEditorFragment(event.id.value)
+                    .actionAddTransactions(event.id.value)
                     .let(mNavController::navigate)
             is Event.ShowPaymentDeletingDialog -> TODO()
         }

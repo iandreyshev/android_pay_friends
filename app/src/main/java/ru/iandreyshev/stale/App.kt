@@ -2,6 +2,7 @@ package ru.iandreyshev.stale
 
 import android.app.Application
 import ru.iandreyshev.stale.data.payment.InMemoryPaymentsStorage
+import ru.iandreyshev.stale.data.time.DateProviderStub
 import timber.log.Timber
 
 class App : Application() {
@@ -13,6 +14,7 @@ class App : Application() {
 
     companion object {
         val storage = InMemoryPaymentsStorage()
+        val dateProvider = DateProviderStub()
     }
 
 }

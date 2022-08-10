@@ -1,9 +1,9 @@
 package ru.iandreyshev.stale.presentation.paymentsList
 
-import ru.iandreyshev.stale.domain.payment.Payment
+import ru.iandreyshev.stale.domain.payments.PaymentSummary
 
 data class State(
-    val payments: List<Payment>,
+    val payments: List<PaymentSummary>,
     val isLoading: Boolean
 ) {
 

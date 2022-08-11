@@ -18,8 +18,9 @@
     <string name="payment_editor_name_title">Название</string>
     <string name="payment_editor_menu_save_title">Сохранить</string>
     <string name="payment_editor_error_empty_name">Название должно содержать символы</string>
-    <string name="payment_editor_members_field_hint">Введите участников…</string>
+    <string name="payment_editor_members_field_hint">Добавьте участников…</string>
     <string name="payment_editor_members_field_title">Участники</string>
     <string name="payment_editor_name_field_hint">Введите название…</string>
-    <string name="payment_editor_add_member_title">Добавьте участника</string>
+    <string name="payment_editor_add_member_title">Добавить участника</string>
+    <string name="transaction_editor_menu_save_title">Сохранить</string>
 </resources>

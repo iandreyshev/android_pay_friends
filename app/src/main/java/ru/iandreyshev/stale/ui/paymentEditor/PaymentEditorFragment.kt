@@ -85,7 +85,7 @@ class PaymentEditorFragment : Fragment(R.layout.fragment_payment_editor) {
     }
 
     private fun initAddMemberButton() {
-        mBinding.addMemberButton.setOnClickListener { mViewModel.onAddMember() }
+        mBinding.addMemberButton.clickableArea.setOnClickListener { mViewModel.onAddMember() }
     }
 
     private fun render(state: State) {
@@ -96,12 +96,13 @@ class PaymentEditorFragment : Fragment(R.layout.fragment_payment_editor) {
             layoutManager.justifyContent = JustifyContent.FLEX_START
             mBinding.membersList.layoutManager = layoutManager
             mBinding.membersList.adapter = mMembersAdapter
+            mBinding.membersList.addItemDecoration(MemberItemDecoration(resources))
             mBinding.membersList.itemAnimator = null
         }
         mMembersAdapter.submitList(state.draft.members)
 
-        mBinding.addMemberButtonContent.isVisible = state.canAddMember
-        mBinding.memberCandidate.text = state.memberCandidate
+        mBinding.addMemberButton.content.isVisible = state.canAddMember
+        mBinding.addMemberButton.memberCandidate.text = state.memberCandidate
     }
 
     private fun handleEvent(event: Event) {

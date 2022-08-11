@@ -100,60 +100,18 @@
                 app:layout_constraintTop_toBottomOf="@id/membersList"
                 tools:text="Ivan Andreyshev Ivan Andreyshev Ivan Andreyshev Ivan Andreyshev Ivan AndreyshevIvan Andreyshev Ivan Andreyshev Ivan Andreyshev Ivan Andreyshev " />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/addMemberButtonContent"
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="@dimen/step_16"
-                android:paddingVertical="@dimen/step_6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/memberField">
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/profileIcon"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:background="#BDA4A4"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Circle"
-                    app:srcCompat="@drawable/ic_baseline_person_24" />
+                <include
+                    android:id="@+id/addMemberButton"
+                    layout="@layout/lay_add_member_button" />
 
-                <TextView
-                    android:id="@+id/addMemberTitle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/step_8"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="@string/payment_editor_add_member_title"
-                    android:textSize="@dimen/text_size_3"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/profileIcon"
-                    app:layout_constraintTop_toTopOf="@id/profileIcon" />
-
-                <TextView
-                    android:id="@+id/memberCandidate"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/step_2"
-                    android:textSize="@dimen/text_size_1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/addMemberTitle"
-                    app:layout_constraintTop_toBottomOf="@id/addMemberTitle"
-                    tools:text="Ivan Andreyshev" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <View
-                android:id="@+id/addMemberButton"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="?attr/selectableItemBackground"
-                app:layout_constraintBottom_toBottomOf="@id/addMemberButtonContent"
-                app:layout_constraintEnd_toEndOf="@id/addMemberButtonContent"
-                app:layout_constraintStart_toStartOf="@id/addMemberButtonContent"
-                app:layout_constraintTop_toTopOf="@id/addMemberButtonContent" />
+            </FrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

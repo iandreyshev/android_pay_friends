@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/step_16"
+        android:layout_marginTop="@dimen/step_16"
+        android:text="Кто заплатил"
+        android:textSize="@dimen/text_size_3"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/step_16"
+        android:layout_marginTop="@dimen/step_6"
+        android:background="@null"
+        android:lines="1"
+        app:layout_constraintBottom_toBottomOf="@id/totalCost"
+        app:layout_constraintEnd_toStartOf="@id/totalCost"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/totalCost" />
+
+    <FrameLayout
+        android:id="@+id/producerWrapper"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/step_16"
+        app:layout_constraintBottom_toBottomOf="@id/totalCost"
+        app:layout_constraintEnd_toStartOf="@id/totalCost"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/totalCost">
+
+        <include layout="@layout/item_payment_editor_member" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/totalCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/step_16"
+        android:layout_marginTop="@dimen/step_4"
+        android:gravity="end"
+        android:lines="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        tools:text="Итог\n37 0000" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/suggestionsList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/step_4"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/totalCost"
+        app:layout_goneMarginTop="0dp"
+        tools:itemCount="7"
+        tools:listitem="@layout/item_payment_editor_member" />
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/suggestionsList">
+
+        <include
+            android:id="@+id/addMemberButton"
+            layout="@layout/lay_add_member_button" />
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

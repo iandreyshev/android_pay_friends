@@ -35,8 +35,9 @@ class InMemoryPaymentsStorage : PaymentsStorage {
     }
 
     override suspend fun remove(id: PaymentId) {
-        mCache.value.toMutableList()
-            .removeIf { it.id == id }
+        val newList = mCache.value.toMutableList()
+        newList.removeIf { it.id == id }
+        mCache.emit(newList)
     }
 
     override fun observe(): Flow<List<Payment>> {

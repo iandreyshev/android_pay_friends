@@ -6,6 +6,7 @@ import ru.iandreyshev.stale.domain.paymentEditor.PaymentDraftError
 
 sealed interface Event {
     data class NavigateToPayment(val id: PaymentId) : Event
+    object ClearMemberField : Event
     data class ShowError(val error: ErrorType) : Event
     object Back : Event
     object BackWithError : Event

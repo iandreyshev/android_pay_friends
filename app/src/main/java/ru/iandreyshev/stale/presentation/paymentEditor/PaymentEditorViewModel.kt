@@ -2,16 +2,21 @@ package ru.iandreyshev.stale.presentation.paymentEditor
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.iandreyshev.stale.domain.core.ErrorType
+import ru.iandreyshev.stale.domain.core.Member
 import ru.iandreyshev.stale.domain.core.PaymentId
 import ru.iandreyshev.stale.domain.core.Result
 import ru.iandreyshev.stale.domain.paymentEditor.GetPaymentDraftUseCase
+import ru.iandreyshev.stale.domain.paymentEditor.PaymentDraftError
 import ru.iandreyshev.stale.domain.paymentEditor.SavePaymentUseCase
+import ru.iandreyshev.stale.domain.paymentEditor.ValidateMemberUseCase
 import ru.iandreyshev.stale.presentation.utils.SingleStateViewModel
 
 class PaymentEditorViewModel(
     id: PaymentId?,
     private val getDraft: GetPaymentDraftUseCase,
-    private val savePayment: SavePaymentUseCase
+    private val savePayment: SavePaymentUseCase,
+    private val isMemberValid: ValidateMemberUseCase
 ) : SingleStateViewModel<State, Event>(
     initialState = State.default(id = id)
 ) {
@@ -25,6 +30,31 @@ class PaymentEditorViewModel(
             name = uiDraft.name
         )
 
+        modifyState { copy(draft = newDraft, memberCandidate = uiDraft.member) }
+    }
+
+    fun onAddMember() {
+        val memberCandidateName = getState().memberCandidate.trim()
+        val memberCandidate = Member(memberCandidateName)
+
+        if (isMemberValid(memberCandidate)) {
+            val newMembers = getState().draft.members.toMutableList() + memberCandidate
+            val newDraft = getState().draft.copy(members = newMembers)
+            modifyState { copy(draft = newDraft) }
+            event { Event.ClearMemberField }
+            return
+        }
+
+        event {
+            val errorType = ErrorType.InvalidPaymentDraft(listOf(PaymentDraftError.INVALID_MEMBER))
+            Event.ShowError(errorType)
+        }
+    }
+
+    fun onRemoveMember(position: Int) {
+        val members = getState().draft.members.toMutableList()
+        members.removeAt(position)
+        val newDraft = getState().draft.copy(members = members)
         modifyState { copy(draft = newDraft) }
     }
 

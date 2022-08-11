@@ -8,16 +8,23 @@
         <entry key="..\:/Dev/android_stale/app/src/main/res/layout/fragment_stub.xml" value="0.17249240121580547" />
         <entry key="..\:/Dev/android_stale/app/src/main/res/menu/menu_main.xml" value="0.25" />
         <entry key="..\:/Dev/android_stale/app/src/main/res/menu/menu_payment_options.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/background_payment_editor_member.xml" value="0.1335" />
+        <entry key="app/src/main/res/drawable/chip_payment_editor_member.xml" value="0.1705" />
+        <entry key="app/src/main/res/drawable/ic_baseline_flag_24.xml" value="0.1105" />
+        <entry key="app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_menu.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_onboarding.xml" value="0.13055555555555556" />
         <entry key="app/src/main/res/layout/fragment_payment.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_payment_editor.xml" value="0.2359375" />
+        <entry key="app/src/main/res/layout/fragment_payment_editor.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_payments_list.xml" value="0.2359375" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_payment.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_payment_editor_member.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/view_payment_editor_member.xml" value="0.47506762684154347" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu_payment_editor.xml" value="0.20104166666666667" />
+        <entry key="app/src/main/res/xml/chip_member_editable.xml" value="0.275" />
       </map>
     </option>
   </component>

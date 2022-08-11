@@ -2,10 +2,15 @@ package ru.iandreyshev.stale.ui.paymentEditor
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.widget.doOnTextChanged
+import android.widget.ScrollView
+import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import ru.iandreyshev.stale.App
 import ru.iandreyshev.stale.R
 import ru.iandreyshev.stale.databinding.FragmentPaymentEditorBinding
@@ -13,6 +18,7 @@ import ru.iandreyshev.stale.domain.core.ErrorType
 import ru.iandreyshev.stale.domain.core.PaymentId
 import ru.iandreyshev.stale.domain.paymentEditor.GetPaymentDraftUseCase
 import ru.iandreyshev.stale.domain.paymentEditor.SavePaymentUseCase
+import ru.iandreyshev.stale.domain.paymentEditor.ValidateMemberUseCase
 import ru.iandreyshev.stale.domain.paymentEditor.ValidatePaymentDraftUseCase
 import ru.iandreyshev.stale.presentation.paymentEditor.Event
 import ru.iandreyshev.stale.presentation.paymentEditor.PaymentEditorViewModel
@@ -23,6 +29,7 @@ import ru.iandreyshev.stale.ui.utils.uiLazy
 import ru.iandreyshev.stale.ui.utils.viewBindings
 import ru.iandreyshev.stale.ui.utils.viewModelFactory
 
+
 class PaymentEditorFragment : Fragment(R.layout.fragment_payment_editor) {
 
     private val mArgs by navArgs<PaymentEditorFragmentArgs>()
@@ -32,13 +39,20 @@ class PaymentEditorFragment : Fragment(R.layout.fragment_payment_editor) {
             id = mArgs.paymentId?.let { PaymentId(it) },
             getDraft = GetPaymentDraftUseCase(App.storage),
             savePayment = SavePaymentUseCase(
-                validate = ValidatePaymentDraftUseCase(),
+                isDraftValid = ValidatePaymentDraftUseCase(
+                    isMemberValid = ValidateMemberUseCase()
+                ),
                 storage = App.storage,
                 dateProvider = App.dateProvider
-            )
+            ),
+            isMemberValid = ValidateMemberUseCase()
         )
     }
     private val mNavController by uiLazy { findNavController() }
+    private val mMembersAdapter by uiLazy {
+        MembersAdapter { member, position ->
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,6 +60,7 @@ class PaymentEditorFragment : Fragment(R.layout.fragment_payment_editor) {
         initAppBar()
         initNameField()
         initMembersField()
+        initAddMemberButton()
 
         mViewModel.state.observe(viewLifecycleOwner, ::render)
         mViewModel.event.observe(viewLifecycleOwner, ::handleEvent)
@@ -62,18 +77,31 @@ class PaymentEditorFragment : Fragment(R.layout.fragment_payment_editor) {
     }
 
     private fun initNameField() {
-        mBinding.nameField.doOnTextChanged { _, _, _, _ ->
-            mViewModel.onDraftChanged(composeDraft())
-        }
+        mBinding.nameField.doAfterTextChanged { mViewModel.onDraftChanged(composeDraft()) }
     }
 
     private fun initMembersField() {
-        mBinding.membersField.doOnTextChanged { _, _, _, _ ->
-            mViewModel.onDraftChanged(composeDraft())
-        }
+        mBinding.memberField.doAfterTextChanged { mViewModel.onDraftChanged(composeDraft()) }
+    }
+
+    private fun initAddMemberButton() {
+        mBinding.addMemberButton.setOnClickListener { mViewModel.onAddMember() }
     }
 
     private fun render(state: State) {
+        mBinding.membersList.isVisible = state.draft.members.isNotEmpty()
+        if (mBinding.membersList.adapter == null) {
+            val layoutManager = FlexboxLayoutManager(context)
+            layoutManager.flexDirection = FlexDirection.ROW
+            layoutManager.justifyContent = JustifyContent.FLEX_START
+            mBinding.membersList.layoutManager = layoutManager
+            mBinding.membersList.adapter = mMembersAdapter
+            mBinding.membersList.itemAnimator = null
+        }
+        mMembersAdapter.submitList(state.draft.members)
+
+        mBinding.addMemberButtonContent.isVisible = state.canAddMember
+        mBinding.memberCandidate.text = state.memberCandidate
     }
 
     private fun handleEvent(event: Event) {
@@ -82,6 +110,8 @@ class PaymentEditorFragment : Fragment(R.layout.fragment_payment_editor) {
                 PaymentEditorFragmentDirections
                     .actionBackToNewPayment(event.id.value)
                     .let(mNavController::navigate)
+            Event.ClearMemberField ->
+                mBinding.memberField.setText("")
             is Event.ShowError -> when (val error = event.error) {
                 is ErrorType.InvalidPaymentDraft -> when (error.errors.firstOrNull()) {
                     null -> Unit
@@ -98,7 +128,7 @@ class PaymentEditorFragment : Fragment(R.layout.fragment_payment_editor) {
 
     private fun composeDraft() = UIPaymentDraft(
         name = mBinding.nameField.text.toString(),
-        members = mBinding.membersField.text.toString()
+        member = mBinding.memberField.text.toString()
     )
 
 }

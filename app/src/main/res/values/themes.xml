@@ -19,4 +19,9 @@
         <item name="indicatorSize">56dp</item>
         <item name="trackThickness">3dp</item>
     </style>
+
+    <style name="ShapeAppearanceOverlay.App.Circle" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
+
 </resources>

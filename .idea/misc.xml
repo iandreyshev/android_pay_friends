@@ -23,7 +23,7 @@
         <entry key="app/src/main/res/layout/item_add_transaction_button.xml" value="0.125" />
         <entry key="app/src/main/res/layout/item_payment.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_payment_editor_member.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/item_transaction_editor_producer.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/item_transaction_editor_producer.xml" value="0.25386996904024767" />
         <entry key="app/src/main/res/layout/item_transaction_editor_transaction.xml" value="0.14907407407407408" />
         <entry key="app/src/main/res/layout/item_transaction_producer.xml" value="0.14907407407407408" />
         <entry key="app/src/main/res/layout/lay_add_member_button.xml" value="0.12407407407407407" />

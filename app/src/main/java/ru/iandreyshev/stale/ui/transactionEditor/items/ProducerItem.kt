@@ -13,8 +13,7 @@ data class ProducerItem(
     val producer: Member?,
     val totalCost: Int,
     val suggestions: List<Member>,
-    val query: String,
-    val canAddNewMember: Boolean
+    val candidate: String,
 ) : TransactionEditorItem
 
 fun producerAdapterDelegate(
@@ -34,20 +33,21 @@ fun producerAdapterDelegate(
                 binding.producerField.isVisible = true
                 binding.producerField.doAfterTextChanged(onProducerFieldTextChanged)
 
-                binding.suggestionsList.isVisible = !item.canAddNewMember && item.suggestions.isNotEmpty()
+                binding.suggestionsList.isVisible = item.suggestions.isNotEmpty()
                 when (val adapter = binding.suggestionsList.adapter as? MembersAdapter) {
                     null -> {
                         val newAdapter = MembersAdapter { member, _ -> onSuggestionClick(member.name) }
                         newAdapter.submitList(item.suggestions)
                         binding.suggestionsList.adapter = newAdapter
+                        binding.suggestionsList.itemAnimator = null
                     }
                     else -> {
                         adapter.submitList(item.suggestions)
                     }
                 }
 
-                binding.addMemberButton.isVisible = item.canAddNewMember
-                binding.addMemberButton.setState(name = item.query) { onAddButtonClick() }
+                binding.addMemberButton.isVisible = item.candidate.isNotEmpty()
+                binding.addMemberButton.setState(name = item.candidate) { onAddButtonClick() }
             }
             else -> {
                 binding.producer.isVisible = true

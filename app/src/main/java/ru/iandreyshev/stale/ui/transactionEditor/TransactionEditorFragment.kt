@@ -39,7 +39,7 @@ class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor)
                 onAddButtonClick = {}
             ),
             transactionAdapterDelegate(),
-            addTransactionAdapterDelegate()
+            producerFieldAdapterDelegate()
         )
     }
 
@@ -65,11 +65,10 @@ class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor)
     private fun render(state: State) {
         val items = mutableListOf<TransactionEditorItem>(
             ProducerItem(
-                producer = state.producer,
-                totalCost = state.totalCost,
-                suggestions = state.producerSuggestions,
-                query = state.producerSearchQuery,
-                canAddNewMember = state.isAddingNewMemberActive
+                producer = state.producerField.producer,
+                totalCost = state.producerField.cost,
+                suggestions = state.producerField.suggestions,
+                candidate = state.producerField.candidate,
             )
         )
 
@@ -84,16 +83,17 @@ class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor)
             )
         }
 
-        if (state.isNewTransactionsAvailable) {
+        if (state.receiverField.isEnabled) {
             items.add(
-                AddTransactionButtonItem(
-                    query = state.newTransactionReceiverSearchQuery,
-                    suggestions = state.newTransactionReceiverSuggestions
+                ReceiverFieldItem(
+                    query = state.receiverField.candidate,
+                    suggestions = state.receiverField.suggestions
                 )
             )
         }
 
         mAdapter.items = items
+        mAdapter.notifyDataSetChanged()
     }
 
     private fun handleLabel(label: Label) {

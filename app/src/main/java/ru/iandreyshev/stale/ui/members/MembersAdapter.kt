@@ -27,7 +27,7 @@ class MembersAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         LayoutInflater.from(parent.context)
-            .inflate(R.layout.view_editable_member, parent, false)
+            .inflate(R.layout.item_payment_editor_member, parent, false)
             .let { ViewHolder(it) }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

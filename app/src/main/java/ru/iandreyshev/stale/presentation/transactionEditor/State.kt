@@ -8,32 +8,58 @@ import ru.iandreyshev.stale.domain.core.TransactionId
 data class State(
     val paymentId: PaymentId,
     val transactionId: TransactionId,
-    val producer: Member?,
-    val producerSearchQuery: String,
-    val producerSuggestions: List<Member>,
-    val isAddingNewMemberActive: Boolean,
-    val totalCost: Int,
+    val producerField: ProducerFieldState,
+    val receiverField: ReceiverFieldState,
     val members: List<Member>,
     val transactions: List<Transaction>,
-    val isNewTransactionsAvailable: Boolean,
-    val newTransactionReceiverSearchQuery: String,
-    val newTransactionReceiverSuggestions: List<Member>,
+    val isStarted: Boolean
 ) {
 
     companion object {
         fun default() = State(
             paymentId = PaymentId(""),
             transactionId = TransactionId(""),
-            producer = null,
-            producerSearchQuery = "",
-            producerSuggestions = listOf(),
-            isAddingNewMemberActive = false,
-            totalCost = 0,
+            producerField = ProducerFieldState.default(),
             members = listOf(),
             transactions = listOf(),
-            isNewTransactionsAvailable = true,
-            newTransactionReceiverSearchQuery = "",
-            newTransactionReceiverSuggestions = listOf()
+            receiverField = ReceiverFieldState.default(),
+            isStarted = false
+        )
+    }
+
+}
+
+data class ProducerFieldState(
+    val producer: Member?,
+    val suggestions: List<Member>,
+    val candidate: String,
+    val cost: Int,
+) {
+
+    companion object {
+        fun default() = ProducerFieldState(
+            producer = null,
+            candidate = "",
+            suggestions = listOf(),
+            cost = 0,
+        )
+    }
+
+}
+
+data class ReceiverFieldState(
+    val isEnabled: Boolean,
+    val suggestions: List<Member>,
+    val isCandidateActive: Boolean,
+    val candidate: String
+) {
+
+    companion object {
+        fun default() = ReceiverFieldState(
+            isEnabled = false,
+            suggestions = listOf(),
+            isCandidateActive = false,
+            candidate = "",
         )
     }
 

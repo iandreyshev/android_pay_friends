@@ -21,6 +21,6 @@
     <string name="payment_editor_members_field_hint">Добавьте участников…</string>
     <string name="payment_editor_members_field_title">Участники</string>
     <string name="payment_editor_name_field_hint">Введите название…</string>
-    <string name="payment_editor_add_member_title">Добавить участника</string>
+    <string name="payment_editor_add_member_title">Новый участник</string>
     <string name="transaction_editor_menu_save_title">Сохранить</string>
 </resources>

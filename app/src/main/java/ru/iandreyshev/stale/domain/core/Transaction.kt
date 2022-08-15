@@ -3,7 +3,7 @@ package ru.iandreyshev.stale.domain.core
 data class Transaction(
     val participants: TransactionParticipants,
     val cost: Int,
-    val description: String? = null
+    val description: String = ""
 ) {
 
     fun isMirrorOf(transaction: Transaction) =

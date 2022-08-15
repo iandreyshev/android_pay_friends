@@ -19,30 +19,28 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:id="@+id/producerField"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/step_16"
         android:layout_marginTop="@dimen/step_6"
         android:background="@null"
+        android:hint="Введите имя..."
         android:lines="1"
         app:layout_constraintBottom_toBottomOf="@id/totalCost"
         app:layout_constraintEnd_toStartOf="@id/totalCost"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/totalCost" />
 
-    <FrameLayout
-        android:id="@+id/producerWrapper"
+    <ru.iandreyshev.stale.ui.members.EditableMemberView
+        android:id="@+id/producer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/step_16"
         app:layout_constraintBottom_toBottomOf="@id/totalCost"
         app:layout_constraintEnd_toStartOf="@id/totalCost"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/totalCost">
-
-        <include layout="@layout/item_payment_editor_member" />
-
-    </FrameLayout>
+        app:layout_constraintTop_toTopOf="@id/totalCost" />
 
     <TextView
         android:id="@+id/totalCost"
@@ -68,19 +66,14 @@
         app:layout_constraintTop_toBottomOf="@id/totalCost"
         app:layout_goneMarginTop="0dp"
         tools:itemCount="7"
-        tools:listitem="@layout/item_payment_editor_member" />
+        tools:listitem="@layout/view_editable_member" />
 
-    <FrameLayout
+    <ru.iandreyshev.stale.ui.members.AddMemberButton
+        android:id="@+id/addMemberButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/suggestionsList">
-
-        <include
-            android:id="@+id/addMemberButton"
-            layout="@layout/lay_add_member_button" />
-
-    </FrameLayout>
+        app:layout_constraintTop_toBottomOf="@id/suggestionsList" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

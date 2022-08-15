@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_payment_editor_member">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/firstCharBackground"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginVertical="@dimen/step_4"
+        android:layout_marginStart="@dimen/step_4"
+        android:background="#0a0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Circle" />
+
+    <TextView
+        android:id="@+id/firstChar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLength="1"
+        android:paddingHorizontal="@dimen/step_4"
+        android:textColor="@color/white"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@id/firstCharBackground"
+        app:layout_constraintEnd_toEndOf="@id/firstCharBackground"
+        app:layout_constraintStart_toStartOf="@id/firstCharBackground"
+        app:layout_constraintTop_toTopOf="@id/firstCharBackground"
+        tools:text="I" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/step_4"
+        android:layout_marginStart="@dimen/step_4"
+        android:layout_marginEnd="@dimen/step_8"
+        android:ellipsize="end"
+        android:lines="1"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_3"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/firstCharBackground"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Ivan Andreyshev" />
+
+    <View
+        android:id="@+id/clickableArea"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,7 +2,6 @@ package ru.iandreyshev.stale.ui.paymentEditor
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ScrollView
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -24,6 +23,7 @@ import ru.iandreyshev.stale.presentation.paymentEditor.Event
 import ru.iandreyshev.stale.presentation.paymentEditor.PaymentEditorViewModel
 import ru.iandreyshev.stale.presentation.paymentEditor.State
 import ru.iandreyshev.stale.presentation.paymentEditor.UIPaymentDraft
+import ru.iandreyshev.stale.ui.members.MembersAdapter
 import ru.iandreyshev.stale.ui.utils.toast
 import ru.iandreyshev.stale.ui.utils.uiLazy
 import ru.iandreyshev.stale.ui.utils.viewBindings

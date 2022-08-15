@@ -82,7 +82,7 @@
                 app:layout_constraintTop_toBottomOf="@id/participantsFieldTitle"
                 app:layout_goneMarginTop="0dp"
                 tools:itemCount="7"
-                tools:listitem="@layout/item_payment_editor_member" />
+                tools:listitem="@layout/view_editable_member" />
 
             <EditText
                 android:id="@+id/memberField"
@@ -109,7 +109,7 @@
 
                 <include
                     android:id="@+id/addMemberButton"
-                    layout="@layout/lay_add_member_button" />
+                    layout="@layout/view_add_member_button" />
 
             </FrameLayout>
 

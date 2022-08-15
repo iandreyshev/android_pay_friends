@@ -20,12 +20,15 @@
         <entry key="app/src/main/res/layout/fragment_payments_list.xml" value="0.2359375" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_transaction_editor.xml" value="0.14907407407407408" />
+        <entry key="app/src/main/res/layout/item_add_transaction_button.xml" value="0.125" />
         <entry key="app/src/main/res/layout/item_payment.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_payment_editor_member.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/item_transaction_editor_producer.xml" value="0.18631002491918103" />
+        <entry key="app/src/main/res/layout/item_transaction_editor_producer.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_transaction_editor_transaction.xml" value="0.14907407407407408" />
         <entry key="app/src/main/res/layout/item_transaction_producer.xml" value="0.14907407407407408" />
         <entry key="app/src/main/res/layout/lay_add_member_button.xml" value="0.12407407407407407" />
+        <entry key="app/src/main/res/layout/view_add_member_button.xml" value="0.19722222222222222" />
+        <entry key="app/src/main/res/layout/view_editable_member.xml" value="0.19722222222222222" />
         <entry key="app/src/main/res/layout/view_payment_editor_member.xml" value="0.47506762684154347" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu_payment_editor.xml" value="0.20104166666666667" />

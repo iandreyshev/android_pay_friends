@@ -2,6 +2,7 @@ package ru.iandreyshev.stale.data.payment
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import ru.iandreyshev.stale.domain.core.Member
 import ru.iandreyshev.stale.domain.core.Payment
 import ru.iandreyshev.stale.domain.core.PaymentId
 import ru.iandreyshev.stale.domain.payments.PaymentsStorage
@@ -32,6 +33,10 @@ class InMemoryPaymentsStorage : PaymentsStorage {
 
     override suspend fun get(id: PaymentId): Payment? {
         return mCache.value.firstOrNull { it.id == id }
+    }
+
+    override suspend fun getMembers(id: PaymentId): List<Member> {
+        TODO("getMembers not implemented")
     }
 
     override suspend fun remove(id: PaymentId) {

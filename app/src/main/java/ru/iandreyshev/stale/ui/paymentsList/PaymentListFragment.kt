@@ -93,7 +93,7 @@ class PaymentListFragment : Fragment(R.layout.fragment_payments_list) {
                     .let(mNavController::navigate)
             is Event.NavigateToTransactionEditor ->
                 PaymentListFragmentDirections
-                    .actionAddTransactions(event.id.value)
+                    .actionAddTransactions(event.paymentId.value, null)
                     .let(mNavController::navigate)
             is Event.ShowPaymentDeletingDialog -> TODO()
         }

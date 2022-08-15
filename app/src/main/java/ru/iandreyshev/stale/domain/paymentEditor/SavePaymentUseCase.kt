@@ -25,6 +25,7 @@ class SavePaymentUseCase(
             id = draft.id ?: PaymentId(""),
             name = draft.name,
             members = draft.members,
+            transactions = listOf(),
             isArchived = false,
             creationDate = dateProvider.currentDate()
         )

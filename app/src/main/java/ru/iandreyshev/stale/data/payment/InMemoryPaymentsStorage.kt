@@ -35,10 +35,6 @@ class InMemoryPaymentsStorage : PaymentsStorage {
         return mCache.value.firstOrNull { it.id == id }
     }
 
-    override suspend fun getMembers(id: PaymentId): List<Member> {
-        TODO("getMembers not implemented")
-    }
-
     override suspend fun remove(id: PaymentId) {
         val newList = mCache.value.toMutableList()
         newList.removeIf { it.id == id }

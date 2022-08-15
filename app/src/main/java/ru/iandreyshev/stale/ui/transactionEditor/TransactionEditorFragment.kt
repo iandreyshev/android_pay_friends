@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.onEach
 import ru.iandreyshev.stale.R
 import ru.iandreyshev.stale.databinding.FragmentTransactionEditorBinding
 import ru.iandreyshev.stale.domain.core.PaymentId
+import ru.iandreyshev.stale.domain.core.TransactionId
 import ru.iandreyshev.stale.presentation.transactionEditor.Intent
 import ru.iandreyshev.stale.presentation.transactionEditor.Label
 import ru.iandreyshev.stale.presentation.transactionEditor.State
@@ -23,7 +24,10 @@ import ru.iandreyshev.stale.ui.utils.viewModelFactory
 class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor) {
 
     private val mViewModel by viewModelFactory {
-        TransactionEditorViewModel(PaymentId(mArgs.paymentId))
+        TransactionEditorViewModel(
+            PaymentId(mArgs.paymentId),
+            mArgs.transactionId?.let { TransactionId(it) }
+        )
     }
     private val mArgs by navArgs<TransactionEditorFragmentArgs>()
     private val mBinding by viewBindings(FragmentTransactionEditorBinding::bind)
@@ -65,7 +69,7 @@ class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor)
                 totalCost = state.totalCost,
                 suggestions = state.producerSuggestions,
                 query = state.producerSearchQuery,
-                canAddNewMember = state.canAddNewMember
+                canAddNewMember = state.isAddingNewMemberActive
             )
         )
 

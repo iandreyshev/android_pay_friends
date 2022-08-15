@@ -5,5 +5,6 @@ data class Payment(
     val name: String,
     val members: List<Member>,
     val creationDate: String,
-    val isArchived: Boolean
+    val isArchived: Boolean,
+    val transactions: List<Transaction>
 )

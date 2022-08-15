@@ -7,12 +7,14 @@ import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import ru.iandreyshev.stale.data.payment.InMemoryPaymentsStorage
 import ru.iandreyshev.stale.domain.core.PaymentId
+import ru.iandreyshev.stale.domain.core.TransactionId
 import ru.iandreyshev.stale.domain.transactionEditor.FilterMembers
 import ru.iandreyshev.stale.system.AppDispatchers
 import ru.iandreyshev.stale.ui.utils.uiLazy
 
 class TransactionEditorViewModel(
-    paymentId: PaymentId
+    paymentId: PaymentId,
+    transactionId: TransactionId?
 ) : ViewModel() {
 
     val state by uiLazy { mStore.states }
@@ -21,7 +23,7 @@ class TransactionEditorViewModel(
     private val mStore = DefaultStoreFactory()
         .create(
             name = "Transaction editor store",
-            initialState = State.default(paymentId = paymentId),
+            initialState = State.default(),
             executorFactory = {
                 Executor(
                     dispatchers = AppDispatchers,
@@ -31,7 +33,8 @@ class TransactionEditorViewModel(
             },
             reducer = Reducer,
             bootstrapper = object : CoroutineBootstrapper<Action>() {
-                override fun invoke() = dispatch(Action.InvokeOnStart)
+                override fun invoke() =
+                    dispatch(Action.OnStart(paymentId, transactionId))
             }
         )
 

@@ -1,6 +1,7 @@
 package ru.iandreyshev.stale.domain.calc
 
 import ru.iandreyshev.stale.domain.core.Transaction
+import ru.iandreyshev.stale.domain.core.TransactionId
 import ru.iandreyshev.stale.domain.core.TransactionParticipants
 import java.lang.IllegalStateException
 import kotlin.math.abs
@@ -20,8 +21,8 @@ class CalcResultUseCase {
                 null -> optimized[entry.key] = entry.value
                 else -> {
                     val resultParticipants = getResultParticipants(
-                        transaction1 = Transaction(entry.key, entry.value),
-                        transaction2 = Transaction(mirror, mirrorCost)
+                        transaction1 = Transaction(TransactionId(""), entry.key, entry.value),
+                        transaction2 = Transaction(TransactionId(""), mirror, mirrorCost)
                     )
 
                     optimized.remove(mirror)
@@ -33,7 +34,7 @@ class CalcResultUseCase {
             }
         }
 
-        return optimized.map { Transaction(it.key, it.value) }
+        return optimized.map { Transaction(TransactionId(""), it.key, it.value) }
     }
 
     private fun getResultParticipants(

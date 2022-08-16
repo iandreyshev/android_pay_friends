@@ -4,6 +4,10 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
+import ru.iandreyshev.stale.R
 import ru.iandreyshev.stale.databinding.ViewEditableMemberBinding
 import java.util.*
 
@@ -25,13 +29,26 @@ class EditableMemberView
     fun setState(
         name: String,
         onClickListener: () -> Unit = {},
-        canRemove: Boolean = false,
-        onRemoveListener: () -> Unit = {}
+        onRemoveListener: (() -> Unit)? = null
     ) {
         mBinding.firstChar.text = name.getFirstChar()
         mBinding.name.text = name
         mBinding.clickableArea.setOnClickListener {
             onClickListener()
+        }
+
+        if (onRemoveListener == null) {
+            mBinding.name.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                marginEnd = resources.getDimensionPixelSize(R.dimen.step_10)
+            }
+            mBinding.removeButton.setOnClickListener(null)
+            mBinding.removeButton.isVisible = false
+        } else {
+            mBinding.name.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                marginEnd = resources.getDimensionPixelSize(R.dimen.step_4)
+            }
+            mBinding.removeButton.setOnClickListener { onRemoveListener() }
+            mBinding.removeButton.isVisible = true
         }
     }
 

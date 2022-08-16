@@ -10,9 +10,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/step_16"
-        android:layout_marginTop="@dimen/step_16"
+        android:layout_marginTop="@dimen/step_20"
         android:text="Кто заплатил"
-        android:textSize="@dimen/text_size_3"
+        android:textSize="@dimen/text_size_4"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,37 +25,39 @@
         android:layout_marginHorizontal="@dimen/step_16"
         android:layout_marginTop="@dimen/step_6"
         android:background="@null"
-        android:hint="Введите имя..."
+        android:hint="Поиск..."
         android:lines="1"
-        app:layout_constraintBottom_toBottomOf="@id/totalCost"
-        app:layout_constraintEnd_toStartOf="@id/totalCost"
+        app:layout_constraintBottom_toBottomOf="@id/cost"
+        app:layout_constraintEnd_toStartOf="@id/cost"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/totalCost" />
+        app:layout_constraintTop_toTopOf="@id/cost" />
 
     <ru.iandreyshev.stale.ui.members.EditableMemberView
         android:id="@+id/producer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/step_16"
-        app:layout_constraintBottom_toBottomOf="@id/totalCost"
-        app:layout_constraintEnd_toStartOf="@id/totalCost"
+        app:layout_constraintBottom_toBottomOf="@id/cost"
+        app:layout_constraintEnd_toStartOf="@id/cost"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/totalCost" />
+        app:layout_constraintTop_toTopOf="@id/cost" />
 
     <TextView
-        android:id="@+id/totalCost"
+        android:id="@+id/cost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/step_16"
         android:layout_marginTop="@dimen/step_4"
         android:gravity="end"
         android:lines="2"
+        android:textSize="@dimen/text_size_3"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title"
-        tools:text="Итог\n37 0000" />
+        tools:text="Итог\n37.000 ₽" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/suggestionsList"
+        android:id="@+id/suggestions"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/step_4"
@@ -63,7 +65,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/totalCost"
+        app:layout_constraintTop_toBottomOf="@id/cost"
         app:layout_goneMarginTop="0dp"
         tools:itemCount="7"
         tools:listitem="@layout/view_editable_member" />
@@ -74,18 +76,33 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/suggestionsList" />
+        app:layout_constraintTop_toBottomOf="@id/suggestions" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/transactionsTitle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/step_16"
-        android:layout_marginTop="@dimen/step_16"
-        android:text="За кого"
-        android:textSize="@dimen/text_size_3"
+        android:layout_marginTop="@dimen/step_20"
+        android:text="Транзакции"
+        android:textSize="@dimen/text_size_4"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addMemberButton" />
+        app:layout_constraintTop_toBottomOf="@id/addMemberButton"
+        app:layout_goneMarginBaseline="0dp" />
+
+    <TextView
+        android:id="@+id/transactionsEmptyView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/step_64"
+        android:layout_marginVertical="@dimen/step_16"
+        android:gravity="center"
+        android:text="Выберите получателя, чтобы добавить транзакцию."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/transactionsTitle"
+        app:layout_goneMarginBaseline="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

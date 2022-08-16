@@ -3,6 +3,7 @@ package ru.iandreyshev.stale.presentation.transactionEditor
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ru.iandreyshev.stale.domain.core.Member
 import ru.iandreyshev.stale.domain.core.TransactionId
 import ru.iandreyshev.stale.domain.paymentEditor.ValidateMemberUseCase
 import ru.iandreyshev.stale.domain.payments.PaymentsStorage
@@ -24,7 +25,12 @@ class Executor(
 
     override fun executeIntent(intent: Intent, getState: () -> State) {
         when (intent) {
+            Intent.OnSave -> TODO()
+            Intent.OnExit -> TODO()
             is Intent.OnProducerFieldChanged -> onProducerFieldChanged(intent.text, getState)
+            is Intent.OnProducerSelected -> dispatch(Message.UpdateProducer(intent.member))
+            is Intent.OnProducerCandidateSelected -> onProducerCandidateSelected(intent.name)
+            Intent.OnRemoveProducer -> dispatch(Message.UpdateProducer(null))
         }
     }
 
@@ -76,9 +82,13 @@ class Executor(
                 null -> {
                     val candidate = text.trim()
                     val filters = FilterMembers.Filters(candidate)
+                    val members = filterMembers(getState().members, filters)
                     Message.UpdateProducerSuggestions(
-                        suggestions = filterMembers(getState().members, filters),
-                        candidate = candidate
+                        suggestions = members,
+                        candidate = when {
+                            members.isEmpty() -> candidate
+                            else -> ""
+                        }
                     )
                 }
                 else -> Message.UpdateProducerSuggestions(
@@ -87,6 +97,15 @@ class Executor(
                 )
             }
         )
+    }
+
+    private fun onProducerCandidateSelected(candidate: String) {
+        val member = Member(candidate.trim())
+
+        when {
+            validateMember(member) -> dispatch(Message.UpdateProducer(member))
+            else -> publish(Label.Error.InvalidProducerCandidate)
+        }
     }
 
 }

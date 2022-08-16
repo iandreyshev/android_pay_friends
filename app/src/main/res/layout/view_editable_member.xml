@@ -38,14 +38,14 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/step_4"
         android:layout_marginStart="@dimen/step_4"
-        android:layout_marginEnd="@dimen/step_8"
+        android:layout_marginEnd="@dimen/step_4"
         android:ellipsize="end"
         android:lines="1"
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_3"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/removeButton"
         app:layout_constraintStart_toEndOf="@id/firstCharBackground"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Ivan Andreyshev" />
@@ -59,5 +59,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/removeButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginVertical="@dimen/step_2"
+        android:layout_marginEnd="@dimen/step_10"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_close_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -50,8 +50,9 @@ class PaymentEditorFragment : Fragment(R.layout.fragment_payment_editor) {
     }
     private val mNavController by uiLazy { findNavController() }
     private val mMembersAdapter by uiLazy {
-        MembersAdapter { member, position ->
-        }
+        MembersAdapter(
+            onMemberClick = { member, position -> }
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

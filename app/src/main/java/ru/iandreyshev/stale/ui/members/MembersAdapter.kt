@@ -12,7 +12,8 @@ import ru.iandreyshev.stale.domain.core.Member
 import ru.iandreyshev.stale.ui.utils.uiLazy
 
 class MembersAdapter(
-    private val onMemberClick: (Member, Int) -> Unit
+    private val onMemberClick: (Member, Int) -> Unit,
+    private val onRemoveMemberClick: ((Member, Int) -> Unit)? = null
 ) : ListAdapter<Member, MembersAdapter.ViewHolder>(ItemCallback) {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -34,7 +35,10 @@ class MembersAdapter(
         val member = getItem(position)
         holder.binding.memberView.setState(
             name = member.name,
-            onClickListener = { onMemberClick(member, position) }
+            onClickListener = { onMemberClick(member, position) },
+            onRemoveListener = onRemoveMemberClick?.let { block ->
+                { block(member, position) }
+            }
         )
     }
 

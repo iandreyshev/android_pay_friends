@@ -1,6 +1,7 @@
 package ru.iandreyshev.stale.ui.transactionEditor.items
 
 import android.text.Editable
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
@@ -11,54 +12,61 @@ import ru.iandreyshev.stale.ui.members.MembersAdapter
 
 data class ProducerFieldItem(
     val producer: Member?,
-    val totalCost: Int,
+    val cost: Int,
     val suggestions: List<Member>,
     val candidate: String,
-) : TransactionEditorItem
+    val isTransactionsListEmpty: Boolean
+) : TransactionEditorItem {
+
+    val hasSuggestions: Boolean
+        get() = suggestions.isNotEmpty()
+
+}
 
 fun producerAdapterDelegate(
     onProducerFieldTextChanged: (Editable?) -> Unit,
-    onSuggestionClick: (String) -> Unit,
-    onAddButtonClick: () -> Unit,
+    onSuggestionClick: (Member) -> Unit,
+    onAddButtonClick: (String) -> Unit,
+    onRemoveProducerClick: () -> Unit
 ) = adapterDelegateViewBinding<ProducerFieldItem, TransactionEditorItem, ItemTransactionEditorProducerBinding>(
     viewBinding = { inflater, root ->
         inflater.inflate(R.layout.item_transaction_editor_producer, root, false)
             .let(ItemTransactionEditorProducerBinding::bind)
     }) {
     bind {
-        when (val producer = item.producer) {
+        val producer = item.producer
+        binding.producer.isVisible = producer != null
+        binding.producer.setState(name = producer?.name.orEmpty()) { onRemoveProducerClick() }
+
+        binding.producerField.isVisible = producer == null
+        binding.producerField.doAfterTextChanged(onProducerFieldTextChanged)
+
+        binding.suggestions.isVisible = producer == null && item.hasSuggestions
+        when (val adapter = binding.suggestions.adapter as? MembersAdapter) {
             null -> {
-                binding.producer.isVisible = false
-
-                binding.producerField.isVisible = true
-                binding.producerField.doAfterTextChanged(onProducerFieldTextChanged)
-
-                binding.suggestionsList.isVisible = item.suggestions.isNotEmpty()
-                when (val adapter = binding.suggestionsList.adapter as? MembersAdapter) {
-                    null -> {
-                        val newAdapter = MembersAdapter { member, _ -> onSuggestionClick(member.name) }
-                        newAdapter.submitList(item.suggestions)
-                        binding.suggestionsList.adapter = newAdapter
-                        binding.suggestionsList.itemAnimator = null
-                    }
-                    else -> {
-                        adapter.submitList(item.suggestions)
-                    }
+                val newAdapter = MembersAdapter(
+                    onMemberClick = { member, _ -> onSuggestionClick(member) }
+                )
+                newAdapter.submitList(item.suggestions)
+                binding.suggestions.adapter = newAdapter
+                binding.suggestions.itemAnimator = null
+                val itemDecoration = CandidatesItemDecoration(binding.root.resources)
+                binding.suggestions.addItemDecoration(itemDecoration)
+            }
+            else ->
+                adapter.submitList(item.suggestions) {
+                    binding.suggestions.scrollToPosition(0)
                 }
-
-                binding.addMemberButton.isVisible = item.candidate.isNotEmpty()
-                binding.addMemberButton.setState(name = item.candidate) { onAddButtonClick() }
-            }
-            else -> {
-                binding.producer.isVisible = true
-                binding.producer.setState(name = producer.name)
-
-                binding.producerField.isVisible = false
-
-                binding.suggestionsList.isVisible = false
-
-                binding.addMemberButton.isVisible = false
-            }
         }
+
+        binding.addMemberButton.isVisible = producer == null && item.candidate.isNotEmpty()
+        binding.addMemberButton.setState(name = item.candidate) {
+            onAddButtonClick(binding.producerField.text.toString())
+        }
+
+        binding.transactionsEmptyView.isVisible = item.isTransactionsListEmpty
+
+        binding.cost.isInvisible = producer == null
+        binding.cost.text = getString(R.string.transaction_editor_cost, item.cost)
     }
 }

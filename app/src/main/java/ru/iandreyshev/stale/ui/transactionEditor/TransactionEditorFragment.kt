@@ -34,9 +34,18 @@ class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor)
     private val mAdapter by uiLazy {
         ListDelegationAdapter(
             producerAdapterDelegate(
-                onProducerFieldTextChanged = { mViewModel.onIntent(Intent.OnProducerFieldChanged(it.toString())) },
-                onSuggestionClick = {},
-                onAddButtonClick = {}
+                onProducerFieldTextChanged = {
+                    mViewModel(Intent.OnProducerFieldChanged(it.toString()))
+                },
+                onSuggestionClick = {
+                    mViewModel(Intent.OnProducerSelected(it))
+                },
+                onAddButtonClick = {
+                    mViewModel(Intent.OnProducerCandidateSelected(it))
+                },
+                onRemoveProducerClick = {
+                    mViewModel(Intent.OnRemoveProducer)
+                }
             ),
             transactionAdapterDelegate(),
             producerFieldAdapterDelegate()
@@ -66,9 +75,10 @@ class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor)
         val items = mutableListOf<TransactionEditorItem>(
             ProducerFieldItem(
                 producer = state.producerField.producer,
-                totalCost = state.producerField.cost,
+                cost = state.producerField.cost,
                 suggestions = state.producerField.suggestions,
                 candidate = state.producerField.candidate,
+                isTransactionsListEmpty = state.transactions.isEmpty()
             )
         )
 

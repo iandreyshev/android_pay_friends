@@ -29,10 +29,5 @@ class AddMemberButton
         }
     }
 
-    private fun String.getFirstChar(): String {
-        return (firstOrNull() ?: "").toString()
-            .replaceFirstChar { it.titlecase(Locale.getDefault()) }
-    }
-
 }
 

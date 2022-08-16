@@ -40,6 +40,6 @@ class TransactionEditorViewModel(
             }
         )
 
-    fun onIntent(intent: Intent) = mStore.accept(intent)
+    operator fun invoke(intent: Intent) = mStore.accept(intent)
 
 }

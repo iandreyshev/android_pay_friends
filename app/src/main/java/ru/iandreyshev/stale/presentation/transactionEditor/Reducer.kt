@@ -12,5 +12,7 @@ val Reducer = Reducer<State, Message> { message ->
                     candidate = message.candidate
                 )
             )
+        is Message.UpdateProducer ->
+            copy(producerField = producerField.copy(producer = message.producer))
     }
 }

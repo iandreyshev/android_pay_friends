@@ -2,7 +2,6 @@ package ru.iandreyshev.stale.data.payment
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import ru.iandreyshev.stale.domain.core.Member
 import ru.iandreyshev.stale.domain.core.Payment
 import ru.iandreyshev.stale.domain.core.PaymentId
 import ru.iandreyshev.stale.domain.payments.PaymentsStorage
@@ -10,7 +9,7 @@ import kotlin.random.Random
 
 class InMemoryPaymentsStorage : PaymentsStorage {
 
-    private val mCache: MutableStateFlow<List<Payment>> = MutableStateFlow(listOf())
+    private val mCache: MutableStateFlow<List<Payment>> = MutableStateFlow(createMock1())
 
     override suspend fun save(payment: Payment): Payment {
         val ids = mCache.value
@@ -23,7 +22,7 @@ class InMemoryPaymentsStorage : PaymentsStorage {
 
         var newId: PaymentId
         do {
-            newId = PaymentId(Random.nextInt().toString())
+            newId = randomPaymentId()
         } while (newId in ids)
 
         val newPayment = payment.copy(id = newId)

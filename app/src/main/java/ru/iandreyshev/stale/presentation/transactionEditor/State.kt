@@ -56,7 +56,7 @@ data class ReceiverFieldState(
 
     companion object {
         fun default() = ReceiverFieldState(
-            isEnabled = false,
+            isEnabled = true,
             suggestions = listOf(),
             isCandidateActive = false,
             candidate = "",

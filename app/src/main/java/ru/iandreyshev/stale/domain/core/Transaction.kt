@@ -10,4 +10,16 @@ data class Transaction(
     fun isMirrorOf(transaction: Transaction) =
         participants == transaction.participants.mirror()
 
+    companion object {
+        fun empty(
+            id: TransactionId = TransactionId(""),
+            participants: TransactionParticipants
+        ) = Transaction(
+            id = id,
+            participants = participants,
+            cost = 0,
+            description = ""
+        )
+    }
+
 }

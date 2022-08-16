@@ -32,6 +32,7 @@ data class State(
 data class ProducerFieldState(
     val producer: Member?,
     val suggestions: List<Member>,
+    val candidateQuery: String,
     val candidate: String,
     val cost: Int,
 ) {
@@ -39,6 +40,7 @@ data class ProducerFieldState(
     companion object {
         fun default() = ProducerFieldState(
             producer = null,
+            candidateQuery = "",
             candidate = "",
             suggestions = listOf(),
             cost = 0,
@@ -49,16 +51,20 @@ data class ProducerFieldState(
 
 data class ReceiverFieldState(
     val isEnabled: Boolean,
+    val receiver: Member?,
     val suggestions: List<Member>,
     val isCandidateActive: Boolean,
+    val candidateQuery: String,
     val candidate: String
 ) {
 
     companion object {
         fun default() = ReceiverFieldState(
             isEnabled = true,
+            receiver = null,
             suggestions = listOf(),
             isCandidateActive = false,
+            candidateQuery = "",
             candidate = "",
         )
     }

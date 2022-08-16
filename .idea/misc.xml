@@ -19,7 +19,7 @@
         <entry key="app/src/main/res/layout/fragment_payment_editor.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_payments_list.xml" value="0.2359375" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_transaction_editor.xml" value="0.14907407407407408" />
+        <entry key="app/src/main/res/layout/fragment_transaction_editor.xml" value="0.19545011167173032" />
         <entry key="app/src/main/res/layout/item_add_transaction_button.xml" value="0.125" />
         <entry key="app/src/main/res/layout/item_payment.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_payment_editor_member.xml" value="0.335" />

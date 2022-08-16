@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/producerField"
+        android:id="@+id/receiverField"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/step_16"
@@ -35,12 +35,12 @@
         android:id="@+id/suggestions"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/step_16"
         android:layout_marginTop="@dimen/step_4"
         android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/producerField"
+        app:layout_constraintTop_toBottomOf="@id/receiverField"
         app:layout_goneMarginTop="0dp"
         tools:itemCount="7"
         tools:listitem="@layout/view_editable_member" />

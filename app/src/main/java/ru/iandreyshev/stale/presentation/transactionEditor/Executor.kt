@@ -4,7 +4,9 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.iandreyshev.stale.domain.core.Member
+import ru.iandreyshev.stale.domain.core.Transaction
 import ru.iandreyshev.stale.domain.core.TransactionId
+import ru.iandreyshev.stale.domain.core.TransactionParticipants
 import ru.iandreyshev.stale.domain.paymentEditor.ValidateMemberUseCase
 import ru.iandreyshev.stale.domain.payments.PaymentsStorage
 import ru.iandreyshev.stale.domain.transactionEditor.FilterMembers
@@ -25,12 +27,22 @@ class Executor(
 
     override fun executeIntent(intent: Intent, getState: () -> State) {
         when (intent) {
-            Intent.OnSave -> TODO()
-            Intent.OnExit -> TODO()
-            is Intent.OnProducerFieldChanged -> onProducerFieldChanged(intent.text, getState)
-            is Intent.OnProducerSelected -> dispatch(Message.UpdateProducer(intent.member))
-            is Intent.OnProducerCandidateSelected -> onProducerCandidateSelected(intent.name)
+            // Common
+            Intent.OnSave -> onSave(getState)
+            Intent.OnExit -> publish(Label.Exit())
+            // Producer field
+            is Intent.OnProducerFieldChanged -> onProducerFieldChanged(intent.query, getState)
+            is Intent.OnProducerSelected -> dispatch(Message.UpdateProducer(intent.producer))
+            is Intent.OnProducerCandidateSelected -> onProducerCandidateSelected(intent.query)
             Intent.OnRemoveProducer -> dispatch(Message.UpdateProducer(null))
+            // Receiver field
+            is Intent.OnReceiverFieldChanged -> onReceiverFieldChanged(intent.query, getState)
+            is Intent.OnReceiverSelected -> onReceiverSelected(intent.receiver, getState)
+            is Intent.OnReceiverCandidateSelected -> onReceiverCandidateSelected(intent.query, getState)
+            // Transactions
+            is Intent.OnCostChanged -> TODO()
+            is Intent.OnDescriptionChanged -> TODO()
+            is Intent.OnRemoveTransaction -> TODO()
         }
     }
 
@@ -76,34 +88,59 @@ class Executor(
         }
     }
 
-    private fun onProducerFieldChanged(text: String, getState: () -> State) {
-        dispatch(
-            when (getState().producerField.producer) {
-                null -> {
-                    val candidate = text.trim()
-                    val filters = FilterMembers.Filters(candidate)
-                    val members = filterMembers(getState().members, filters)
-                    Message.UpdateProducerSuggestions(
-                        suggestions = members,
-                        candidate = when {
-                            members.isEmpty() -> candidate
-                            else -> ""
-                        }
-                    )
-                }
-                else -> Message.UpdateProducerSuggestions(
-                    suggestions = emptyList(),
-                    candidate = ""
-                )
-            }
-        )
+    private fun onSave(getState: () -> State) {
     }
 
-    private fun onProducerCandidateSelected(candidate: String) {
-        val member = Member(candidate.trim())
+    private fun onProducerFieldChanged(query: String, getState: () -> State) {
+        val message = when (getState().producerField.producer) {
+            null -> {
+                var candidate = query.trim()
+                val filters = FilterMembers.Filters(candidate)
+                val members = filterMembers(getState().members, filters)
+                candidate = if (members.isEmpty()) candidate else ""
+                Message.UpdateProducerSuggestions(query, candidate, members)
+            }
+            else -> Message.UpdateProducerSuggestions(query, "", emptyList())
+        }
+        dispatch(message)
+    }
+
+    private fun onProducerCandidateSelected(query: String) {
+        val producer = Member(query.trim())
 
         when {
-            validateMember(member) -> dispatch(Message.UpdateProducer(member))
+            validateMember(producer) -> dispatch(Message.UpdateProducer(producer))
+            else -> publish(Label.Error.InvalidProducerCandidate)
+        }
+    }
+
+    private fun onReceiverFieldChanged(query: String, getState: () -> State) {
+        val message = when (getState().receiverField.receiver) {
+            null -> {
+                var candidate = query.trim()
+                val filters = FilterMembers.Filters(candidate)
+                val members = filterMembers(getState().members, filters)
+                candidate = if (members.isEmpty()) candidate else ""
+                Message.UpdateReceiverSuggestions(query, candidate, members)
+            }
+            else -> Message.UpdateReceiverSuggestions(query, "", emptyList())
+        }
+        dispatch(message)
+    }
+
+    private fun onReceiverSelected(receiver: Member, getState: () -> State) {
+        val producer = getState().producerField.producer ?: Member("")
+        val participants = TransactionParticipants(producer, receiver)
+        val newTransaction = Transaction.empty(participants = participants)
+        val transactions = getState().transactions.toMutableList()
+        transactions.add(newTransaction)
+        dispatch(Message.UpdateTransactions(transactions))
+    }
+
+    private fun onReceiverCandidateSelected(query: String, getState: () -> State) {
+        val receiver = Member(query.trim())
+        when {
+            validateMember(receiver) -> onReceiverSelected(receiver, getState)
             else -> publish(Label.Error.InvalidProducerCandidate)
         }
     }

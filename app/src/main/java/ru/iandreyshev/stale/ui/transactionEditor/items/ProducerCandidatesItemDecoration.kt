@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.iandreyshev.stale.R
 import ru.iandreyshev.stale.ui.utils.uiLazy
 
-class CandidatesItemDecoration(
+class ProducerCandidatesItemDecoration(
     private val resources: Resources
 ) : RecyclerView.ItemDecoration() {
 

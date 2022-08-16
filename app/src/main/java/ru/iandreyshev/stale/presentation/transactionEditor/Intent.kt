@@ -8,8 +8,18 @@ sealed interface Intent {
     object OnExit : Intent
 
     // Producer field
-    data class OnProducerFieldChanged(val text: String) : Intent
-    data class OnProducerSelected(val member: Member): Intent
-    data class OnProducerCandidateSelected(val name: String): Intent
+    data class OnProducerFieldChanged(val query: String) : Intent
+    data class OnProducerSelected(val producer: Member) : Intent
+    data class OnProducerCandidateSelected(val query: String) : Intent
     object OnRemoveProducer : Intent
+
+    // Receiver field
+    data class OnReceiverFieldChanged(val query: String) : Intent
+    data class OnReceiverSelected(val receiver: Member) : Intent
+    data class OnReceiverCandidateSelected(val query: String) : Intent
+
+    // Transactions
+    data class OnRemoveTransaction(val position: Int) : Intent
+    data class OnCostChanged(val position: Int, val cost: Int) : Intent
+    data class OnDescriptionChanged(val position: Int, val description: String): Intent
 }

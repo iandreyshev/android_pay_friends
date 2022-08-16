@@ -64,7 +64,7 @@ class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor)
 
     private fun render(state: State) {
         val items = mutableListOf<TransactionEditorItem>(
-            ProducerItem(
+            ProducerFieldItem(
                 producer = state.producerField.producer,
                 totalCost = state.producerField.cost,
                 suggestions = state.producerField.suggestions,

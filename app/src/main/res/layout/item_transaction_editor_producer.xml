@@ -76,4 +76,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/suggestionsList" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/step_16"
+        android:layout_marginTop="@dimen/step_16"
+        android:text="За кого"
+        android:textSize="@dimen/text_size_3"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addMemberButton" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

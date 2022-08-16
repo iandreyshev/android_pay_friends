@@ -10,8 +10,8 @@ data class State(
     val transactionId: TransactionId,
     val producerField: ProducerFieldState,
     val receiverField: ReceiverFieldState,
-    val members: List<Member>,
     val transactions: List<Transaction>,
+    val members: List<Member>,
     val isStarted: Boolean
 ) {
 

@@ -57,12 +57,12 @@ class Executor(
                             suggestions = payment.members,
                             cost = totalCost,
                         ),
-                        members = payment.members,
-                        transactions = transaction?.let { listOf(it) }.orEmpty(),
                         receiverField = getState().receiverField.copy(
                             isCandidateActive = action.transactionId == null,
                             suggestions = newTransactionReceiverSuggestions
                         ),
+                        transactions = listOfNotNull(transaction),
+                        members = payment.members,
                         isStarted = true
                     )
                 )

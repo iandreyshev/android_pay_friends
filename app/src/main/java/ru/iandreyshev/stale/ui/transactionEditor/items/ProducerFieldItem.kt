@@ -9,7 +9,7 @@ import ru.iandreyshev.stale.databinding.ItemTransactionEditorProducerBinding
 import ru.iandreyshev.stale.domain.core.Member
 import ru.iandreyshev.stale.ui.members.MembersAdapter
 
-data class ProducerItem(
+data class ProducerFieldItem(
     val producer: Member?,
     val totalCost: Int,
     val suggestions: List<Member>,
@@ -20,7 +20,7 @@ fun producerAdapterDelegate(
     onProducerFieldTextChanged: (Editable?) -> Unit,
     onSuggestionClick: (String) -> Unit,
     onAddButtonClick: () -> Unit,
-) = adapterDelegateViewBinding<ProducerItem, TransactionEditorItem, ItemTransactionEditorProducerBinding>(
+) = adapterDelegateViewBinding<ProducerFieldItem, TransactionEditorItem, ItemTransactionEditorProducerBinding>(
     viewBinding = { inflater, root ->
         inflater.inflate(R.layout.item_transaction_editor_producer, root, false)
             .let(ItemTransactionEditorProducerBinding::bind)

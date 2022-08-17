@@ -1,6 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:elevation="8dp"
+    app:cardCornerRadius="@dimen/step_16">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/step_8"
+        android:paddingVertical="@dimen/step_6">
+
+        <TextView
+            android:id="@+id/receiverTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Должник:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/receiver"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/step_4"
+            app:layout_constraintBottom_toBottomOf="@id/receiverTitle"
+            app:layout_constraintEnd_toStartOf="@id/removeButton"
+            app:layout_constraintStart_toEndOf="@id/receiverTitle"
+            app:layout_constraintTop_toTopOf="@id/receiverTitle"
+            tools:text="Ivan Andreyshev" />
+
+        <TextView
+            android:id="@+id/costTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/step_4"
+            android:text="Сумма"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/receiverTitle" />
+
+        <EditText
+            android:id="@+id/costField"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/step_4"
+            android:background="@null"
+            android:hint="1000₽"
+            android:inputType="number"
+            android:textSize="@dimen/text_size_2"
+            app:layout_constraintBottom_toBottomOf="@id/costTitle"
+            app:layout_constraintEnd_toEndOf="@id/receiver"
+            app:layout_constraintStart_toEndOf="@id/costTitle"
+            app:layout_constraintTop_toTopOf="@id/costTitle" />
+
+        <EditText
+            android:id="@+id/descriptionField"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/step_4"
+            android:hint="Описание (опционально)"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:textSize="@dimen/text_size_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/costTitle" />
+
+        <ImageButton
+            android:id="@+id/removeButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_close_24" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>

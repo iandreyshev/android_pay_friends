@@ -99,7 +99,7 @@
         android:layout_marginHorizontal="@dimen/step_64"
         android:layout_marginVertical="@dimen/step_16"
         android:gravity="center"
-        android:text="Выберите получателя, чтобы добавить транзакцию."
+        android:text="Выберите участника, который является должником, чтобы записать оплату"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/transactionsTitle"

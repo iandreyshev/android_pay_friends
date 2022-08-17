@@ -25,7 +25,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/step_20">
 
             <include
                 android:id="@+id/producerView"
@@ -35,7 +36,7 @@
                 android:id="@+id/transactions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" />
+                android:orientation="vertical" />
 
             <include
                 android:id="@+id/receiverView"

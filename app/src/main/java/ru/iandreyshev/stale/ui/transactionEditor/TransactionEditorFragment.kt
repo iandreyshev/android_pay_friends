@@ -2,10 +2,13 @@ package ru.iandreyshev.stale.ui.transactionEditor
 
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.get
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +21,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.iandreyshev.stale.R
 import ru.iandreyshev.stale.databinding.FragmentTransactionEditorBinding
+import ru.iandreyshev.stale.databinding.ItemTransactionEditorTransactionBinding
 import ru.iandreyshev.stale.domain.core.PaymentId
 import ru.iandreyshev.stale.domain.core.TransactionId
 import ru.iandreyshev.stale.presentation.transactionEditor.Intent
@@ -25,11 +29,9 @@ import ru.iandreyshev.stale.presentation.transactionEditor.Label
 import ru.iandreyshev.stale.presentation.transactionEditor.State
 import ru.iandreyshev.stale.presentation.transactionEditor.TransactionEditorViewModel
 import ru.iandreyshev.stale.ui.members.MembersAdapter
-import ru.iandreyshev.stale.ui.transactionEditor.items.ProducerCandidatesItemDecoration
-import ru.iandreyshev.stale.ui.transactionEditor.items.ProducerFieldItem
-import ru.iandreyshev.stale.ui.transactionEditor.items.ReceiverCandidatesItemDecoration
-import ru.iandreyshev.stale.ui.transactionEditor.items.ReceiverFieldItem
+import ru.iandreyshev.stale.ui.transactionEditor.items.*
 import ru.iandreyshev.stale.ui.utils.*
+import kotlin.math.abs
 
 class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor) {
 
@@ -42,6 +44,8 @@ class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor)
     private val mNavController by uiLazy { findNavController() }
     private val mArgs by navArgs<TransactionEditorFragmentArgs>()
     private val mBinding by viewBindings(FragmentTransactionEditorBinding::bind)
+    private val mTransactionMarginHorizontal by uiLazy { resources.getDimensionPixelSize(R.dimen.step_16) }
+    private val mTransactionMarginVertical by uiLazy { resources.getDimensionPixelSize(R.dimen.step_8) }
 
     private var mAlertDialog: AlertDialog? = null
 
@@ -104,16 +108,13 @@ class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor)
             )
         )
 
-//        state.transactions.forEachIndexed { index, transaction ->
-//            items.add(
-//                TransactionItem(
-//                    member = transaction.participants.receiver,
-//                    cost = transaction.cost,
-//                    description = transaction.description,
-//                    showHeader = index == 0
-//                )
-//            )
-//        }
+        renderTransactions(transactions = state.transactions.map { transaction ->
+            TransactionItem(
+                receiver = transaction.participants.receiver,
+                cost = transaction.cost,
+                description = transaction.description,
+            )
+        })
 
         if (state.receiverField.isEnabled) {
             renderReceiverField(
@@ -197,6 +198,35 @@ class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor)
         binding.addMemberButton.setState(name = item.candidate) {
             binding.receiverField.text.toString()
             mViewModel(Intent.OnReceiverCandidateSelected(binding.receiverField.text.toString()))
+        }
+    }
+
+    private fun renderTransactions(transactions: List<TransactionItem>) {
+        val viewCount = mBinding.transactions.childCount
+        val countDiff = abs(transactions.count() - viewCount)
+
+        when {
+            viewCount < transactions.count() -> repeat(countDiff) {
+                ItemTransactionEditorTransactionBinding
+                    .inflate(layoutInflater, mBinding.transactions, true)
+            }
+            viewCount > transactions.count() -> repeat(countDiff) {
+                mBinding.transactions.removeViewAt(viewCount - 1 - it)
+            }
+        }
+
+        transactions.forEachIndexed { index, transactionItem ->
+            val view = mBinding.transactions[index]
+            val binding = ItemTransactionEditorTransactionBinding.bind(view)
+            binding.root.updateLayoutParams<LinearLayout.LayoutParams> {
+                marginStart = mTransactionMarginHorizontal
+                marginEnd = mTransactionMarginHorizontal
+                bottomMargin = mTransactionMarginVertical
+                if (index == 0) {
+                    topMargin = mTransactionMarginVertical
+                }
+            }
+            binding.receiver.text = transactionItem.receiver.name
         }
     }
 

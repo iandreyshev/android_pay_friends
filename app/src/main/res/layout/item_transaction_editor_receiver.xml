@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/step_16"
         android:layout_marginTop="@dimen/step_20"
-        android:text="Получатель"
+        android:text="Участники"
         android:textSize="@dimen/text_size_4"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

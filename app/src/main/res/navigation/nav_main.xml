@@ -39,6 +39,9 @@
         <argument
             android:name="paymentId"
             app:argType="string" />
+        <argument
+            android:name="paymentName"
+            app:argType="string" />
         <action
             android:id="@+id/actionEditCurrentPayment"
             app:destination="@id/paymentEditorFragment" />

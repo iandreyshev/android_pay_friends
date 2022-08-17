@@ -26,4 +26,7 @@
     <string name="transaction_editor_menu_save_title">Сохранить</string>
     <string name="transaction_editor_cost">Итог\n %1$d ₽</string>
     <string name="transaction_editor_error_empty_name">Название должно содержать символы</string>
+
+    <string name="payment_tab_result_title">Итог</string>
+    <string name="payment_tab_history_title">История</string>
 </resources>

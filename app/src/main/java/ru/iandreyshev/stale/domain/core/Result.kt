@@ -12,4 +12,7 @@ sealed interface ErrorType {
     data class InvalidPaymentDraft(
         val errors: List<PaymentDraftError>
     ) : ErrorType
+
+    // Common
+    object Unknown : ErrorType
 }

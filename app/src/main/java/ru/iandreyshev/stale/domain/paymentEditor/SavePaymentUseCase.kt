@@ -13,7 +13,7 @@ class SavePaymentUseCase(
     private val dateProvider: DateProvider
 ) {
 
-    suspend operator fun invoke(draft: PaymentDraft): Result<PaymentId> {
+    suspend operator fun invoke(draft: PaymentDraft): Result<Payment> {
         val preparedDraft = draft.copy(name = draft.name.trim())
         val validationErrors = isDraftValid(preparedDraft)
 
@@ -31,7 +31,7 @@ class SavePaymentUseCase(
         )
         payment = storage.save(payment)
 
-        return Result.Success(payment.id)
+        return Result.Success(payment)
     }
 
 }

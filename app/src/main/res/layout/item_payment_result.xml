@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/step_16"
+    android:paddingVertical="@dimen/step_12">
+
+    <TextView
+        android:id="@+id/firstMemberTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Должник:"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/firstMember"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/step_8"
+        app:layout_constraintBottom_toBottomOf="@id/firstMemberTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/firstMemberTitle"
+        app:layout_constraintTop_toTopOf="@id/firstMemberTitle"
+        tools:text="Ivan" />
+
+    <TextView
+        android:id="@+id/secondMemberTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/step_4"
+        android:text="Получатель"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/firstMemberTitle" />
+
+    <TextView
+        android:id="@+id/secondMember"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/step_8"
+        android:layout_marginTop="@dimen/step_4"
+        app:layout_constraintBottom_toBottomOf="@id/secondMemberTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/secondMemberTitle"
+        app:layout_constraintTop_toTopOf="@id/secondMemberTitle"
+        tools:text="Илья" />
+
+    <TextView
+        android:id="@+id/costTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/step_4"
+        android:text="Сумма"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/secondMemberTitle" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/step_4"
+        app:layout_constraintBottom_toBottomOf="@id/costTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/costTitle"
+        app:layout_constraintTop_toTopOf="@id/costTitle"
+        tools:text="1000" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

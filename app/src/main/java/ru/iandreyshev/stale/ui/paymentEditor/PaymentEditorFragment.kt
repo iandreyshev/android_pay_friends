@@ -110,7 +110,7 @@ class PaymentEditorFragment : Fragment(R.layout.fragment_payment_editor) {
         when (event) {
             is Event.NavigateToPayment ->
                 PaymentEditorFragmentDirections
-                    .actionBackToNewPayment(event.id.value)
+                    .actionBackToNewPayment(event.id.value, event.name)
                     .let(mNavController::navigate)
             Event.ClearMemberField ->
                 mBinding.memberField.setText("")
@@ -119,6 +119,7 @@ class PaymentEditorFragment : Fragment(R.layout.fragment_payment_editor) {
                     null -> Unit
                     else -> toast(R.string.payment_editor_error_empty_name)
                 }
+                ErrorType.Unknown -> toast(R.string.common_unknown_error)
             }
             is Event.BackWithError -> {
                 toast(R.string.common_unknown_error)

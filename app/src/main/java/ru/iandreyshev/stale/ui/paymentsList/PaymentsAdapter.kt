@@ -12,7 +12,7 @@ import ru.iandreyshev.stale.domain.core.PaymentId
 import ru.iandreyshev.stale.domain.payments.PaymentSummary
 
 class PaymentsAdapter(
-    private val onClick: (PaymentId) -> Unit,
+    private val onClick: (PaymentSummary) -> Unit,
     private val onAddTransaction: (PaymentId) -> Unit,
     private val onOptionsMenuOpen: (View, PaymentId) -> Unit
 ) : ListAdapter<PaymentSummary, PaymentsAdapter.ViewHolder>(ItemCallback) {
@@ -33,7 +33,7 @@ class PaymentsAdapter(
         val item = getItem(position)
         holder.binding.title.text = item.name
         holder.binding.contentLayout.setOnClickListener {
-            onClick(item.id)
+            onClick(item)
         }
         holder.binding.addTransactionButton.setOnClickListener {
             onAddTransaction(item.id)

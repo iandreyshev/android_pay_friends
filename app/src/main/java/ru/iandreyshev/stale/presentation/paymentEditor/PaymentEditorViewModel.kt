@@ -62,7 +62,9 @@ class PaymentEditorViewModel(
         modifyState { copy(isSavingInProgress = true) }
         viewModelScope.launch {
             when (val result = savePayment(getState().draft)) {
-                is Result.Success -> event(Event.NavigateToPayment(result.data))
+                is Result.Success -> event {
+                    Event.NavigateToPayment(result.data.id, result.data.name)
+                }
                 is Result.Error -> event(Event.ShowError(result.error))
             }
             modifyState { copy(isSavingInProgress = false) }

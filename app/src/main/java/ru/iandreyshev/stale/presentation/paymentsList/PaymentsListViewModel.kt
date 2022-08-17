@@ -7,6 +7,7 @@ import kotlinx.coroutines.launch
 import ru.iandreyshev.stale.domain.core.PaymentId
 import ru.iandreyshev.stale.domain.payments.ArchivePaymentUseCase
 import ru.iandreyshev.stale.domain.payments.GetPaymentsListUseCase
+import ru.iandreyshev.stale.domain.payments.PaymentSummary
 import ru.iandreyshev.stale.domain.payments.PaymentsStorage
 import ru.iandreyshev.stale.presentation.utils.SingleStateViewModel
 
@@ -24,8 +25,8 @@ class PaymentsListViewModel(
             .launchIn(viewModelScope)
     }
 
-    fun onOpenPayment(id: PaymentId) {
-        event(Event.NavigateToPayment(id))
+    fun onOpenPayment(payment: PaymentSummary) {
+        event(Event.NavigateToPayment(payment.id, payment.name))
     }
 
     fun onAddTransaction(id: PaymentId) {

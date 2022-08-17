@@ -1,10 +1,12 @@
 package ru.iandreyshev.stale
 
+import kotlinx.coroutines.runBlocking
 import ru.iandreyshev.stale.domain.calc.CalcResultUseCase
 import ru.iandreyshev.stale.domain.core.Member
 import ru.iandreyshev.stale.domain.core.Transaction
 import ru.iandreyshev.stale.domain.core.TransactionId
 import ru.iandreyshev.stale.domain.core.TransactionParticipants
+import ru.iandreyshev.stale.system.AppDispatchers
 
 fun main() {
     var line = readLine()
@@ -25,7 +27,9 @@ fun main() {
         line = readLine()
     }
 
-    CalcResultUseCase()(transactions).forEach {
-        println(it.toString())
+    runBlocking {
+        CalcResultUseCase(AppDispatchers)(transactions).forEach {
+            println(it.toString())
+        }
     }
 }

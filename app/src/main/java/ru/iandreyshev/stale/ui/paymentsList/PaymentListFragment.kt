@@ -85,7 +85,7 @@ class PaymentListFragment : Fragment(R.layout.fragment_payments_list) {
         when (event) {
             is Event.NavigateToPayment ->
                 PaymentListFragmentDirections
-                    .actionOpenPayment(event.id.value)
+                    .actionOpenPayment(event.id.value, event.name)
                     .let(mNavController::navigate)
             is Event.NavigateToPaymentEditor ->
                 PaymentListFragmentDirections

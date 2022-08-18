@@ -10,8 +10,8 @@ import ru.iandreyshev.stale.App
 import ru.iandreyshev.stale.R
 import ru.iandreyshev.stale.databinding.FragmentPaymentsListBinding
 import ru.iandreyshev.stale.domain.core.PaymentId
-import ru.iandreyshev.stale.domain.payments.ArchivePaymentUseCase
 import ru.iandreyshev.stale.domain.payments.GetPaymentsListUseCase
+import ru.iandreyshev.stale.domain.payments.MarkPaymentAsCompletedUseCase
 import ru.iandreyshev.stale.presentation.paymentsList.Event
 import ru.iandreyshev.stale.presentation.paymentsList.PaymentsListViewModel
 import ru.iandreyshev.stale.presentation.paymentsList.State
@@ -25,13 +25,16 @@ class PaymentListFragment : Fragment(R.layout.fragment_payments_list) {
     private val mBinding by viewBindings(FragmentPaymentsListBinding::bind)
     private val mViewModel by viewModelFactory {
         PaymentsListViewModel(
+            isListOfActivePayments = mArgs,
             storage = App.storage,
-            archivePayment = ArchivePaymentUseCase(storage = App.storage),
+            completePayment = MarkPaymentAsCompletedUseCase(storage = App.storage),
             getList = GetPaymentsListUseCase(storage = App.storage)
         )
     }
+    private val mArgs by uiLazy { arguments?.getBoolean(ARG_IS_ACTIVE, true) ?: true }
     private val mAdapter by uiLazy {
         PaymentsAdapter(
+            isActivePayments = mArgs,
             onClick = mViewModel::onOpenPayment,
             onAddTransaction = mViewModel::onAddTransaction,
             onOptionsMenuOpen = ::onOptionsMenuOpen
@@ -42,7 +45,7 @@ class PaymentListFragment : Fragment(R.layout.fragment_payments_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initList()
+        initView()
         initNewPaymentButton()
         mViewModel.state.observe(viewLifecycleOwner, ::render)
         mViewModel.event.observe(viewLifecycleOwner, ::handleEvent)
@@ -53,7 +56,7 @@ class PaymentListFragment : Fragment(R.layout.fragment_payments_list) {
         mPopupMenu.dismissOnDestroy()
     }
 
-    private fun initList() {
+    private fun initView() {
         mBinding.listView.adapter = mAdapter
     }
 
@@ -76,9 +79,20 @@ class PaymentListFragment : Fragment(R.layout.fragment_payments_list) {
 
         mBinding.loadingIndicator.isVisible = false
         mBinding.emptyViewGroup.isVisible = state.payments.isEmpty()
+        mBinding.emptyViewButton.isVisible = mBinding.emptyViewGroup.isVisible && state.isListOfActivePayments
         mBinding.listView.isVisible = state.payments.isNotEmpty()
         mBinding.newPaymentButton.isVisible = state.payments.isNotEmpty()
         mAdapter.submitList(state.payments)
+
+        mBinding.toolbarTitle.text = when (state.isListOfActivePayments) {
+            true -> getString(R.string.menu_item_active_payments_title)
+            else -> getString(R.string.menu_item_completed_payments_title)
+        }
+
+        mBinding.emptyViewText.text = when (state.isListOfActivePayments) {
+            true -> getString(R.string.payments_list_empty_view_text_active)
+            else -> getString(R.string.common_empty_list)
+        }
     }
 
     private fun handleEvent(event: Event) {
@@ -101,16 +115,29 @@ class PaymentListFragment : Fragment(R.layout.fragment_payments_list) {
 
     private fun onOptionsMenuOpen(view: View, id: PaymentId) {
         mPopupMenu = PopupMenu(requireContext(), view).apply {
-            inflate(R.menu.menu_payment_options)
+            inflate(
+                when (mArgs) {
+                    true -> R.menu.menu_active_payment_list_options
+                    else -> R.menu.menu_completed_payment_list_options
+                }
+            )
             setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.paymentOptionComplete -> mViewModel.onArchivePayment(id, isArchive = true)
+                    R.id.paymentOptionComplete -> mViewModel.onCompletePayment(id, isCompleted = true)
                     R.id.paymentOptionEdit -> mViewModel.onEditPayment(id)
                     R.id.paymentOptionDelete -> mViewModel.onDeletePayment(id)
                 }
                 return@setOnMenuItemClickListener true
             }
             show()
+        }
+    }
+
+    companion object {
+        private const val ARG_IS_ACTIVE = "is_active"
+
+        fun args(isListOfActivePayments: Boolean) = Bundle().apply {
+            putBoolean(ARG_IS_ACTIVE, isListOfActivePayments)
         }
     }
 

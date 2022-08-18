@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_menu"
-    app:startDestination="@id/paymentListDest">
+    app:startDestination="@id/activePaymentsListDest">
 
     <fragment
-        android:id="@+id/paymentListDest"
+        android:id="@+id/activePaymentsListDest"
         android:name="ru.iandreyshev.stale.ui.paymentsList.PaymentListFragment"
         android:label="PaymentListFragment"
         tools:layout="@layout/fragment_payments_list">
@@ -22,9 +22,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/archiveDest"
+        android:id="@+id/completedPaymentsListDest"
         android:name="ru.iandreyshev.stale.ui.paymentsList.PaymentListFragment"
-        android:label="ArchiveFragment"
+        android:label="CompletedFragment"
         tools:layout="@layout/fragment_payments_list" />
 
     <fragment

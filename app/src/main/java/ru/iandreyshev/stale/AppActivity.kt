@@ -2,15 +2,14 @@ package ru.iandreyshev.stale
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import ru.iandreyshev.stale.databinding.ActivityMainBinding
+import ru.iandreyshev.stale.ui.paymentsList.PaymentListFragment
 import ru.iandreyshev.stale.ui.utils.uiLazy
 import ru.iandreyshev.stale.ui.utils.viewBindings
-import timber.log.Timber
 
 class AppActivity : AppCompatActivity() {
 
@@ -20,8 +19,8 @@ class AppActivity : AppCompatActivity() {
             .navController
     }
     private val mDestinationsWithMenu = setOf(
-        R.id.paymentListDest,
-        R.id.archiveDest,
+        R.id.activePaymentsListDest,
+        R.id.completedPaymentsListDest,
         R.id.settingsDest
     )
 
@@ -33,6 +32,15 @@ class AppActivity : AppCompatActivity() {
 
     private fun initMenu() {
         mBinding.menuView.setupWithNavController(mNavController)
+        mBinding.menuView.setOnItemSelectedListener { item ->
+            val args = when (item.itemId) {
+                R.id.activePaymentsListDest -> PaymentListFragment.args(isListOfActivePayments = true)
+                R.id.completedPaymentsListDest -> PaymentListFragment.args(isListOfActivePayments = false)
+                else -> bundleOf()
+            }
+            mNavController.navigate(item.itemId, args)
+            true
+        }
         mNavController.addOnDestinationChangedListener { _, destination, _ ->
             mBinding.menuView.isVisible = destination.id in mDestinationsWithMenu
         }

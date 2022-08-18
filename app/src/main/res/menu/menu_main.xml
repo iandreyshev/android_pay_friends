@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/paymentListDest"
+        android:id="@+id/activePaymentsListDest"
         android:icon="@drawable/ic_baseline_send_24"
         android:title="@string/menu_item_active_payments_title" />
     <item
-        android:id="@+id/archiveDest"
+        android:id="@+id/completedPaymentsListDest"
         android:icon="@drawable/ic_baseline_flag_24"
         android:title="@string/menu_item_completed_payments_title" />
     <item

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/paymentOptionMakeActive"
+        android:title="@string/payment_option_make_active_title" />
+    <item
+        android:id="@+id/paymentOptionDelete"
+        android:title="@string/payment_option_delete_title" />
+</menu>

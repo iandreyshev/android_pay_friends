@@ -3,6 +3,7 @@ package ru.iandreyshev.stale.ui.paymentsList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +13,7 @@ import ru.iandreyshev.stale.domain.core.PaymentId
 import ru.iandreyshev.stale.domain.payments.PaymentSummary
 
 class PaymentsAdapter(
+    private val isActivePayments: Boolean,
     private val onClick: (PaymentSummary) -> Unit,
     private val onAddTransaction: (PaymentId) -> Unit,
     private val onOptionsMenuOpen: (View, PaymentId) -> Unit
@@ -35,6 +37,7 @@ class PaymentsAdapter(
         holder.binding.contentLayout.setOnClickListener {
             onClick(item)
         }
+        holder.binding.addTransactionButton.isVisible = isActivePayments
         holder.binding.addTransactionButton.setOnClickListener {
             onAddTransaction(item.id)
         }

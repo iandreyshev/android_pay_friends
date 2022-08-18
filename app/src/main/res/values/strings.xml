@@ -2,16 +2,18 @@
     <string name="app_name">Stale</string>
 
     <string name="common_unknown_error">Неизвестная ошибка</string>
+    <string name="common_empty_list">Список пуст</string>
 
     <string name="menu_item_active_payments_title">Активные</string>
     <string name="menu_item_completed_payments_title">Завершенные</string>
     <string name="menu_item_settings_title">Настройки</string>
 
-    <string name="payments_list_empty_view_text">У вас ещё нет рассчётов</string>
+    <string name="payments_list_empty_view_text_active">У вас ещё нет рассчётов</string>
     <string name="payments_list_empty_view_button">Начать</string>
 
     <string name="payment_option_complete_title">Завершить</string>
     <string name="payment_option_edit_title">Редактировать</string>
+    <string name="payment_option_make_active_title">Вернуть в активные</string>
     <string name="payment_option_delete_title">Удалить</string>
 
     <string name="payment_editor_title">Новый рассчёт</string>

@@ -7,15 +7,20 @@ class GetPaymentsListUseCase(
     private val storage: PaymentsStorage
 ) {
 
-    operator fun invoke(): Flow<List<PaymentSummary>> {
+    data class Filter(
+        val isListOfActivePayments: Boolean
+    )
+
+    operator fun invoke(filter: Filter): Flow<List<PaymentSummary>> {
         return storage.observe()
             .map { list ->
-                list.map { payment ->
-                    PaymentSummary(
-                        id = payment.id,
-                        name = payment.name
-                    )
-                }
+                list.filter { it.isCompleted != filter.isListOfActivePayments }
+                    .map { payment ->
+                        PaymentSummary(
+                            id = payment.id,
+                            name = payment.name
+                        )
+                    }
             }
     }
 

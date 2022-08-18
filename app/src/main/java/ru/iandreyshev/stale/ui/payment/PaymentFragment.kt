@@ -61,7 +61,7 @@ class PaymentFragment : Fragment(R.layout.fragment_payment) {
     }
 
     private fun initAppBar() {
-        mBinding.toolbar.setNavigationOnClickListener { mViewModel.onAddTransaction() }
+        mBinding.toolbar.setNavigationOnClickListener { mViewModel.onExit() }
     }
 
     private fun initAddTransactionButton() {

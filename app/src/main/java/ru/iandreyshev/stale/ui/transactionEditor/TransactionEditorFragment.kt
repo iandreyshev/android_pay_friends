@@ -64,6 +64,10 @@ class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor)
                 .onEach(::handleLabel)
                 .launchIn(this)
         }
+
+        if (savedInstanceState == null) {
+            mBinding.producerView.producerField.showKeyboard()
+        }
     }
 
     override fun onDestroyView() {
@@ -73,12 +77,12 @@ class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor)
 
     private fun initGestures() {
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner) {
-            showExitDialog()
+            mViewModel(Intent.OnBack)
         }
     }
 
     private fun initAppBar() {
-        mBinding.toolbar.setNavigationOnClickListener { showExitDialog() }
+        mBinding.toolbar.setNavigationOnClickListener { mViewModel(Intent.OnBack) }
         mBinding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.transactionEditorMenuSave -> mViewModel(Intent.OnSave)
@@ -119,7 +123,6 @@ class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor)
         if (state.receiverField.isEnabled) {
             renderReceiverField(
                 ReceiverFieldItem(
-                    receiver = state.receiverField.receiver,
                     suggestions = state.receiverField.suggestions,
                     candidateQuery = state.receiverField.candidateQuery,
                     candidate = state.receiverField.candidate,
@@ -171,9 +174,7 @@ class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor)
     private fun renderReceiverField(item: ReceiverFieldItem) {
         val binding = mBinding.receiverView
 
-        binding.receiverField.isVisible = item.receiver == null
-
-        binding.suggestions.isVisible = item.receiver == null && item.hasSuggestions
+        binding.suggestions.isVisible = item.hasSuggestions
         val adapter = binding.suggestions.adapter as? MembersAdapter ?: run {
             val newAdapter = MembersAdapter(
                 onMemberClick = { member, _ ->
@@ -194,7 +195,7 @@ class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor)
             binding.suggestions.scrollToPosition(0)
         }
 
-        binding.addMemberButton.isVisible = item.receiver == null && item.candidate.isNotEmpty()
+        binding.addMemberButton.isVisible = item.candidate.isNotEmpty()
         binding.addMemberButton.setState(name = item.candidate) {
             binding.receiverField.text.toString()
             mViewModel(Intent.OnReceiverCandidateSelected(binding.receiverField.text.toString()))
@@ -233,6 +234,7 @@ class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor)
     private fun handleLabel(label: Label) {
         when (label) {
             is Label.Exit -> mNavController.popBackStack()
+            Label.ExitWithWarning -> showExitDialog()
             Label.Error.InvalidProducerCandidate ->
                 toast(R.string.transaction_editor_error_empty_name)
         }
@@ -248,7 +250,7 @@ class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor)
             }
             .setPositiveButton("Выйти") { dialog, _ ->
                 dialog.cancel()
-                mViewModel(Intent.OnExit)
+                mNavController.popBackStack()
             }
             .show()
     }

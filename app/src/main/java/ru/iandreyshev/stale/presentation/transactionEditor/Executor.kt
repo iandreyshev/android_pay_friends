@@ -29,12 +29,12 @@ class Executor(
         when (intent) {
             // Common
             Intent.OnSave -> onSave(getState)
-            Intent.OnExit -> publish(Label.Exit())
+            Intent.OnBack -> onBack(getState)
             // Producer field
             is Intent.OnProducerFieldChanged -> onProducerFieldChanged(intent.query, getState)
-            is Intent.OnProducerSelected -> dispatch(Message.UpdateProducer(intent.producer))
-            is Intent.OnProducerCandidateSelected -> onProducerCandidateSelected(intent.query)
-            Intent.OnRemoveProducer -> dispatch(Message.UpdateProducer(null))
+            is Intent.OnProducerSelected -> onProducerSelected(intent.producer, getState)
+            is Intent.OnProducerCandidateSelected -> onProducerCandidateSelected(intent.query, getState)
+            Intent.OnRemoveProducer -> onProducerSelected(null, getState)
             // Receiver field
             is Intent.OnReceiverFieldChanged -> onReceiverFieldChanged(intent.query, getState)
             is Intent.OnReceiverSelected -> onReceiverSelected(intent.receiver, getState)
@@ -91,6 +91,13 @@ class Executor(
     private fun onSave(getState: () -> State) {
     }
 
+    private fun onBack(getState: () -> State) {
+        when (getState().transactions.isEmpty()) {
+            true -> publish(Label.Exit())
+            else -> publish(Label.ExitWithWarning)
+        }
+    }
+
     private fun onProducerFieldChanged(query: String, getState: () -> State) {
         val message = when (getState().producerField.producer) {
             null -> {
@@ -105,27 +112,44 @@ class Executor(
         dispatch(message)
     }
 
-    private fun onProducerCandidateSelected(query: String) {
+    private fun onProducerCandidateSelected(query: String, getState: () -> State) {
         val producer = Member(query.trim())
 
         when {
-            validateMember(producer) -> dispatch(Message.UpdateProducer(producer))
+            validateMember(producer) -> onProducerSelected(producer, getState)
             else -> publish(Label.Error.InvalidProducerCandidate)
         }
     }
 
-    private fun onReceiverFieldChanged(query: String, getState: () -> State) {
-        val message = when (getState().receiverField.receiver) {
-            null -> {
-                var candidate = query.trim()
-                val filters = FilterMembers.Filters(candidate)
-                val members = filterMembers(getState().members, filters)
-                candidate = if (members.isEmpty()) candidate else ""
-                Message.UpdateReceiverSuggestions(query, candidate, members)
-            }
-            else -> Message.UpdateReceiverSuggestions(query, "", emptyList())
+    private fun onProducerSelected(producer: Member?, getState: () -> State) {
+        if (producer == null) {
+            val query = getState().receiverField.candidateQuery
+            val suggestions = getProducerSuggestions(query, null, getState().members)
+            dispatch(Message.UpdateProducer(null, suggestions))
+            return
         }
-        dispatch(message)
+
+        val query = getState().receiverField.candidateQuery
+        val suggestions = getProducerSuggestions(query, producer, getState().members)
+        dispatch(Message.UpdateProducer(producer, suggestions))
+    }
+
+    private fun onReceiverFieldChanged(query: String, getState: () -> State) {
+        var candidate = query.trim()
+        val producer = getState().producerField.producer
+        val suggestions = getProducerSuggestions(query, producer, getState().members)
+        candidate = if (suggestions.isEmpty()) candidate else ""
+        dispatch(Message.UpdateReceiverSuggestions(query, candidate, suggestions))
+    }
+
+    private fun getProducerSuggestions(candidate: String, producer: Member?, members: List<Member>): List<Member> {
+        val filters = FilterMembers.Filters(candidate.trim())
+        val newMembers = when (producer) {
+            null -> members
+            else -> members - producer
+        }
+
+        return filterMembers(newMembers, filters)
     }
 
     private fun onReceiverSelected(receiver: Member, getState: () -> State) {

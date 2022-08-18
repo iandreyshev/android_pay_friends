@@ -5,7 +5,7 @@ import ru.iandreyshev.stale.domain.core.Member
 sealed interface Intent {
     // Common
     object OnSave : Intent
-    object OnExit : Intent
+    object OnBack : Intent
 
     // Producer field
     data class OnProducerFieldChanged(val query: String) : Intent

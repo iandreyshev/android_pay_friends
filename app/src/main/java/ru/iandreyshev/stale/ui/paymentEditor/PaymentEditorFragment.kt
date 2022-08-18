@@ -1,7 +1,9 @@
 package ru.iandreyshev.stale.ui.paymentEditor
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -25,6 +27,7 @@ import ru.iandreyshev.stale.presentation.paymentEditor.State
 import ru.iandreyshev.stale.presentation.paymentEditor.UIPaymentDraft
 import ru.iandreyshev.stale.ui.members.MembersAdapter
 import ru.iandreyshev.stale.ui.utils.*
+
 
 class PaymentEditorFragment : Fragment(R.layout.fragment_payment_editor) {
 
@@ -83,6 +86,13 @@ class PaymentEditorFragment : Fragment(R.layout.fragment_payment_editor) {
 
     private fun initMembersField() {
         mBinding.memberField.doAfterTextChanged { mViewModel.onDraftChanged(composeDraft()) }
+        mBinding.memberField.setOnEditorActionListener { _, actionId, event ->
+            if (event?.keyCode == KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
+                mBinding.addMemberButton.clickableArea.performClick()
+                return@setOnEditorActionListener true
+            }
+            false
+        }
     }
 
     private fun initAddMemberButton() {

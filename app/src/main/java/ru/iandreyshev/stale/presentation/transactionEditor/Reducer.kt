@@ -13,9 +13,13 @@ val Reducer = Reducer<State, Message> { message ->
             )
         )
         is Message.UpdateProducer -> when (message.producer) {
-            null -> copy(producerField = producerField.copy(producer = message.producer))
+            null -> copy(
+                producerField = producerField.copy(producer = message.producer),
+                receiverField = receiverField.copy(suggestions = message.receiverSuggestions)
+            )
             else -> copy(
                 producerField = producerField.copy(producer = message.producer),
+                receiverField = receiverField.copy(suggestions = message.receiverSuggestions),
                 transactions = transactions.map { transaction ->
                     transaction.copy(
                         participants = transaction.participants.copy(producer = message.producer)

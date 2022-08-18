@@ -51,7 +51,6 @@ data class ProducerFieldState(
 
 data class ReceiverFieldState(
     val isEnabled: Boolean,
-    val receiver: Member?,
     val suggestions: List<Member>,
     val isCandidateActive: Boolean,
     val candidateQuery: String,
@@ -61,7 +60,6 @@ data class ReceiverFieldState(
     companion object {
         fun default() = ReceiverFieldState(
             isEnabled = true,
-            receiver = null,
             suggestions = listOf(),
             isCandidateActive = false,
             candidateQuery = "",

@@ -5,7 +5,7 @@ import ru.iandreyshev.stale.domain.core.Transaction
 
 sealed interface Message {
     data class Started(val startedState: State) : Message
-    data class UpdateProducer(val producer: Member?) : Message
+    data class UpdateProducer(val producer: Member?, val receiverSuggestions: List<Member>) : Message
     data class UpdateProducerSuggestions(
         val candidateQuery: String,
         val candidate: String,

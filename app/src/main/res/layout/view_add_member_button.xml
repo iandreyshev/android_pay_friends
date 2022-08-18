@@ -19,20 +19,21 @@
             android:id="@+id/profileIcon"
             android:layout_width="42dp"
             android:layout_height="42dp"
-            android:background="#BDA4A4"
+            android:background="@color/orange"
+            app:contentPadding="6dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Circle"
-            app:srcCompat="@drawable/ic_baseline_person_24" />
+            app:srcCompat="@drawable/ic_baseline_person_add_24" />
 
         <TextView
             android:id="@+id/addMemberTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/step_8"
-            android:fontFamily="sans-serif-medium"
             android:text="@string/payment_editor_add_member_title"
-            android:textSize="@dimen/text_size_3"
+            android:textColor="@color/gray_dark"
+            android:textSize="@dimen/text_size_1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/profileIcon"
             app:layout_constraintTop_toTopOf="@id/profileIcon" />
@@ -42,7 +43,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/step_2"
-            android:textSize="@dimen/text_size_1"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/addMemberTitle"
             app:layout_constraintTop_toBottomOf="@id/addMemberTitle"

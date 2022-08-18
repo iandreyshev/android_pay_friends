@@ -35,7 +35,8 @@
     <fragment
         android:id="@+id/paymentFragment"
         android:name="ru.iandreyshev.stale.ui.payment.PaymentFragment"
-        android:label="PaymentFragment">
+        android:label="PaymentFragment"
+        tools:layout="@layout/fragment_payment">
         <argument
             android:name="paymentId"
             app:argType="string" />
@@ -45,11 +46,15 @@
         <action
             android:id="@+id/actionEditCurrentPayment"
             app:destination="@id/paymentEditorFragment" />
+        <action
+            android:id="@+id/actionAddTransactionsToPayment"
+            app:destination="@id/transactionEditorFragment" />
     </fragment>
     <fragment
         android:id="@+id/transactionEditorFragment"
         android:name="ru.iandreyshev.stale.ui.transactionEditor.TransactionEditorFragment"
-        android:label="TransactionEditorFragment">
+        android:label="TransactionEditorFragment"
+        tools:layout="@layout/fragment_transaction_editor">
         <argument
             android:name="paymentId"
             app:argType="string" />
@@ -61,7 +66,8 @@
     <fragment
         android:id="@+id/paymentEditorFragment"
         android:name="ru.iandreyshev.stale.ui.paymentEditor.PaymentEditorFragment"
-        android:label="PaymentEditorFragment">
+        android:label="PaymentEditorFragment"
+        tools:layout="@layout/fragment_payment_editor">
         <argument
             android:name="paymentId"
             app:argType="string"

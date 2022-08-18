@@ -19,19 +19,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/nav_main" />
 
-    <androidx.constraintlayout.helper.widget.CircularFlow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:circularflow_angles="20"
-        app:circularflow_radiusInDP="0"
-        app:circularflow_viewCenter="@id/menuView"
-        app:constraint_referenced_ids="menuCenterView" />
-
     <View
         android:id="@+id/menuCenterView"
-        android:layout_width="1dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/red" />
+        app:layout_constraintBottom_toBottomOf="@id/menuView"
+        app:layout_constraintTop_toTopOf="@id/menuView" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/menuView"

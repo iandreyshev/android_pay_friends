@@ -37,18 +37,24 @@ class PaymentEditorViewModel(
         val memberCandidateName = getState().memberCandidate.trim()
         val memberCandidate = Member(memberCandidateName)
 
-        if (isMemberValid(memberCandidate)) {
-            val newMembers = getState().draft.members.toMutableList() + memberCandidate
-            val newDraft = getState().draft.copy(members = newMembers)
-            modifyState { copy(draft = newDraft) }
-            event { Event.ClearMemberField }
+        if (!isMemberValid(memberCandidate)) {
+            event {
+                val errorType = ErrorType.InvalidPaymentDraft(listOf(PaymentDraftError.INVALID_MEMBER))
+                Event.ShowError(errorType)
+            }
+            return
+        } else if (getState().draft.members.contains(memberCandidate)) {
+            event {
+                val errorType = ErrorType.InvalidPaymentDraft(listOf(PaymentDraftError.MEMBER_EXISTS))
+                Event.ShowError(errorType)
+            }
             return
         }
 
-        event {
-            val errorType = ErrorType.InvalidPaymentDraft(listOf(PaymentDraftError.INVALID_MEMBER))
-            Event.ShowError(errorType)
-        }
+        val newMembers = getState().draft.members.toMutableList() + memberCandidate
+        val newDraft = getState().draft.copy(members = newMembers)
+        modifyState { copy(draft = newDraft) }
+        event { Event.ClearMemberField }
     }
 
     fun onRemoveMember(position: Int) {

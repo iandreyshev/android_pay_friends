@@ -45,4 +45,12 @@ class PaymentViewModel(
         }
     }
 
+    fun onAddTransaction() {
+        event { Event.OpenTransactionEditor(getState().id) }
+    }
+
+    fun onExit() {
+        event { Event.Exit() }
+    }
+
 }

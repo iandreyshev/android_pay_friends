@@ -3,12 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -35,8 +37,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/step_16"
-                android:layout_marginTop="@dimen/step_8"
+                android:layout_marginTop="@dimen/step_20"
                 android:text="@string/payment_editor_name_title"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -49,8 +53,12 @@
                 android:layout_marginTop="@dimen/step_4"
                 android:background="@null"
                 android:hint="@string/payment_editor_name_field_hint"
+                android:inputType="textCapSentences|textMultiLine"
                 android:maxLength="128"
                 android:paddingVertical="@dimen/step_4"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray_dark"
+                android:textSize="@dimen/text_size_6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/titleFieldTitle"
@@ -61,8 +69,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/step_16"
-                android:layout_marginTop="@dimen/step_8"
+                android:layout_marginTop="@dimen/step_16"
                 android:text="@string/payment_editor_members_field_title"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/nameField" />
@@ -72,7 +82,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/step_16"
-                android:layout_marginTop="@dimen/step_4"
+                android:layout_marginTop="@dimen/step_6"
                 android:nestedScrollingEnabled="false"
                 android:orientation="vertical"
                 android:overScrollMode="never"
@@ -91,10 +101,12 @@
                 android:layout_marginHorizontal="@dimen/step_16"
                 android:background="@null"
                 android:hint="@string/payment_editor_members_field_hint"
-                android:inputType="textFilter|textNoSuggestions"
+                android:inputType="textCapSentences"
                 android:maxLength="120"
-                android:paddingTop="@dimen/step_4"
-                android:paddingBottom="@dimen/step_4"
+                android:paddingVertical="@dimen/step_4"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray_dark"
+                android:textSize="@dimen/text_size_6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/membersList"
@@ -103,6 +115,7 @@
             <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/step_4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/memberField">

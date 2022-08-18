@@ -2,6 +2,7 @@ package ru.iandreyshev.stale.ui.payment
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -42,6 +43,7 @@ class PaymentFragment : Fragment(R.layout.fragment_payment) {
 
         initAppBar()
         initViewPager()
+        initAddTransactionButton()
 
         mViewModel.state.observe(viewLifecycleOwner, ::render)
         mViewModel.event.observe(viewLifecycleOwner, ::handleEvent)
@@ -59,14 +61,33 @@ class PaymentFragment : Fragment(R.layout.fragment_payment) {
     }
 
     private fun initAppBar() {
-        mBinding.toolbar.setNavigationOnClickListener { mNavController.popBackStack() }
+        mBinding.toolbar.setNavigationOnClickListener { mViewModel.onAddTransaction() }
+    }
+
+    private fun initAddTransactionButton() {
+        mBinding.emptyViewButton.setOnClickListener { mViewModel.onAddTransaction() }
+        mBinding.addPaymentButton.setOnClickListener { mViewModel.onAddTransaction() }
     }
 
     private fun render(state: State) {
         mBinding.toolbar.title = state.name
+
+        mBinding.tabLayout.isVisible = state.history.isNotEmpty()
+        mBinding.viewPager.isVisible = state.history.isNotEmpty()
+
+        mBinding.emptyViewGroup.isVisible = state.history.isEmpty()
+
+        mBinding.addPaymentButton.isVisible = state.history.isNotEmpty()
     }
 
     private fun handleEvent(event: Event) {
+        when (event) {
+            is Event.Exit -> mNavController.popBackStack()
+            is Event.OpenTransactionEditor ->
+                PaymentFragmentDirections
+                    .actionAddTransactionsToPayment(event.id.value, null)
+                    .let(mNavController::navigate)
+        }
     }
 
 }

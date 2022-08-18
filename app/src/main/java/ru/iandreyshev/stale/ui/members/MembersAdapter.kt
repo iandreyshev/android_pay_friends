@@ -12,7 +12,7 @@ import ru.iandreyshev.stale.domain.core.Member
 import ru.iandreyshev.stale.ui.utils.uiLazy
 
 class MembersAdapter(
-    private val onMemberClick: (Member, Int) -> Unit,
+    private val onMemberClick: (Member, Int) -> Unit = { _, _ -> },
     private val onRemoveMemberClick: ((Member, Int) -> Unit)? = null
 ) : ListAdapter<Member, MembersAdapter.ViewHolder>(ItemCallback) {
 

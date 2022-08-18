@@ -24,11 +24,7 @@ import ru.iandreyshev.stale.presentation.paymentEditor.PaymentEditorViewModel
 import ru.iandreyshev.stale.presentation.paymentEditor.State
 import ru.iandreyshev.stale.presentation.paymentEditor.UIPaymentDraft
 import ru.iandreyshev.stale.ui.members.MembersAdapter
-import ru.iandreyshev.stale.ui.utils.toast
-import ru.iandreyshev.stale.ui.utils.uiLazy
-import ru.iandreyshev.stale.ui.utils.viewBindings
-import ru.iandreyshev.stale.ui.utils.viewModelFactory
-
+import ru.iandreyshev.stale.ui.utils.*
 
 class PaymentEditorFragment : Fragment(R.layout.fragment_payment_editor) {
 
@@ -51,7 +47,7 @@ class PaymentEditorFragment : Fragment(R.layout.fragment_payment_editor) {
     private val mNavController by uiLazy { findNavController() }
     private val mMembersAdapter by uiLazy {
         MembersAdapter(
-            onMemberClick = { member, position -> }
+            onRemoveMemberClick = { _, position -> mViewModel.onRemoveMember(position) }
         )
     }
 
@@ -65,10 +61,14 @@ class PaymentEditorFragment : Fragment(R.layout.fragment_payment_editor) {
 
         mViewModel.state.observe(viewLifecycleOwner, ::render)
         mViewModel.event.observe(viewLifecycleOwner, ::handleEvent)
+
+        if (savedInstanceState == null) {
+            mBinding.nameField.showKeyboard()
+        }
     }
 
     private fun initAppBar() {
-        mBinding.toolbar.setNavigationOnClickListener { mNavController.popBackStack() }
+        mBinding.toolbar.setNavigationOnClickListener { mViewModel.onExit() }
         mBinding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.paymentEditorMenuSave -> mViewModel.onSave()

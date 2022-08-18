@@ -15,6 +15,7 @@ fun createMock1(): List<Payment> {
     }
 
     return mutableListOf<Payment>().apply {
+        return@apply
         repeat(Random.nextInt(0, 20)) {
             add(
                 Payment(

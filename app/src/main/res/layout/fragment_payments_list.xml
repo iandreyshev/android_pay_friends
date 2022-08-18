@@ -48,7 +48,8 @@
         android:id="@+id/emptyViewGroup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:constraint_referenced_ids="emptyViewImage, emptyViewText, emptyViewButton" />
+        app:constraint_referenced_ids="emptyViewImage, emptyViewText, emptyViewButton"
+        tools:visibility="gone" />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/loadingIndicator"
@@ -60,6 +61,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <FrameLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_light"
+        android:text="Расчёты"
+        android:textColor="@color/black"
+        android:textSize="32dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/step_16"
+            android:layout_marginTop="@dimen/step_32"
+            android:layout_marginBottom="@dimen/step_20"
+            android:text="Активные"
+            android:textColor="@color/black"
+            android:textSize="32dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </FrameLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listView"
         android:layout_width="0dp"
@@ -68,10 +98,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         tools:itemCount="7"
         tools:listitem="@layout/item_payment"
-        tools:visibility="gone" />
+        tools:visibility="visible" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/newPaymentButton"

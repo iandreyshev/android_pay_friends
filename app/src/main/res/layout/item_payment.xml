@@ -4,25 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="16dp"
-    android:layout_marginTop="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="12dp">
+    android:layout_marginHorizontal="@dimen/step_16"
+    android:layout_marginTop="@dimen/step_12"
+    app:cardCornerRadius="@dimen/step_16"
+    app:cardElevation="@dimen/step_2">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="8dp"
-        android:paddingVertical="4dp">
+        android:background="@drawable/background_payment_item"
+        android:paddingHorizontal="@dimen/step_12"
+        android:paddingVertical="@dimen/step_12">
 
         <TextView
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/gray_light"
             android:textSize="24sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/optionsButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -32,6 +34,9 @@
             android:id="@+id/date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/step_4"
+            android:text="10 декабря 2022"
+            android:textColor="@color/gray_light"
             app:layout_constraintEnd_toStartOf="@id/optionsButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title"
@@ -39,12 +44,17 @@
 
         <Button
             android:id="@+id/addTransactionButton"
+            style="@style/OutlinedButton_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Добавить оплату"
+            android:text="Оплата"
+            android:textColor="@color/black"
+            app:icon="@drawable/ic_baseline_add_24"
+            app:iconTint="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/date" />
+            app:layout_constraintTop_toBottomOf="@id/date"
+            app:strokeColor="@color/black" />
 
         <ImageButton
             android:id="@+id/optionsButton"
@@ -54,7 +64,8 @@
             android:text="+"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_more_vert_24" />
+            app:srcCompat="@drawable/ic_baseline_more_vert_24"
+            app:tint="@color/black" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

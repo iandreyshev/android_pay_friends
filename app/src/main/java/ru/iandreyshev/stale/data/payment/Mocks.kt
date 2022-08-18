@@ -1,9 +1,7 @@
 package ru.iandreyshev.stale.data.payment
 
 import io.bloco.faker.Faker
-import ru.iandreyshev.stale.domain.core.Member
-import ru.iandreyshev.stale.domain.core.Payment
-import ru.iandreyshev.stale.domain.core.PaymentId
+import ru.iandreyshev.stale.domain.core.*
 import kotlin.random.Random
 
 fun createMock1(): List<Payment> {
@@ -24,7 +22,21 @@ fun createMock1(): List<Payment> {
                     name = faker.book.title(),
                     members = members,
                     creationDate = faker.date.backward().toString(),
-                    transactions = emptyList(),
+                    transactions = mutableListOf<Transaction>().apply {
+                        repeat(Random.nextInt(10, 100)) {
+                            add(
+                                Transaction(
+                                    id = randomTransactionId(),
+                                    participants = TransactionParticipants(
+                                        producer = Member(faker.name.name()),
+                                        receiver = Member(faker.name.name())
+                                    ),
+                                    cost = 0,
+                                    description = ""
+                                )
+                            )
+                        }
+                    },
                     isArchived = false
                 )
             )
@@ -34,3 +46,6 @@ fun createMock1(): List<Payment> {
 
 fun randomPaymentId() =
     PaymentId(Random.nextInt().toString())
+
+fun randomTransactionId() =
+    TransactionId(Random.nextInt().toString())

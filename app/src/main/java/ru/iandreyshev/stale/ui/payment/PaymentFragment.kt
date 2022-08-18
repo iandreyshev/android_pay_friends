@@ -5,7 +5,6 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import ru.iandreyshev.stale.App
 import ru.iandreyshev.stale.R
@@ -70,13 +69,4 @@ class PaymentFragment : Fragment(R.layout.fragment_payment) {
     private fun handleEvent(event: Event) {
     }
 
-}
-
-private class PaymentViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
-    override fun getItemCount() = ITEMS_COUNT
-    override fun createFragment(position: Int) = PaymentResultFragment.newInstance(isResult = position == 0)
-
-    companion object {
-        private const val ITEMS_COUNT = 2
-    }
 }

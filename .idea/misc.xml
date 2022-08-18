@@ -11,6 +11,7 @@
         <entry key="app/src/main/res/drawable/background_main_menu.xml" value="0.2135" />
         <entry key="app/src/main/res/drawable/background_payment_editor_member.xml" value="0.1335" />
         <entry key="app/src/main/res/drawable/background_payment_item.xml" value="0.2135" />
+        <entry key="app/src/main/res/drawable/background_payment_list_add_button.xml" value="0.2105" />
         <entry key="app/src/main/res/drawable/chip_payment_editor_member.xml" value="0.1705" />
         <entry key="app/src/main/res/drawable/ic_baseline_flag_24.xml" value="0.1105" />
         <entry key="app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.1" />

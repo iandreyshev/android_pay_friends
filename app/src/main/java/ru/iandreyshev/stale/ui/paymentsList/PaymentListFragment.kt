@@ -6,6 +6,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import ru.iandreyshev.stale.App
 import ru.iandreyshev.stale.R
 import ru.iandreyshev.stale.databinding.FragmentPaymentsListBinding
@@ -19,6 +20,7 @@ import ru.iandreyshev.stale.ui.utils.dismissOnDestroy
 import ru.iandreyshev.stale.ui.utils.uiLazy
 import ru.iandreyshev.stale.ui.utils.viewBindings
 import ru.iandreyshev.stale.ui.utils.viewModelFactory
+import timber.log.Timber
 
 class PaymentListFragment : Fragment(R.layout.fragment_payments_list) {
 
@@ -45,7 +47,7 @@ class PaymentListFragment : Fragment(R.layout.fragment_payments_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
+        initList()
         initNewPaymentButton()
         mViewModel.state.observe(viewLifecycleOwner, ::render)
         mViewModel.event.observe(viewLifecycleOwner, ::handleEvent)
@@ -56,7 +58,7 @@ class PaymentListFragment : Fragment(R.layout.fragment_payments_list) {
         mPopupMenu.dismissOnDestroy()
     }
 
-    private fun initView() {
+    private fun initList() {
         mBinding.listView.adapter = mAdapter
     }
 
@@ -79,9 +81,9 @@ class PaymentListFragment : Fragment(R.layout.fragment_payments_list) {
 
         mBinding.loadingIndicator.isVisible = false
         mBinding.emptyViewGroup.isVisible = state.payments.isEmpty()
-        mBinding.emptyViewButton.isVisible = mBinding.emptyViewGroup.isVisible && state.isListOfActivePayments
+        mBinding.emptyViewButton.isVisible = state.payments.isEmpty() && state.isListOfActivePayments
         mBinding.listView.isVisible = state.payments.isNotEmpty()
-        mBinding.newPaymentButton.isVisible = state.payments.isNotEmpty()
+        mBinding.newPaymentButton.isVisible = state.payments.isNotEmpty() && state.isListOfActivePayments
         mAdapter.submitList(state.payments)
 
         mBinding.toolbarTitle.text = when (state.isListOfActivePayments) {

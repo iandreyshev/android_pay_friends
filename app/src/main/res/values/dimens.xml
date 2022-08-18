@@ -22,4 +22,5 @@
 
     <dimen name="main_menu_height">64dp</dimen>
     <dimen name="main_menu_height_half">32dp</dimen>
+    <dimen name="payment_list_fab_bottom_margin">48dp</dimen>
 </resources>

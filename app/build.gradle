@@ -58,5 +58,7 @@ dependencies {
     implementation 'com.hannesdorfmann:adapterdelegates4-kotlin-dsl-layoutcontainer:4.3.2'
     implementation 'com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:4.3.2'
 
+    implementation 'ru.tinkoff.decoro:decoro:1.5.1'
+
     debugImplementation 'com.github.blocoio:faker:1.2.8'
 }

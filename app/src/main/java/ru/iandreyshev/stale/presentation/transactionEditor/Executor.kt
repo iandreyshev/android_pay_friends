@@ -40,9 +40,9 @@ class Executor(
             is Intent.OnReceiverSelected -> onReceiverSelected(intent.receiver, getState)
             is Intent.OnReceiverCandidateSelected -> onReceiverCandidateSelected(intent.query, getState)
             // Transactions
-            is Intent.OnCostChanged -> TODO()
+            is Intent.OnCostChanged -> onCostChanged(intent.position, intent.cost, getState)
             is Intent.OnDescriptionChanged -> TODO()
-            is Intent.OnRemoveTransaction -> TODO()
+            is Intent.OnRemoveTransaction -> onTransactionRemoved(intent.position, getState)
         }
     }
 
@@ -158,7 +158,7 @@ class Executor(
         val newTransaction = Transaction.empty(participants = participants)
         val transactions = getState().transactions.toMutableList()
         transactions.add(newTransaction)
-        dispatch(Message.UpdateTransactions(transactions))
+        dispatch(Message.UpdateTransactions(transactions, getState().producerField.cost))
     }
 
     private fun onReceiverCandidateSelected(query: String, getState: () -> State) {
@@ -167,6 +167,26 @@ class Executor(
             validateMember(receiver) -> onReceiverSelected(receiver, getState)
             else -> publish(Label.Error.InvalidProducerCandidate)
         }
+    }
+
+    private fun onCostChanged(position: Int, costStr: String, getState: () -> State) {
+        val transactions = getState().transactions.toMutableList()
+        val cost = when {
+            costStr.isEmpty() -> 0
+            else -> costStr.toInt()
+        }
+        val transaction = transactions[position].copy(cost = cost)
+        transactions.removeAt(position)
+        transactions.add(position, transaction)
+        val totalCost = transactions.sumOf { it.cost }
+        dispatch(Message.UpdateTransactions(transactions, totalCost))
+    }
+
+    private fun onTransactionRemoved(position: Int, getState: () -> State) {
+        val transactions = getState().transactions.toMutableList()
+        transactions.removeAt(position)
+        val totalCost = transactions.sumOf { it.cost }
+        dispatch(Message.UpdateTransactions(transactions, totalCost))
     }
 
 }

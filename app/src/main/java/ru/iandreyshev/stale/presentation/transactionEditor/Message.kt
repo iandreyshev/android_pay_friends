@@ -18,5 +18,5 @@ sealed interface Message {
         val suggestions: List<Member>,
     ) : Message
 
-    data class UpdateTransactions(val transactions: List<Transaction>) : Message
+    data class UpdateTransactions(val transactions: List<Transaction>, val totalCost: Int) : Message
 }

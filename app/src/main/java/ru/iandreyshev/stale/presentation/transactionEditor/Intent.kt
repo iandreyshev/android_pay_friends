@@ -20,6 +20,6 @@ sealed interface Intent {
 
     // Transactions
     data class OnRemoveTransaction(val position: Int) : Intent
-    data class OnCostChanged(val position: Int, val cost: Int) : Intent
+    data class OnCostChanged(val position: Int, val cost: String) : Intent
     data class OnDescriptionChanged(val position: Int, val description: String): Intent
 }

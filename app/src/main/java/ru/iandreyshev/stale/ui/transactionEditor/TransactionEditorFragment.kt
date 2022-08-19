@@ -1,14 +1,12 @@
 package ru.iandreyshev.stale.ui.transactionEditor
 
 import android.os.Bundle
+import android.text.TextWatcher
 import android.view.View
 import android.widget.LinearLayout
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.get
-import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
-import androidx.core.view.updateLayoutParams
+import androidx.core.view.*
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -33,6 +31,7 @@ import ru.iandreyshev.stale.ui.transactionEditor.items.*
 import ru.iandreyshev.stale.ui.utils.*
 import kotlin.math.abs
 
+
 class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor) {
 
     private val mViewModel by viewModelFactory {
@@ -48,6 +47,7 @@ class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor)
     private val mTransactionMarginVertical by uiLazy { resources.getDimensionPixelSize(R.dimen.step_8) }
 
     private var mAlertDialog: AlertDialog? = null
+    private val mCostWatchers = mutableSetOf<TextWatcher>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -216,6 +216,13 @@ class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor)
             }
         }
 
+        mBinding.transactions.forEach { view ->
+            val binding = ItemTransactionEditorTransactionBinding.bind(view)
+            mCostWatchers.forEach { watcher ->
+                binding.costField.removeTextChangedListener(watcher)
+            }
+        }
+
         transactions.forEachIndexed { index, transactionItem ->
             val view = mBinding.transactions[index]
             val binding = ItemTransactionEditorTransactionBinding.bind(view)
@@ -228,6 +235,12 @@ class TransactionEditorFragment : Fragment(R.layout.fragment_transaction_editor)
                 }
             }
             binding.receiver.text = transactionItem.receiver.name
+            mCostWatchers += binding.costField.doAfterTextChanged {
+                mViewModel(Intent.OnCostChanged(index, it.toString()))
+            }
+            binding.removeButton.setOnClickListener {
+                mViewModel(Intent.OnRemoveTransaction(index))
+            }
         }
     }
 

@@ -4,20 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="8dp"
+    android:backgroundTint="@color/gray_light"
+    android:elevation="10dp"
     app:cardCornerRadius="@dimen/step_16">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/step_8"
-        android:paddingVertical="@dimen/step_6">
+        android:paddingHorizontal="@dimen/step_10"
+        android:paddingVertical="@dimen/step_12">
 
         <TextView
             android:id="@+id/receiverTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Должник:"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_3"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -27,6 +30,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/step_4"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_3"
             app:layout_constraintBottom_toBottomOf="@id/receiverTitle"
             app:layout_constraintEnd_toStartOf="@id/removeButton"
             app:layout_constraintStart_toEndOf="@id/receiverTitle"
@@ -37,8 +42,10 @@
             android:id="@+id/costTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/step_4"
+            android:layout_marginTop="@dimen/step_6"
             android:text="Сумма"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_3"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/receiverTitle" />
@@ -51,7 +58,9 @@
             android:background="@null"
             android:hint="1000₽"
             android:inputType="number"
-            android:textSize="@dimen/text_size_2"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray_dark"
+            android:textSize="@dimen/text_size_3"
             app:layout_constraintBottom_toBottomOf="@id/costTitle"
             app:layout_constraintEnd_toEndOf="@id/receiver"
             app:layout_constraintStart_toEndOf="@id/costTitle"
@@ -60,11 +69,14 @@
         <EditText
             android:id="@+id/descriptionField"
             android:layout_width="0dp"
-            android:layout_marginTop="@dimen/step_4"
-            android:hint="Описание (опционально)"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/step_6"
             android:background="@null"
-            android:textSize="@dimen/text_size_2"
+            android:hint="Описание (опционально)"
+            android:inputType="textCapSentences"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray_dark"
+            android:textSize="@dimen/text_size_3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/costTitle" />

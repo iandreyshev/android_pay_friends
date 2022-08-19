@@ -5,13 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingHorizontal="@dimen/step_16"
-    android:paddingVertical="@dimen/step_12">
+    android:paddingVertical="@dimen/step_8">
 
     <TextView
         android:id="@+id/firstMemberTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Должник:"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_3"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,6 +23,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/step_8"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_3"
         app:layout_constraintBottom_toBottomOf="@id/firstMemberTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/firstMemberTitle"
@@ -33,6 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/step_4"
         android:text="Получатель"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_3"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/firstMemberTitle" />
@@ -43,6 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/step_8"
         android:layout_marginTop="@dimen/step_4"
+        android:textSize="@dimen/text_size_3"
         app:layout_constraintBottom_toBottomOf="@id/secondMemberTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/secondMemberTitle"
@@ -55,18 +62,34 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/step_4"
         android:text="Сумма"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_3"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/secondMemberTitle" />
 
     <TextView
+        android:id="@+id/cost"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/step_4"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_3"
         app:layout_constraintBottom_toBottomOf="@id/costTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/costTitle"
         app:layout_constraintTop_toTopOf="@id/costTitle"
         tools:text="1000" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/step_4"
+        android:textColor="@color/gray_dark"
+        android:textSize="@dimen/text_size_3"
+        app:layout_constraintTop_toBottomOf="@id/cost"
+        app:layout_goneMarginBaseline="0dp"
+        tools:text="Description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

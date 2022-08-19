@@ -9,7 +9,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "ru.iandreyshev.stale"
+        applicationId "ru.iandreyshev.payfriends"
         minSdk 24
         targetSdk 32
         versionCode 1

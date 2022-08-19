@@ -37,7 +37,7 @@
         app:layout_constraintTop_toBottomOf="@id/title"
         tools:visibility="gone" />
 
-    <ru.iandreyshev.stale.ui.members.EditableMemberView
+    <ru.iandreyshev.payfriends.ui.members.EditableMemberView
         android:id="@+id/producer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
         tools:paddingHorizontal="@dimen/step_16"
         tools:visibility="gone" />
 
-    <ru.iandreyshev.stale.ui.members.AddMemberButton
+    <ru.iandreyshev.payfriends.ui.members.AddMemberButton
         android:id="@+id/addMemberButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

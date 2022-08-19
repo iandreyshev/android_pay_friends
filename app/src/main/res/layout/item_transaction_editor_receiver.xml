@@ -51,7 +51,7 @@
         tools:itemCount="7"
         tools:listitem="@layout/view_editable_member" />
 
-    <ru.iandreyshev.stale.ui.members.AddMemberButton
+    <ru.iandreyshev.payfriends.ui.members.AddMemberButton
         android:id="@+id/addMemberButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

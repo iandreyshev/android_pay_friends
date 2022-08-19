@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/activePaymentsListDest"
-        android:name="ru.iandreyshev.stale.ui.paymentsList.PaymentListFragment"
+        android:name="ru.iandreyshev.payfriends.ui.paymentsList.PaymentListFragment"
         android:label="PaymentListFragment"
         tools:layout="@layout/fragment_payments_list">
         <action
@@ -23,18 +23,18 @@
 
     <fragment
         android:id="@+id/completedPaymentsListDest"
-        android:name="ru.iandreyshev.stale.ui.paymentsList.PaymentListFragment"
+        android:name="ru.iandreyshev.payfriends.ui.paymentsList.PaymentListFragment"
         android:label="CompletedFragment"
         tools:layout="@layout/fragment_payments_list" />
 
     <fragment
         android:id="@+id/settingsDest"
-        android:name="ru.iandreyshev.stale.ui.settings.SettingsFragment"
+        android:name="ru.iandreyshev.payfriends.ui.settings.SettingsFragment"
         android:label="SettingsFragment" />
 
     <fragment
         android:id="@+id/paymentFragment"
-        android:name="ru.iandreyshev.stale.ui.payment.PaymentFragment"
+        android:name="ru.iandreyshev.payfriends.ui.payment.PaymentFragment"
         android:label="PaymentFragment"
         tools:layout="@layout/fragment_payment">
         <argument
@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/transactionEditorFragment"
-        android:name="ru.iandreyshev.stale.ui.transactionEditor.TransactionEditorFragment"
+        android:name="ru.iandreyshev.payfriends.ui.transactionEditor.TransactionEditorFragment"
         android:label="TransactionEditorFragment"
         tools:layout="@layout/fragment_transaction_editor">
         <argument
@@ -65,7 +65,7 @@
     </fragment>
     <fragment
         android:id="@+id/paymentEditorFragment"
-        android:name="ru.iandreyshev.stale.ui.paymentEditor.PaymentEditorFragment"
+        android:name="ru.iandreyshev.payfriends.ui.paymentEditor.PaymentEditorFragment"
         android:label="PaymentEditorFragment"
         tools:layout="@layout/fragment_payment_editor">
         <argument

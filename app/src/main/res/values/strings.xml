@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Stale</string>
+    <string name="app_name">PayFriends</string>
 
     <string name="common_unknown_error">Неизвестная ошибка</string>
     <string name="common_empty_list">Список пуст</string>

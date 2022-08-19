@@ -4,6 +4,7 @@ import kotlinx.coroutines.withContext
 import ru.iandreyshev.stale.domain.core.Transaction
 import ru.iandreyshev.stale.domain.core.TransactionId
 import ru.iandreyshev.stale.domain.core.TransactionParticipants
+import ru.iandreyshev.stale.domain.time.Date
 import ru.iandreyshev.stale.system.Dispatchers
 import kotlin.math.abs
 
@@ -25,8 +26,8 @@ class CalcResultUseCase(
                     null -> optimized[entry.key] = entry.value
                     else -> {
                         val resultParticipants = getResultParticipants(
-                            transaction1 = Transaction(TransactionId(""), entry.key, entry.value),
-                            transaction2 = Transaction(TransactionId(""), mirror, mirrorCost)
+                            transaction1 = Transaction(TransactionId.none(), entry.key, entry.value, "", Date("")),
+                            transaction2 = Transaction(TransactionId.none(), mirror, mirrorCost, "", Date(""))
                         )
 
                         optimized.remove(mirror)
@@ -38,7 +39,9 @@ class CalcResultUseCase(
                 }
             }
 
-            optimized.map { Transaction(TransactionId(""), it.key, it.value) }
+            optimized.map {
+                Transaction(TransactionId.none(), it.key, it.value, "", Date(""))
+            }
         }
 
     private fun getResultParticipants(

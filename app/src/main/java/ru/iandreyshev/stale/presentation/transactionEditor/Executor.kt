@@ -3,20 +3,19 @@ package ru.iandreyshev.stale.presentation.transactionEditor
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.iandreyshev.stale.domain.core.Member
-import ru.iandreyshev.stale.domain.core.Transaction
-import ru.iandreyshev.stale.domain.core.TransactionId
-import ru.iandreyshev.stale.domain.core.TransactionParticipants
+import ru.iandreyshev.stale.domain.core.*
 import ru.iandreyshev.stale.domain.paymentEditor.ValidateMemberUseCase
 import ru.iandreyshev.stale.domain.payments.PaymentsStorage
 import ru.iandreyshev.stale.domain.transactionEditor.FilterMembers
+import ru.iandreyshev.stale.domain.transactionEditor.SaveTransactionsUseCase
 import ru.iandreyshev.stale.system.Dispatchers
 
 class Executor(
     private val dispatchers: Dispatchers,
     private val storage: PaymentsStorage,
     private val filterMembers: FilterMembers,
-    private val validateMember: ValidateMemberUseCase
+    private val validateMember: ValidateMemberUseCase,
+    private val saveTransactions: SaveTransactionsUseCase
 ) : CoroutineExecutor<Intent, Action, State, Message, Label>() {
 
     override fun executeAction(action: Action, getState: () -> State) {
@@ -69,7 +68,7 @@ class Executor(
                 Message.Started(
                     getState().copy(
                         paymentId = payment.id,
-                        transactionId = action.transactionId ?: TransactionId(""),
+                        transactionId = action.transactionId ?: TransactionId.none(),
                         producerField = getState().producerField.copy(
                             producer = producer,
                             suggestions = payment.members,
@@ -89,6 +88,14 @@ class Executor(
     }
 
     private fun onSave(getState: () -> State) {
+        dispatch(Message.ChangeSavingState(true))
+        scope.launch {
+            when (saveTransactions(getState().transactions)) {
+                is Result.Success -> publish(Label.Exit("Saving success"))
+                is Result.Error -> publish(Label.Error.Unknown)
+            }
+            dispatch(Message.ChangeSavingState(false))
+        }
     }
 
     private fun onBack(getState: () -> State) {

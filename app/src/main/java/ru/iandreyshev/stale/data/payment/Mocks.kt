@@ -2,6 +2,7 @@ package ru.iandreyshev.stale.data.payment
 
 import io.bloco.faker.Faker
 import ru.iandreyshev.stale.domain.core.*
+import ru.iandreyshev.stale.domain.time.Date
 import kotlin.random.Random
 
 fun createMock1(): List<Payment> {
@@ -22,7 +23,7 @@ fun createMock1(): List<Payment> {
                     id = randomPaymentId(),
                     name = faker.book.title(),
                     members = members,
-                    creationDate = faker.date.backward().toString(),
+                    creationDate = Date(faker.date.backward().toString()),
                     transactions = mutableListOf<Transaction>().apply {
                         repeat(Random.nextInt(10, 100)) {
                             add(
@@ -33,7 +34,8 @@ fun createMock1(): List<Payment> {
                                         receiver = Member(faker.name.name())
                                     ),
                                     cost = 0,
-                                    description = ""
+                                    description = "",
+                                    creationDate = Date("")
                                 )
                             )
                         }

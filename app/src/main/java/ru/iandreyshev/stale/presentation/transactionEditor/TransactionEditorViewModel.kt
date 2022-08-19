@@ -10,6 +10,7 @@ import ru.iandreyshev.stale.domain.core.PaymentId
 import ru.iandreyshev.stale.domain.core.TransactionId
 import ru.iandreyshev.stale.domain.paymentEditor.ValidateMemberUseCase
 import ru.iandreyshev.stale.domain.transactionEditor.FilterMembers
+import ru.iandreyshev.stale.domain.transactionEditor.SaveTransactionsUseCase
 import ru.iandreyshev.stale.system.AppDispatchers
 import ru.iandreyshev.stale.ui.utils.uiLazy
 
@@ -30,7 +31,13 @@ class TransactionEditorViewModel(
                     dispatchers = AppDispatchers,
                     storage = App.storage,
                     filterMembers = FilterMembers(),
-                    validateMember = ValidateMemberUseCase()
+                    validateMember = ValidateMemberUseCase(),
+                    saveTransactions = SaveTransactionsUseCase(
+                        paymentId = paymentId,
+                        dispatchers = AppDispatchers,
+                        storage = App.storage,
+                        dateProvider = App.dateProvider
+                    )
                 )
             },
             reducer = Reducer,

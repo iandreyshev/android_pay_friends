@@ -12,18 +12,20 @@ data class State(
     val receiverField: ReceiverFieldState,
     val transactions: List<Transaction>,
     val members: List<Member>,
-    val isStarted: Boolean
+    val isStarted: Boolean,
+    val isSaving: Boolean
 ) {
 
     companion object {
         fun default() = State(
             paymentId = PaymentId(""),
-            transactionId = TransactionId(""),
+            transactionId = TransactionId.none(),
             producerField = ProducerFieldState.default(),
             members = listOf(),
             transactions = listOf(),
             receiverField = ReceiverFieldState.default(),
-            isStarted = false
+            isStarted = false,
+            isSaving = false
         )
     }
 

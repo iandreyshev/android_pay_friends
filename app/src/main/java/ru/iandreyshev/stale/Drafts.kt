@@ -6,6 +6,7 @@ import ru.iandreyshev.stale.domain.core.Member
 import ru.iandreyshev.stale.domain.core.Transaction
 import ru.iandreyshev.stale.domain.core.TransactionId
 import ru.iandreyshev.stale.domain.core.TransactionParticipants
+import ru.iandreyshev.stale.domain.time.Date
 import ru.iandreyshev.stale.system.AppDispatchers
 
 fun main() {
@@ -16,12 +17,14 @@ fun main() {
         val splitted = line.split(" ")
         transactions.add(
             Transaction(
-                id = TransactionId(""),
+                id = TransactionId.none(),
                 participants = TransactionParticipants(
                     producer = Member(splitted[0]),
                     receiver = Member(splitted[1])
                 ),
-                cost = splitted[2].toInt()
+                cost = splitted[2].toInt(),
+                description = "",
+                creationDate = Date("")
             )
         )
         line = readLine()

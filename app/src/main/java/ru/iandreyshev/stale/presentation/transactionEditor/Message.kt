@@ -19,4 +19,5 @@ sealed interface Message {
     ) : Message
 
     data class UpdateTransactions(val transactions: List<Transaction>, val totalCost: Int) : Message
+    data class ChangeSavingState(val isSaving: Boolean) : Message
 }

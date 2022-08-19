@@ -38,5 +38,6 @@ val Reducer = Reducer<State, Message> { message ->
             transactions = message.transactions,
             producerField = producerField.copy(cost = message.totalCost)
         )
+        is Message.ChangeSavingState -> copy(isSaving = message.isSaving)
     }
 }

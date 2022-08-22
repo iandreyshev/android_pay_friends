@@ -31,4 +31,7 @@
 
     <string name="payment_tab_result_title">Итог</string>
     <string name="payment_tab_history_title">История</string>
+    <string name="payment_receiver_title">Должник</string>
+    <string name="payment_producer_title">Спонсор</string>
+    <string name="payment_cost">Сумма</string>
 </resources>

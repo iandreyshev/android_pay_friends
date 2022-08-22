@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
@@ -20,38 +21,12 @@ import ru.iandreyshev.payfriends.ui.utils.viewBindings
 
 class PaymentResultFragment : Fragment(R.layout.fragment_recycler_view) {
 
-    private class Adapter : ListAdapter<Transaction, ViewHolder>(ItemCallback) {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_payment_result, parent, false)
-                .let { ViewHolder(it) }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val item = getItem(position)
-            holder.binding
-        }
-
-    }
-
-    private class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val binding by uiLazy { ItemPaymentResultBinding.bind(itemView) }
-    }
-
-    object ItemCallback : DiffUtil.ItemCallback<Transaction>() {
-        override fun areItemsTheSame(oldItem: Transaction, newItem: Transaction) = true
-        override fun areContentsTheSame(oldItem: Transaction, newItem: Transaction) =
-            oldItem == newItem
-    }
-
     private val mViewModel by viewModels<PaymentViewModel>(
-        ownerProducer = {
-            requireParentFragment()
-        }
+        ownerProducer = { requireParentFragment() }
     )
     private val mBinding by viewBindings(FragmentRecyclerViewBinding::bind)
     private val mIsResult by uiLazy { arguments?.getBoolean(ARG_KEY, false) ?: false }
-    private val mAdapter by uiLazy { Adapter() }
+    private val mAdapter by uiLazy { PaymentResultAdapter(mIsResult) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

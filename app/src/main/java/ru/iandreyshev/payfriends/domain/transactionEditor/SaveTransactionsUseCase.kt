@@ -35,7 +35,7 @@ class SaveTransactionsUseCase(
             }
             resultTransactions.addAll(existedTransactions.values)
 
-            storage.save(payment.copy(transactions = transactionsWithDate))
+            storage.save(payment.copy(transactions = resultTransactions))
 
             Result.Success(Unit)
         }

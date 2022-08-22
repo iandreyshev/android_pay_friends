@@ -24,7 +24,11 @@ class InMemoryPaymentsStorage : PaymentsStorage {
             newId = randomPaymentId()
         } while (newId in ids)
 
-        val newPayment = payment.copy(id = newId)
+        val newPayment = payment.copy(
+            id = newId,
+            transactions = payment.transactions
+                .map { it.copy(id = randomTransactionId()) }
+        )
         mCache.emit(mCache.value + newPayment)
         return newPayment
     }

@@ -13,7 +13,7 @@ class SettingsFragment : Fragment(R.layout.fragment_stub) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mBinding.textView.text = "SettingsFragment"
+        mBinding.textView.text = "Settings not implemented yet"
     }
 
 }

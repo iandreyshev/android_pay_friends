@@ -8,30 +8,30 @@
     <string name="menu_item_completed_payments_title">Завершенные</string>
     <string name="menu_item_settings_title">Настройки</string>
 
-    <string name="payments_list_empty_view_text_active">У вас ещё нет расчётов</string>
-    <string name="payments_list_empty_view_button">Добавить</string>
+    <string name="computations_list_empty_view_text_active">У вас ещё нет расчётов</string>
+    <string name="computations_list_empty_view_button">Добавить</string>
 
-    <string name="payment_option_complete_title">Завершить</string>
-    <string name="payment_option_edit_title">Редактировать</string>
-    <string name="payment_option_make_active_title">Вернуть в активные</string>
-    <string name="payment_option_delete_title">Удалить</string>
+    <string name="computations_option_complete_title">Завершить</string>
+    <string name="computations_option_edit_title">Редактировать</string>
+    <string name="computations_option_make_active_title">Вернуть в активные</string>
+    <string name="computations_option_delete_title">Удалить</string>
 
-    <string name="payment_editor_title">Новый расчёт</string>
-    <string name="payment_editor_name_title">Название</string>
-    <string name="payment_editor_menu_save_title">Сохранить</string>
-    <string name="payment_editor_error_empty_name">Название должно содержать символы</string>
-    <string name="payment_editor_members_field_hint">Имя…</string>
-    <string name="payment_editor_members_field_title">Участники</string>
-    <string name="payment_editor_name_field_hint">Введите название…</string>
-    <string name="payment_editor_add_member_title">Новый участник</string>
+    <string name="computation_editor_title">Новый расчёт</string>
+    <string name="computation_editor_name_title">Название</string>
+    <string name="computation_editor_menu_save_title">Сохранить</string>
+    <string name="computation_editor_error_empty_name">Название должно содержать символы</string>
+    <string name="computation_editor_members_field_hint">Имя…</string>
+    <string name="computation_editor_members_field_title">Участники</string>
+    <string name="computation_editor_name_field_hint">Введите название…</string>
+    <string name="computation_editor_add_member_title">Новый участник</string>
 
-    <string name="transaction_editor_menu_save_title">Сохранить</string>
-    <string name="transaction_editor_cost">Итог\n %1$d ₽</string>
-    <string name="transaction_editor_error_empty_name">Название должно содержать символы</string>
+    <string name="bill_editor_menu_save_title">Сохранить</string>
+    <string name="bill_editor_cost">Итог\n %1$d ₽</string>
+    <string name="bill_editor_error_empty_name">Название должно содержать символы</string>
 
-    <string name="payment_tab_result_title">Итог</string>
-    <string name="payment_tab_history_title">История</string>
-    <string name="payment_receiver_title">Должник</string>
-    <string name="payment_producer_title">Спонсор</string>
-    <string name="payment_cost">Сумма</string>
+    <string name="computation_tab_result_title">Итог</string>
+    <string name="computation_tab_history_title">История</string>
+    <string name="computation_receiver_title">Должник</string>
+    <string name="computation_producer_title">Спонсор</string>
+    <string name="computation_cost">Сумма</string>
 </resources>

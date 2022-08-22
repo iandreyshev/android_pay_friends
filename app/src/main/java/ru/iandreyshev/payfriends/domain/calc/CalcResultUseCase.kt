@@ -1,10 +1,9 @@
 package ru.iandreyshev.payfriends.domain.calc
 
 import kotlinx.coroutines.withContext
-import ru.iandreyshev.payfriends.domain.core.Transaction
-import ru.iandreyshev.payfriends.domain.core.TransactionId
-import ru.iandreyshev.payfriends.domain.core.TransactionParticipants
-import ru.iandreyshev.payfriends.domain.time.Date
+import ru.iandreyshev.payfriends.domain.core.Bill
+import ru.iandreyshev.payfriends.domain.core.Participants
+import ru.iandreyshev.payfriends.domain.core.Transfer
 import ru.iandreyshev.payfriends.system.Dispatchers
 import kotlin.math.abs
 
@@ -12,13 +11,18 @@ class CalcResultUseCase(
     private val dispatchers: Dispatchers
 ) {
 
-    suspend operator fun invoke(transactions: List<Transaction>): List<Transaction> =
+    suspend operator fun invoke(bills: List<Bill>): List<Transfer> =
         withContext(dispatchers.io) {
-            val totalCostOfParticipants: Map<TransactionParticipants, Int> =
-                transactions.groupBy { it.participants }
+            val transfers = bills.flatMap { bill ->
+                bill.payments.map { payment ->
+                    Transfer(Participants(bill.backer, payment.receiver), payment.cost)
+                }
+            }
+            val totalCostOfParticipants: Map<Participants, Int> =
+                transfers.groupBy { it.participants }
                     .mapValues { ts -> ts.value.sumOf { it.cost } }
 
-            val optimized = mutableMapOf<TransactionParticipants, Int>()
+            val optimized = mutableMapOf<Participants, Int>()
 
             totalCostOfParticipants.forEach { entry ->
                 val mirror = entry.key.mirror()
@@ -26,8 +30,8 @@ class CalcResultUseCase(
                     null -> optimized[entry.key] = entry.value
                     else -> {
                         val resultParticipants = getResultParticipants(
-                            transaction1 = Transaction(TransactionId.none(), entry.key, entry.value, "", Date("")),
-                            transaction2 = Transaction(TransactionId.none(), mirror, mirrorCost, "", Date(""))
+                            transfer1 = Transfer(entry.key, entry.value),
+                            transfer2 = Transfer(mirror, mirrorCost)
                         )
 
                         optimized.remove(mirror)
@@ -39,24 +43,22 @@ class CalcResultUseCase(
                 }
             }
 
-            optimized.map {
-                Transaction(TransactionId.none(), it.key, it.value, "", Date(""))
-            }
+            optimized.map { Transfer(it.key, it.value) }
         }
 
     private fun getResultParticipants(
-        transaction1: Transaction,
-        transaction2: Transaction
-    ): TransactionParticipants {
-        if (!transaction1.isMirrorOf(transaction2)) {
-            throw IllegalStateException("Transaction $transaction1 is not mirror of $transaction2")
+        transfer1: Transfer,
+        transfer2: Transfer
+    ): Participants {
+        if (!transfer1.isMirrorOf(transfer2)) {
+            throw IllegalStateException("Transfer $transfer1 is not mirror of $transfer2")
         }
 
-        if (transaction1.cost > transaction2.cost) {
-            return transaction1.participants
+        if (transfer1.cost > transfer2.cost) {
+            return transfer1.participants
         }
 
-        return transaction2.participants
+        return transfer2.participants
     }
 
 }

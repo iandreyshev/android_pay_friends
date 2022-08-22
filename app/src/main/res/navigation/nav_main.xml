@@ -7,15 +7,15 @@
 
     <fragment
         android:id="@+id/activePaymentsListDest"
-        android:name="ru.iandreyshev.payfriends.ui.paymentsList.PaymentListFragment"
+        android:name="ru.iandreyshev.payfriends.ui.computationsList.ComputationsListFragment"
         android:label="PaymentListFragment"
-        tools:layout="@layout/fragment_payments_list">
+        tools:layout="@layout/fragment_computations_list">
         <action
             android:id="@+id/actionEditPayment"
             app:destination="@id/paymentEditorFragment" />
         <action
-            android:id="@+id/actionAddTransactions"
-            app:destination="@id/transactionEditorFragment" />
+            android:id="@+id/actionAddBill"
+            app:destination="@id/billEditorFragment" />
         <action
             android:id="@+id/actionOpenPayment"
             app:destination="@id/paymentFragment" />
@@ -23,9 +23,9 @@
 
     <fragment
         android:id="@+id/completedPaymentsListDest"
-        android:name="ru.iandreyshev.payfriends.ui.paymentsList.PaymentListFragment"
+        android:name="ru.iandreyshev.payfriends.ui.computationsList.ComputationsListFragment"
         android:label="CompletedFragment"
-        tools:layout="@layout/fragment_payments_list" />
+        tools:layout="@layout/fragment_computations_list" />
 
     <fragment
         android:id="@+id/settingsDest"
@@ -34,9 +34,9 @@
 
     <fragment
         android:id="@+id/paymentFragment"
-        android:name="ru.iandreyshev.payfriends.ui.payment.PaymentFragment"
+        android:name="ru.iandreyshev.payfriends.ui.computation.ComputationFragment"
         android:label="PaymentFragment"
-        tools:layout="@layout/fragment_payment">
+        tools:layout="@layout/fragment_computation">
         <argument
             android:name="paymentId"
             app:argType="string" />
@@ -47,27 +47,27 @@
             android:id="@+id/actionEditCurrentPayment"
             app:destination="@id/paymentEditorFragment" />
         <action
-            android:id="@+id/actionAddTransactionsToPayment"
-            app:destination="@id/transactionEditorFragment" />
+            android:id="@+id/actionAddBillToPayment"
+            app:destination="@id/billEditorFragment" />
     </fragment>
     <fragment
-        android:id="@+id/transactionEditorFragment"
-        android:name="ru.iandreyshev.payfriends.ui.transactionEditor.TransactionEditorFragment"
-        android:label="TransactionEditorFragment"
-        tools:layout="@layout/fragment_transaction_editor">
+        android:id="@+id/billEditorFragment"
+        android:name="ru.iandreyshev.payfriends.ui.billEditor.BillEditorFragment"
+        android:label="BillEditorFragment"
+        tools:layout="@layout/fragment_bill_editor">
         <argument
             android:name="paymentId"
             app:argType="string" />
         <argument
-            android:name="transactionId"
+            android:name="billId"
             app:argType="string"
             app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/paymentEditorFragment"
-        android:name="ru.iandreyshev.payfriends.ui.paymentEditor.PaymentEditorFragment"
+        android:name="ru.iandreyshev.payfriends.ui.computationEditor.ComputationEditorFragment"
         android:label="PaymentEditorFragment"
-        tools:layout="@layout/fragment_payment_editor">
+        tools:layout="@layout/fragment_computation_editor">
         <argument
             android:name="paymentId"
             app:argType="string"

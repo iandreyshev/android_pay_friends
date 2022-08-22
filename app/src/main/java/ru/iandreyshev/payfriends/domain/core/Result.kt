@@ -1,6 +1,6 @@
 package ru.iandreyshev.payfriends.domain.core
 
-import ru.iandreyshev.payfriends.domain.paymentEditor.PaymentDraftError
+import ru.iandreyshev.payfriends.domain.computationEditor.PaymentDraftError
 
 sealed interface Result<out TResult> {
     data class Success<out T>(val data: T) : Result<T>

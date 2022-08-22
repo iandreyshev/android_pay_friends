@@ -17,6 +17,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_flag_24.xml" value="0.1105" />
         <entry key="app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21181945800781252" />
+        <entry key="app/src/main/res/layout/fragment_bill_editor.xml" value="0.2078125" />
         <entry key="app/src/main/res/layout/fragment_menu.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_onboarding.xml" value="0.13055555555555556" />
         <entry key="app/src/main/res/layout/fragment_payment.xml" value="0.165" />
@@ -26,6 +27,8 @@
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_transaction_editor.xml" value="0.19545011167173032" />
         <entry key="app/src/main/res/layout/item_add_transaction_button.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/item_bill_editor_backer.xml" value="0.15520833333333334" />
+        <entry key="app/src/main/res/layout/item_computation.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/item_payment.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_payment_editor_member.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_payment_result.xml" value="0.335" />

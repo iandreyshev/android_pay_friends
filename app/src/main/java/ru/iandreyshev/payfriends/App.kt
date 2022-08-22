@@ -1,7 +1,7 @@
 package ru.iandreyshev.payfriends
 
 import android.app.Application
-import ru.iandreyshev.payfriends.data.payment.InMemoryPaymentsStorage
+import ru.iandreyshev.payfriends.data.computation.InMemoryStorage
 import ru.iandreyshev.payfriends.data.time.DateProviderStub
 import timber.log.Timber
 
@@ -13,7 +13,7 @@ class App : Application() {
     }
 
     companion object {
-        val storage = InMemoryPaymentsStorage()
+        val storage = InMemoryStorage()
         val dateProvider = DateProviderStub()
     }
 

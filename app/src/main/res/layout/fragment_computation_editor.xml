@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/menu_payment_editor"
+            app:navigationIcon="@drawable/ic_baseline_close_24"
+            app:title="@string/computation_editor_title" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:id="@+id/screenScroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/titleFieldTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/step_16"
+                android:layout_marginTop="@dimen/step_20"
+                android:text="@string/computation_editor_name_title"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/nameField"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/step_16"
+                android:layout_marginTop="@dimen/step_4"
+                android:background="@null"
+                android:hint="@string/computation_editor_name_field_hint"
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxLength="128"
+                android:paddingVertical="@dimen/step_4"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray_dark"
+                android:textSize="@dimen/text_size_6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/titleFieldTitle"
+                app:layout_goneMarginTop="@dimen/step_2" />
+
+            <TextView
+                android:id="@+id/participantsFieldTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/step_16"
+                android:layout_marginTop="@dimen/step_16"
+                android:text="@string/computation_editor_members_field_title"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nameField" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/membersList"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/step_16"
+                android:layout_marginTop="@dimen/step_6"
+                android:nestedScrollingEnabled="false"
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/participantsFieldTitle"
+                app:layout_goneMarginTop="0dp"
+                tools:itemCount="7"
+                tools:listitem="@layout/view_editable_member" />
+
+            <EditText
+                android:id="@+id/memberField"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/step_16"
+                android:background="@null"
+                android:hint="@string/computation_editor_members_field_hint"
+                android:inputType="textCapSentences"
+                android:maxLength="120"
+                android:paddingVertical="@dimen/step_4"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray_dark"
+                android:textSize="@dimen/text_size_6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/membersList"
+                tools:text="Ivan Andreyshev Ivan Andreyshev Ivan Andreyshev Ivan Andreyshev Ivan AndreyshevIvan Andreyshev Ivan Andreyshev Ivan Andreyshev Ivan Andreyshev " />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/step_4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/memberField">
+
+                <include
+                    android:id="@+id/addMemberButton"
+                    layout="@layout/view_add_member_button" />
+
+            </FrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

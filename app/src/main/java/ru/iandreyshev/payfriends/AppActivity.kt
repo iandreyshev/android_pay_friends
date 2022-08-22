@@ -7,7 +7,7 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import ru.iandreyshev.payfriends.databinding.ActivityMainBinding
-import ru.iandreyshev.payfriends.ui.paymentsList.PaymentListFragment
+import ru.iandreyshev.payfriends.ui.computationsList.ComputationsListFragment
 import ru.iandreyshev.payfriends.ui.utils.uiLazy
 import ru.iandreyshev.payfriends.ui.utils.viewBindings
 
@@ -34,8 +34,8 @@ class AppActivity : AppCompatActivity() {
         mBinding.menuView.setupWithNavController(mNavController)
         mBinding.menuView.setOnItemSelectedListener { item ->
             val args = when (item.itemId) {
-                R.id.activePaymentsListDest -> PaymentListFragment.args(isListOfActivePayments = true)
-                R.id.completedPaymentsListDest -> PaymentListFragment.args(isListOfActivePayments = false)
+                R.id.activePaymentsListDest -> ComputationsListFragment.args(isListOfActivePayments = true)
+                R.id.completedPaymentsListDest -> ComputationsListFragment.args(isListOfActivePayments = false)
                 else -> bundleOf()
             }
             mNavController.navigate(item.itemId, args)

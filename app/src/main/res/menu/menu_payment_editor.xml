@@ -4,6 +4,6 @@
     <item
         android:id="@+id/paymentEditorMenuSave"
         android:icon="@drawable/ic_baseline_check_24"
-        android:title="@string/payment_editor_menu_save_title"
+        android:title="@string/computation_editor_menu_save_title"
         app:showAsAction="ifRoom" />
 </menu>

@@ -7,25 +7,18 @@ import ru.iandreyshev.payfriends.domain.computation.GetComputationUseCase
 import ru.iandreyshev.payfriends.domain.core.ComputationId
 import ru.iandreyshev.payfriends.domain.core.ErrorType
 import ru.iandreyshev.payfriends.presentation.utils.SingleStateViewModel
+import javax.inject.Inject
 
-class ComputationViewModel(
-    id: ComputationId,
-    name: String,
+class ComputationViewModel
+@Inject constructor(
     private val calcResult: CalcResultUseCase,
     private val getComputation: GetComputationUseCase
-) : SingleStateViewModel<State, Event>(
-    initialState = State.default().copy(
-        id = id,
-        name = name
-    )
-) {
+) : SingleStateViewModel<State, Event>(State.default()) {
 
-    init {
-        loadData()
-    }
-
-    private fun loadData() {
+    fun onViewCreated(id: ComputationId, name: String) {
         viewModelScope.launch {
+            modifyState { copy(id = id, name = name) }
+
             val computation = getComputation(getState().id) ?: run {
                 event { Event.Exit(ErrorType.Unknown) }
                 return@launch

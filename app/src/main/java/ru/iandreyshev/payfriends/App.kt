@@ -3,6 +3,8 @@ package ru.iandreyshev.payfriends
 import android.app.Application
 import ru.iandreyshev.payfriends.data.computation.InMemoryStorage
 import ru.iandreyshev.payfriends.data.time.DateProviderStub
+import ru.iandreyshev.payfriends.di.AppComponent
+import ru.iandreyshev.payfriends.di.DaggerAppComponent
 import timber.log.Timber
 
 class App : Application() {
@@ -13,7 +15,7 @@ class App : Application() {
     }
 
     companion object {
-        val storage = InMemoryStorage()
+        val component: AppComponent = DaggerAppComponent.create()
         val dateProvider = DateProviderStub()
     }
 

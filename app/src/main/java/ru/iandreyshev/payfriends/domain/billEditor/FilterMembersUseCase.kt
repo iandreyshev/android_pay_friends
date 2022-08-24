@@ -1,8 +1,10 @@
 package ru.iandreyshev.payfriends.domain.billEditor
 
 import ru.iandreyshev.payfriends.domain.core.Member
+import javax.inject.Inject
 
-class FilterMembers {
+class FilterMembersUseCase
+@Inject constructor() {
 
     data class Filters(
         val query: String = ""

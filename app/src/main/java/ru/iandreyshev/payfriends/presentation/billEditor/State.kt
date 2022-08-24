@@ -4,7 +4,8 @@ import ru.iandreyshev.payfriends.domain.core.*
 import ru.iandreyshev.payfriends.domain.billEditor.BillDraft
 
 data class State(
-    val billId: BillId,
+    val computationId: ComputationId,
+    val billId: BillId?,
     val title: String,
     val backerField: BackerFieldState,
     val receiverField: ReceiverFieldState,
@@ -15,6 +16,7 @@ data class State(
 ) {
 
     fun composeBillDraft() = BillDraft(
+        computationId = computationId,
         id = billId,
         title = title,
         backer = backerField.backer,
@@ -23,7 +25,8 @@ data class State(
 
     companion object {
         fun default() = State(
-            billId = BillId.none(),
+            computationId = ComputationId.none(),
+            billId = null,
             title = "",
             backerField = BackerFieldState.default(),
             members = listOf(),

@@ -1,13 +1,15 @@
 package ru.iandreyshev.payfriends.domain.computationEditor
 
-import ru.iandreyshev.payfriends.domain.core.ErrorType
+import ru.iandreyshev.payfriends.domain.computationsList.Storage
 import ru.iandreyshev.payfriends.domain.core.Computation
 import ru.iandreyshev.payfriends.domain.core.ComputationId
+import ru.iandreyshev.payfriends.domain.core.ErrorType
 import ru.iandreyshev.payfriends.domain.core.Result
-import ru.iandreyshev.payfriends.domain.computationsList.Storage
 import ru.iandreyshev.payfriends.domain.time.DateProvider
+import javax.inject.Inject
 
-class SaveComputationUseCase(
+class SaveComputationUseCase
+@Inject constructor(
     private val isDraftValid: ValidatePaymentDraftUseCase,
     private val storage: Storage,
     private val dateProvider: DateProvider

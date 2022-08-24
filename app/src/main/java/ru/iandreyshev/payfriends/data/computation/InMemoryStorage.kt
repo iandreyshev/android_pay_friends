@@ -2,11 +2,15 @@ package ru.iandreyshev.payfriends.data.computation
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import ru.iandreyshev.payfriends.domain.computationsList.Storage
 import ru.iandreyshev.payfriends.domain.core.Computation
 import ru.iandreyshev.payfriends.domain.core.ComputationId
-import ru.iandreyshev.payfriends.domain.computationsList.Storage
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class InMemoryStorage : Storage {
+@Singleton
+class InMemoryStorage
+@Inject constructor() : Storage {
 
     private val mCache: MutableStateFlow<List<Computation>> = MutableStateFlow(createMock1())
 

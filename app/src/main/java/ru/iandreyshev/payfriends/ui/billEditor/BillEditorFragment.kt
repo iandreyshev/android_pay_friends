@@ -33,14 +33,8 @@ import kotlin.math.abs
 
 class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
 
-    private val mViewModel by viewModelFactory {
-        BillEditorViewModel(
-            ComputationId(mArgs.paymentId),
-            mArgs.billId?.let { BillId(it) }
-        )
-    }
+    private val mViewModel by viewModelsDiFactory<BillEditorViewModel>()
     private val mNavController by uiLazy { findNavController() }
-    private val mArgs by navArgs<BillEditorFragmentArgs>()
     private val mBinding by viewBindings(FragmentBillEditorBinding::bind)
     private val mPaymentMarginHorizontal by uiLazy { resources.getDimensionPixelSize(R.dimen.step_16) }
     private val mPaymentMarginVertical by uiLazy { resources.getDimensionPixelSize(R.dimen.step_8) }
@@ -65,6 +59,10 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
         }
 
         if (savedInstanceState == null) {
+            val args = navArgs<BillEditorFragmentArgs>().value
+            val computationId = ComputationId(args.paymentId)
+            val billId = args.billId?.let { BillId(it) }
+            mViewModel.onViewCreated(computationId, billId)
             mBinding.producerView.producerField.showKeyboard()
         }
     }

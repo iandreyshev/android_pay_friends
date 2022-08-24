@@ -2,27 +2,37 @@ package ru.iandreyshev.payfriends.presentation.computationEditor
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.iandreyshev.payfriends.domain.core.ErrorType
-import ru.iandreyshev.payfriends.domain.core.Member
-import ru.iandreyshev.payfriends.domain.core.ComputationId
-import ru.iandreyshev.payfriends.domain.core.Result
 import ru.iandreyshev.payfriends.domain.computationEditor.GetComputationDraftUseCase
 import ru.iandreyshev.payfriends.domain.computationEditor.PaymentDraftError
 import ru.iandreyshev.payfriends.domain.computationEditor.SaveComputationUseCase
 import ru.iandreyshev.payfriends.domain.computationEditor.ValidateMemberUseCase
+import ru.iandreyshev.payfriends.domain.core.ComputationId
+import ru.iandreyshev.payfriends.domain.core.ErrorType
+import ru.iandreyshev.payfriends.domain.core.Member
+import ru.iandreyshev.payfriends.domain.core.Result
 import ru.iandreyshev.payfriends.presentation.utils.SingleStateViewModel
+import javax.inject.Inject
 
-class ComputationEditorViewModel(
-    id: ComputationId?,
+class ComputationEditorViewModel
+@Inject constructor(
     private val getDraft: GetComputationDraftUseCase,
     private val saveComputation: SaveComputationUseCase,
     private val isMemberValid: ValidateMemberUseCase
-) : SingleStateViewModel<State, Event>(
-    initialState = State.default(id = id)
-) {
+) : SingleStateViewModel<State, Event>(State.default()) {
 
-    init {
-        loadPaymentOnStart()
+    fun onViewCreated(id: ComputationId?) {
+        modifyState { copy(draft = draft.copy(id = id), isLoading = true) }
+        viewModelScope.launch {
+            val draftId = getState().draft.id
+            val draft = getDraft(draftId) ?: run {
+                event(Event.BackWithError)
+                return@launch
+            }
+
+            modifyState {
+                copy(draft = draft, isLoading = false)
+            }
+        }
     }
 
     fun onDraftChanged(uiDraft: UIPaymentDraft) {
@@ -79,21 +89,6 @@ class ComputationEditorViewModel(
 
     fun onExit() {
         event(Event.Back)
-    }
-
-    private fun loadPaymentOnStart() {
-        modifyState { copy(isLoading = true) }
-        viewModelScope.launch {
-            val id = getState().draft.id
-            val draft = getDraft(id) ?: run {
-                event(Event.BackWithError)
-                return@launch
-            }
-
-            modifyState {
-                copy(draft = draft, isLoading = false)
-            }
-        }
     }
 
 }

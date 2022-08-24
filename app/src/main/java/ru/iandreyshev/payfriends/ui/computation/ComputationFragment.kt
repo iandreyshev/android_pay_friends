@@ -7,33 +7,19 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.tabs.TabLayoutMediator
-import ru.iandreyshev.payfriends.App
 import ru.iandreyshev.payfriends.R
 import ru.iandreyshev.payfriends.databinding.FragmentComputationBinding
-import ru.iandreyshev.payfriends.domain.calc.CalcResultUseCase
 import ru.iandreyshev.payfriends.domain.core.ComputationId
-import ru.iandreyshev.payfriends.domain.computation.GetComputationUseCase
 import ru.iandreyshev.payfriends.presentation.computation.ComputationViewModel
 import ru.iandreyshev.payfriends.presentation.computation.Event
 import ru.iandreyshev.payfriends.presentation.computation.State
-import ru.iandreyshev.payfriends.system.AppDispatchers
 import ru.iandreyshev.payfriends.ui.utils.uiLazy
 import ru.iandreyshev.payfriends.ui.utils.viewBindings
-import ru.iandreyshev.payfriends.ui.utils.viewModelFactory
+import ru.iandreyshev.payfriends.ui.utils.viewModelsDiFactory
 
 class ComputationFragment : Fragment(R.layout.fragment_computation) {
 
-    private val mViewModel by viewModelFactory {
-        ComputationViewModel(
-            id = ComputationId(mArgs.paymentId),
-            name = mArgs.paymentName,
-            calcResult = CalcResultUseCase(AppDispatchers),
-            getComputation = GetComputationUseCase(
-                storage = App.storage,
-                dispatchers = AppDispatchers
-            )
-        )
-    }
+    private val mViewModel by viewModelsDiFactory<ComputationViewModel>()
     private val mBinding by viewBindings(FragmentComputationBinding::bind)
     private val mArgs by navArgs<ComputationFragmentArgs>()
     private val mNavController by uiLazy { findNavController() }
@@ -47,6 +33,10 @@ class ComputationFragment : Fragment(R.layout.fragment_computation) {
 
         mViewModel.state.observe(viewLifecycleOwner, ::render)
         mViewModel.event.observe(viewLifecycleOwner, ::handleEvent)
+
+        if (savedInstanceState == null) {
+            mViewModel.onViewCreated(id = ComputationId(mArgs.id), name = mArgs.name)
+        }
     }
 
     private fun initViewPager() {

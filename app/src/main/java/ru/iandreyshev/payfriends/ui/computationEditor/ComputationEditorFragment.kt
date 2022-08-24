@@ -12,17 +12,12 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import ru.iandreyshev.payfriends.App
 import ru.iandreyshev.payfriends.R
 import ru.iandreyshev.payfriends.databinding.FragmentComputationEditorBinding
 import ru.iandreyshev.payfriends.domain.core.ComputationId
 import ru.iandreyshev.payfriends.domain.core.ErrorType
-import ru.iandreyshev.payfriends.domain.computationEditor.GetComputationDraftUseCase
-import ru.iandreyshev.payfriends.domain.computationEditor.SaveComputationUseCase
-import ru.iandreyshev.payfriends.domain.computationEditor.ValidateMemberUseCase
-import ru.iandreyshev.payfriends.domain.computationEditor.ValidatePaymentDraftUseCase
-import ru.iandreyshev.payfriends.presentation.computationEditor.Event
 import ru.iandreyshev.payfriends.presentation.computationEditor.ComputationEditorViewModel
+import ru.iandreyshev.payfriends.presentation.computationEditor.Event
 import ru.iandreyshev.payfriends.presentation.computationEditor.State
 import ru.iandreyshev.payfriends.presentation.computationEditor.UIPaymentDraft
 import ru.iandreyshev.payfriends.ui.members.MembersAdapter
@@ -32,20 +27,7 @@ class ComputationEditorFragment : Fragment(R.layout.fragment_computation_editor)
 
     private val mArgs by navArgs<ComputationEditorFragmentArgs>()
     private val mBinding by viewBindings(FragmentComputationEditorBinding::bind)
-    private val mViewModel by viewModelFactory {
-        ComputationEditorViewModel(
-            id = mArgs.paymentId?.let { ComputationId(it) },
-            getDraft = GetComputationDraftUseCase(App.storage),
-            saveComputation = SaveComputationUseCase(
-                isDraftValid = ValidatePaymentDraftUseCase(
-                    isMemberValid = ValidateMemberUseCase()
-                ),
-                storage = App.storage,
-                dateProvider = App.dateProvider
-            ),
-            isMemberValid = ValidateMemberUseCase()
-        )
-    }
+    private val mViewModel by viewModelsDiFactory<ComputationEditorViewModel>()
     private val mNavController by uiLazy { findNavController() }
     private val mMembersAdapter by uiLazy {
         MembersAdapter(
@@ -65,6 +47,8 @@ class ComputationEditorFragment : Fragment(R.layout.fragment_computation_editor)
         mViewModel.event.observe(viewLifecycleOwner, ::handleEvent)
 
         if (savedInstanceState == null) {
+            val id = mArgs.id?.let { ComputationId(it) }
+            mViewModel.onViewCreated(id)
             mBinding.nameField.showKeyboard()
         }
     }
@@ -119,7 +103,7 @@ class ComputationEditorFragment : Fragment(R.layout.fragment_computation_editor)
         when (event) {
             is Event.NavigateToPayment ->
                 ComputationEditorFragmentDirections
-                    .actionBackToNewPayment(event.id.value, event.name)
+                    .actionBackToNewComputation(event.id.value, event.name)
                     .let(mNavController::navigate)
             Event.ClearMemberField ->
                 mBinding.memberField.setText("")

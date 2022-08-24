@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_computations_list">
         <action
             android:id="@+id/actionEditPayment"
-            app:destination="@id/paymentEditorFragment" />
+            app:destination="@id/computationEditorFragment" />
         <action
             android:id="@+id/actionAddBill"
             app:destination="@id/billEditorFragment" />
@@ -38,14 +38,14 @@
         android:label="PaymentFragment"
         tools:layout="@layout/fragment_computation">
         <argument
-            android:name="paymentId"
+            android:name="id"
             app:argType="string" />
         <argument
-            android:name="paymentName"
+            android:name="name"
             app:argType="string" />
         <action
-            android:id="@+id/actionEditCurrentPayment"
-            app:destination="@id/paymentEditorFragment" />
+            android:id="@+id/actionEditCurrentComputation"
+            app:destination="@id/computationEditorFragment" />
         <action
             android:id="@+id/actionAddBillToPayment"
             app:destination="@id/billEditorFragment" />
@@ -64,18 +64,18 @@
             app:nullable="true" />
     </fragment>
     <fragment
-        android:id="@+id/paymentEditorFragment"
+        android:id="@+id/computationEditorFragment"
         android:name="ru.iandreyshev.payfriends.ui.computationEditor.ComputationEditorFragment"
         android:label="PaymentEditorFragment"
         tools:layout="@layout/fragment_computation_editor">
         <argument
-            android:name="paymentId"
+            android:name="id"
             app:argType="string"
             app:nullable="true" />
         <action
-            android:id="@+id/actionBackToNewPayment"
+            android:id="@+id/actionBackToNewComputation"
             app:destination="@id/paymentFragment"
-            app:popUpTo="@id/paymentEditorFragment"
+            app:popUpTo="@id/computationEditorFragment"
             app:popUpToInclusive="true" />
     </fragment>
 

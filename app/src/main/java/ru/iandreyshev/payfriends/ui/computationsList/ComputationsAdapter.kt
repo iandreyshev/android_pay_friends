@@ -13,7 +13,7 @@ import ru.iandreyshev.payfriends.domain.core.ComputationId
 import ru.iandreyshev.payfriends.domain.computationsList.ComputationSummary
 
 class ComputationsAdapter(
-    private val isActivePayments: Boolean,
+    private val isCompleted: Boolean,
     private val onClick: (ComputationSummary) -> Unit,
     private val onAddBill: (ComputationId) -> Unit,
     private val onOptionsMenuOpen: (View, ComputationId) -> Unit
@@ -38,7 +38,7 @@ class ComputationsAdapter(
         holder.binding.contentLayout.setOnClickListener {
             onClick(item)
         }
-        holder.binding.addBillButton.isVisible = isActivePayments
+        holder.binding.addBillButton.isVisible = isCompleted
         holder.binding.addBillButton.setOnClickListener {
             onAddBill(item.id)
         }

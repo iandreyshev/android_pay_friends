@@ -5,9 +5,11 @@ import ru.iandreyshev.payfriends.domain.core.Bill
 import ru.iandreyshev.payfriends.domain.core.Participants
 import ru.iandreyshev.payfriends.domain.core.Transfer
 import ru.iandreyshev.payfriends.system.Dispatchers
+import javax.inject.Inject
 import kotlin.math.abs
 
-class CalcResultUseCase(
+class CalcResultUseCase
+@Inject constructor(
     private val dispatchers: Dispatchers
 ) {
 

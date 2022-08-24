@@ -4,31 +4,28 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import ru.iandreyshev.payfriends.domain.core.ComputationId
+import ru.iandreyshev.payfriends.domain.computationsList.ComputationSummary
 import ru.iandreyshev.payfriends.domain.computationsList.GetComputationsListUseCase
 import ru.iandreyshev.payfriends.domain.computationsList.MarkComputationAsCompletedUseCase
-import ru.iandreyshev.payfriends.domain.computationsList.ComputationSummary
 import ru.iandreyshev.payfriends.domain.computationsList.Storage
+import ru.iandreyshev.payfriends.domain.core.ComputationId
 import ru.iandreyshev.payfriends.presentation.utils.SingleStateViewModel
+import javax.inject.Inject
 
-class ComputationsListViewModel(
-    isListOfActiveComputations: Boolean,
+class ComputationsListViewModel
+@Inject constructor(
     private val storage: Storage,
     private val completeComputation: MarkComputationAsCompletedUseCase,
-    getList: GetComputationsListUseCase,
-) : SingleStateViewModel<State, Event>(
-    initialState = State.default().copy(
-        isListOfActivePayments = isListOfActiveComputations
-    )
-) {
+    private val getList: GetComputationsListUseCase,
+) : SingleStateViewModel<State, Event>(State.default()) {
 
-    init {
-        getList(filter = GetComputationsListUseCase.Filter(isListOfActiveComputations))
+    fun onViewCreated(isCompleted: Boolean) {
+        getList(filter = GetComputationsListUseCase.Filter(isCompleted))
             .onEach { modifyState { copy(computations = it) } }
             .launchIn(viewModelScope)
     }
 
-    fun onOpenPayment(computation: ComputationSummary) {
+    fun onOpen(computation: ComputationSummary) {
         event(Event.NavigateToPayment(computation.id, computation.title))
     }
 

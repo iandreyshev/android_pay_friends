@@ -6,36 +6,26 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import ru.iandreyshev.payfriends.App
 import ru.iandreyshev.payfriends.R
 import ru.iandreyshev.payfriends.databinding.FragmentComputationsListBinding
 import ru.iandreyshev.payfriends.domain.core.ComputationId
-import ru.iandreyshev.payfriends.domain.computationsList.GetComputationsListUseCase
-import ru.iandreyshev.payfriends.domain.computationsList.MarkComputationAsCompletedUseCase
 import ru.iandreyshev.payfriends.presentation.computationsList.ComputationsListViewModel
 import ru.iandreyshev.payfriends.presentation.computationsList.Event
 import ru.iandreyshev.payfriends.presentation.computationsList.State
 import ru.iandreyshev.payfriends.ui.utils.dismissOnDestroy
 import ru.iandreyshev.payfriends.ui.utils.uiLazy
 import ru.iandreyshev.payfriends.ui.utils.viewBindings
-import ru.iandreyshev.payfriends.ui.utils.viewModelFactory
+import ru.iandreyshev.payfriends.ui.utils.viewModelsDiFactory
 
 class ComputationsListFragment : Fragment(R.layout.fragment_computations_list) {
 
     private val mBinding by viewBindings(FragmentComputationsListBinding::bind)
-    private val mViewModel by viewModelFactory {
-        ComputationsListViewModel(
-            isListOfActiveComputations = mArgs,
-            storage = App.storage,
-            completeComputation = MarkComputationAsCompletedUseCase(storage = App.storage),
-            getList = GetComputationsListUseCase(storage = App.storage)
-        )
-    }
-    private val mArgs by uiLazy { arguments?.getBoolean(ARG_IS_ACTIVE, true) ?: true }
+    private val mViewModel by viewModelsDiFactory<ComputationsListViewModel>()
+    private val isCompleted by uiLazy { arguments?.getBoolean(ARG_IS_COMPLETED, true) ?: true }
     private val mAdapter by uiLazy {
         ComputationsAdapter(
-            isActivePayments = mArgs,
-            onClick = mViewModel::onOpenPayment,
+            isCompleted = isCompleted,
+            onClick = mViewModel::onOpen,
             onAddBill = mViewModel::onAddBill,
             onOptionsMenuOpen = ::onOptionsMenuOpen
         )
@@ -45,10 +35,16 @@ class ComputationsListFragment : Fragment(R.layout.fragment_computations_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initList()
         initNewPaymentButton()
+
         mViewModel.state.observe(viewLifecycleOwner, ::render)
         mViewModel.event.observe(viewLifecycleOwner, ::handleEvent)
+
+        if (savedInstanceState == null) {
+            mViewModel.onViewCreated(isCompleted)
+        }
     }
 
     override fun onDestroyView() {
@@ -79,17 +75,17 @@ class ComputationsListFragment : Fragment(R.layout.fragment_computations_list) {
 
         mBinding.loadingIndicator.isVisible = false
         mBinding.emptyViewGroup.isVisible = state.computations.isEmpty()
-        mBinding.emptyViewButton.isVisible = state.computations.isEmpty() && state.isListOfActivePayments
+        mBinding.emptyViewButton.isVisible = state.computations.isEmpty() && state.isCompleted
         mBinding.listView.isVisible = state.computations.isNotEmpty()
-        mBinding.newPaymentButton.isVisible = state.computations.isNotEmpty() && state.isListOfActivePayments
+        mBinding.newPaymentButton.isVisible = state.computations.isNotEmpty() && state.isCompleted
         mAdapter.submitList(state.computations)
 
-        mBinding.toolbarTitle.text = when (state.isListOfActivePayments) {
+        mBinding.toolbarTitle.text = when (state.isCompleted) {
             true -> getString(R.string.menu_item_active_payments_title)
             else -> getString(R.string.menu_item_completed_payments_title)
         }
 
-        mBinding.emptyViewText.text = when (state.isListOfActivePayments) {
+        mBinding.emptyViewText.text = when (state.isCompleted) {
             true -> getString(R.string.computations_list_empty_view_text_active)
             else -> getString(R.string.common_empty_list)
         }
@@ -116,7 +112,7 @@ class ComputationsListFragment : Fragment(R.layout.fragment_computations_list) {
     private fun onOptionsMenuOpen(view: View, id: ComputationId) {
         mPopupMenu = PopupMenu(requireContext(), view).apply {
             inflate(
-                when (mArgs) {
+                when (isCompleted) {
                     true -> R.menu.menu_active_payment_list_options
                     else -> R.menu.menu_completed_payment_list_options
                 }
@@ -134,10 +130,10 @@ class ComputationsListFragment : Fragment(R.layout.fragment_computations_list) {
     }
 
     companion object {
-        private const val ARG_IS_ACTIVE = "is_active"
+        private const val ARG_IS_COMPLETED = "is_completed"
 
         fun args(isListOfActivePayments: Boolean) = Bundle().apply {
-            putBoolean(ARG_IS_ACTIVE, isListOfActivePayments)
+            putBoolean(ARG_IS_COMPLETED, isListOfActivePayments)
         }
     }
 

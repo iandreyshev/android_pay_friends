@@ -1,13 +1,14 @@
 package ru.iandreyshev.payfriends.domain.billEditor
 
 import kotlinx.coroutines.withContext
-import ru.iandreyshev.payfriends.domain.core.*
 import ru.iandreyshev.payfriends.domain.computationsList.Storage
+import ru.iandreyshev.payfriends.domain.core.Result
 import ru.iandreyshev.payfriends.domain.time.DateProvider
 import ru.iandreyshev.payfriends.system.Dispatchers
+import javax.inject.Inject
 
-class SaveBillUseCase(
-    private val computationId: ComputationId,
+class SaveBillUseCase
+@Inject constructor(
     private val storage: Storage,
     private val dateProvider: DateProvider,
     private val dispatchers: Dispatchers

@@ -1,6 +1,9 @@
 package ru.iandreyshev.payfriends.domain.computationEditor
 
-class ValidatePaymentDraftUseCase(
+import javax.inject.Inject
+
+class ValidatePaymentDraftUseCase
+@Inject constructor(
     private val isMemberValid: ValidateMemberUseCase
 ) {
 

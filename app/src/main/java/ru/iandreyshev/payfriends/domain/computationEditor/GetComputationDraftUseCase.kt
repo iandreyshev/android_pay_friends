@@ -1,9 +1,11 @@
 package ru.iandreyshev.payfriends.domain.computationEditor
 
-import ru.iandreyshev.payfriends.domain.core.ComputationId
 import ru.iandreyshev.payfriends.domain.computationsList.Storage
+import ru.iandreyshev.payfriends.domain.core.ComputationId
+import javax.inject.Inject
 
-class GetComputationDraftUseCase(
+class GetComputationDraftUseCase
+@Inject constructor(
     private val storage: Storage
 ) {
 

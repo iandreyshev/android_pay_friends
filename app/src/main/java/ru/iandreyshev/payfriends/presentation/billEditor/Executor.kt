@@ -6,14 +6,14 @@ import kotlinx.coroutines.withContext
 import ru.iandreyshev.payfriends.domain.core.*
 import ru.iandreyshev.payfriends.domain.computationEditor.ValidateMemberUseCase
 import ru.iandreyshev.payfriends.domain.computationsList.Storage
-import ru.iandreyshev.payfriends.domain.billEditor.FilterMembers
+import ru.iandreyshev.payfriends.domain.billEditor.FilterMembersUseCase
 import ru.iandreyshev.payfriends.domain.billEditor.SaveBillUseCase
 import ru.iandreyshev.payfriends.system.Dispatchers
 
 class Executor(
     private val dispatchers: Dispatchers,
     private val storage: Storage,
-    private val filterMembers: FilterMembers,
+    private val filterMembers: FilterMembersUseCase,
     private val validateMember: ValidateMemberUseCase,
     private val saveBill: SaveBillUseCase
 ) : CoroutineExecutor<Intent, Action, State, Message, Label>() {
@@ -108,7 +108,7 @@ class Executor(
         val message = when (getState().backerField.backer) {
             null -> {
                 var candidate = query.trim()
-                val filters = FilterMembers.Filters(candidate)
+                val filters = FilterMembersUseCase.Filters(candidate)
                 val members = filterMembers(getState().members, filters)
                 candidate = if (members.isEmpty()) candidate else ""
                 Message.UpdateProducerSuggestions(query, candidate, members)
@@ -149,7 +149,7 @@ class Executor(
     }
 
     private fun getProducerSuggestions(candidate: String, producer: Member?, members: List<Member>): List<Member> {
-        val filters = FilterMembers.Filters(candidate.trim())
+        val filters = FilterMembersUseCase.Filters(candidate.trim())
         val newMembers = when (producer) {
             null -> members
             else -> members - producer

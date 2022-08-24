@@ -1,8 +1,10 @@
 package ru.iandreyshev.payfriends.domain.computationsList
 
 import ru.iandreyshev.payfriends.domain.core.ComputationId
+import javax.inject.Inject
 
-class MarkComputationAsCompletedUseCase(
+class MarkComputationAsCompletedUseCase
+@Inject constructor(
     private val storage: Storage
 ) {
 

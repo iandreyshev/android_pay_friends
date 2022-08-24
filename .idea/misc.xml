@@ -18,6 +18,8 @@
         <entry key="app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21181945800781252" />
         <entry key="app/src/main/res/layout/fragment_bill_editor.xml" value="0.2078125" />
+        <entry key="app/src/main/res/layout/fragment_computation.xml" value="0.11302083333333333" />
+        <entry key="app/src/main/res/layout/fragment_computations_list.xml" value="0.19166666666666668" />
         <entry key="app/src/main/res/layout/fragment_menu.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_onboarding.xml" value="0.13055555555555556" />
         <entry key="app/src/main/res/layout/fragment_payment.xml" value="0.165" />

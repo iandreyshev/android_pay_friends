@@ -1,7 +1,7 @@
 package ru.iandreyshev.payfriends
 
 import kotlinx.coroutines.runBlocking
-import ru.iandreyshev.payfriends.data.computation.randomBillId
+import ru.iandreyshev.payfriends.data.memory.randomBillId
 import ru.iandreyshev.payfriends.domain.calc.CalcResultUseCase
 import ru.iandreyshev.payfriends.domain.core.Bill
 import ru.iandreyshev.payfriends.domain.core.Member

@@ -1,4 +1,4 @@
-package ru.iandreyshev.payfriends.data.computation
+package ru.iandreyshev.payfriends.data.memory
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

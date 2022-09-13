@@ -18,20 +18,12 @@ import javax.inject.Singleton
 @Singleton
 class RealmStorage
 @Inject constructor(
+    private val config: RealmConfiguration,
     private val dispatchers: Dispatchers
 ) : Storage {
 
     private val realm: Realm by lazy {
-        Realm.open(
-            configuration = RealmConfiguration.Builder(
-                schema = setOf(
-                    ComputationEntity::class,
-                    BillEntity::class,
-                    PaymentEntity::class,
-                    MemberEntity::class
-                )
-            ).build()
-        )
+        Realm.open(configuration = config)
     }
 
     override suspend fun save(computation: Computation): Computation =

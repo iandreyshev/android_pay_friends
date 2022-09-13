@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.iandreyshev.payfriends.R
-import ru.iandreyshev.payfriends.databinding.ItemPaymentResultBinding
+import ru.iandreyshev.payfriends.databinding.ItemComputationResultBinding
 import ru.iandreyshev.payfriends.domain.core.Transfer
 
 class ComputationResultAdapter(
     private val isResult: Boolean
 ) : ListAdapter<Transfer, ComputationResultAdapter.ViewHolder>(ItemCallback) {
 
-    class ViewHolder(val binding: ItemPaymentResultBinding) : RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: ItemComputationResultBinding) : RecyclerView.ViewHolder(binding.root)
 
     object ItemCallback : DiffUtil.ItemCallback<Transfer>() {
         override fun areItemsTheSame(oldItem: Transfer, newItem: Transfer) = true
@@ -24,8 +24,8 @@ class ComputationResultAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_payment_result, parent, false)
-            .let { ItemPaymentResultBinding.bind(it) }
+            .inflate(R.layout.item_computation_result, parent, false)
+            .let { ItemComputationResultBinding.bind(it) }
             .let { ViewHolder(it) }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -36,7 +36,7 @@ class ComputationResultAdapter(
         }
     }
 
-    private fun bindResult(transfer: Transfer, binding: ItemPaymentResultBinding) {
+    private fun bindResult(transfer: Transfer, binding: ItemComputationResultBinding) {
         val res = binding.root.resources
         binding.firstMemberTitle.text = res.getString(R.string.computation_receiver_title)
         binding.firstMember.text = transfer.participants.receiver.name
@@ -49,7 +49,7 @@ class ComputationResultAdapter(
         binding.description.isVisible = false
     }
 
-    private fun bindTransfer(transfer: Transfer, binding: ItemPaymentResultBinding) {
+    private fun bindTransfer(transfer: Transfer, binding: ItemComputationResultBinding) {
         val res = binding.root.resources
         binding.firstMemberTitle.text = res.getString(R.string.computation_producer_title)
         binding.firstMember.text = transfer.participants.backer.name

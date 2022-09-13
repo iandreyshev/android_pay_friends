@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.iandreyshev.payfriends.R
-import ru.iandreyshev.payfriends.databinding.ItemPaymentEditorMemberBinding
+import ru.iandreyshev.payfriends.databinding.ItemComputationEditorMemberBinding
 import ru.iandreyshev.payfriends.domain.core.Member
 import ru.iandreyshev.payfriends.ui.utils.uiLazy
 
@@ -17,7 +17,7 @@ class MembersAdapter(
 ) : ListAdapter<Member, MembersAdapter.ViewHolder>(ItemCallback) {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val binding by uiLazy { ItemPaymentEditorMemberBinding.bind(itemView) }
+        val binding by uiLazy { ItemComputationEditorMemberBinding.bind(itemView) }
     }
 
     object ItemCallback : DiffUtil.ItemCallback<Member>() {
@@ -28,7 +28,7 @@ class MembersAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_payment_editor_member, parent, false)
+            .inflate(R.layout.item_computation_editor_member, parent, false)
             .let { ViewHolder(it) }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

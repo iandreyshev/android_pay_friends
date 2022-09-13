@@ -120,6 +120,7 @@ class ComputationsListFragment : Fragment(R.layout.fragment_computations_list) {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.paymentOptionComplete -> mViewModel.onCompletePayment(id, isCompleted = true)
+                    R.id.paymentOptionMakeNotCompleted -> mViewModel.onCompletePayment(id, isCompleted = false)
                     R.id.paymentOptionEdit -> mViewModel.onEditComputation(id)
                     R.id.paymentOptionDelete -> mViewModel.onDeletePayment(id)
                 }

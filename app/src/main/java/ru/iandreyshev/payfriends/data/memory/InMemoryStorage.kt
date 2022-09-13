@@ -28,7 +28,7 @@ class InMemoryStorage
             newId = randomComputationId()
         } while (newId in ids)
 
-        val newPayment = computation.copy(
+        val newComputation = computation.copy(
             id = newId,
             bills = computation.bills
                 .map { bill ->
@@ -39,9 +39,9 @@ class InMemoryStorage
                         })
                 }
         )
-        mCache.emit(mCache.value + newPayment)
+        mCache.emit(mCache.value + newComputation)
 
-        return newPayment
+        return newComputation
     }
 
     override suspend fun get(id: ComputationId): Computation? =

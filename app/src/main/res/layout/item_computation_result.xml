@@ -26,7 +26,7 @@
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_3"
         app:layout_constraintBottom_toBottomOf="@id/firstMemberTitle"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/secondMember"
         app:layout_constraintStart_toEndOf="@id/firstMemberTitle"
         app:layout_constraintTop_toTopOf="@id/firstMemberTitle"
         tools:text="Ivan" />
@@ -48,37 +48,24 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/step_8"
+        android:layout_marginEnd="@dimen/step_8"
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_3"
         app:layout_constraintBottom_toBottomOf="@id/secondMemberTitle"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/cost"
         app:layout_constraintStart_toEndOf="@id/secondMemberTitle"
         app:layout_constraintTop_toTopOf="@id/secondMemberTitle"
         tools:text="Илья" />
 
     <TextView
-        android:id="@+id/costTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/step_4"
-        android:text="@string/computation_cost"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_size_3"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/secondMemberTitle" />
-
-    <TextView
         android:id="@+id/cost"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/step_8"
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_3"
-        app:layout_constraintBottom_toBottomOf="@id/costTitle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/costTitle"
-        app:layout_constraintTop_toTopOf="@id/costTitle"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteY="60dp"
         tools:text="1000" />
 
     <TextView
@@ -88,7 +75,7 @@
         android:layout_marginTop="@dimen/step_4"
         android:textColor="@color/gray_dark"
         android:textSize="@dimen/text_size_3"
-        app:layout_constraintTop_toBottomOf="@id/cost"
+        app:layout_constraintTop_toBottomOf="@+id/secondMemberTitle"
         app:layout_goneMarginBaseline="0dp"
         tools:text="Description" />
 

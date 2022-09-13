@@ -31,6 +31,7 @@
         <entry key="app/src/main/res/layout/item_add_transaction_button.xml" value="0.125" />
         <entry key="app/src/main/res/layout/item_bill_editor_backer.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/item_computation.xml" value="0.15520833333333334" />
+        <entry key="app/src/main/res/layout/item_computation_result.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_payment.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_payment_editor_member.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_payment_result.xml" value="0.335" />

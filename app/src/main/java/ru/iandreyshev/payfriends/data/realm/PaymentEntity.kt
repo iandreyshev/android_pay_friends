@@ -10,5 +10,5 @@ open class PaymentEntity : RealmObject {
     var receiver: MemberEntity? = null
     var cost: Int = 0
     var description: String = ""
-    var creationDate: Date = Date()
+    var creationDate: String = ""
 }

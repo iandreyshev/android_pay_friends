@@ -10,7 +10,7 @@ open class ComputationEntity : RealmObject {
     @PrimaryKey
     var id: String = ""
     var title: String = ""
-    var creationDate: Date = Date()
+    var creationDate: String = ""
     var isCompleted: Boolean = false
     var members = realmListOf<MemberEntity>()
     var bills = realmListOf<BillEntity>()

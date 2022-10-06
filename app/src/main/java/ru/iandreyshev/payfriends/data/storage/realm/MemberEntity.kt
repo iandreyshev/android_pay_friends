@@ -1,4 +1,4 @@
-package ru.iandreyshev.payfriends.data.realm
+package ru.iandreyshev.payfriends.data.storage.realm
 
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey

@@ -1,10 +1,8 @@
-package ru.iandreyshev.payfriends.data.realm
+package ru.iandreyshev.payfriends.data.storage.realm
 
 import io.realm.kotlin.ext.realmListOf
-import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
-import java.util.*
 
 open class ComputationEntity : RealmObject {
     @PrimaryKey

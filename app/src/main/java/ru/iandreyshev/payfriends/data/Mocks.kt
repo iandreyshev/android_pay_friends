@@ -1,4 +1,4 @@
-package ru.iandreyshev.payfriends.data.memory
+package ru.iandreyshev.payfriends.data.storage.memory
 
 import io.bloco.faker.Faker
 import ru.iandreyshev.payfriends.domain.core.*

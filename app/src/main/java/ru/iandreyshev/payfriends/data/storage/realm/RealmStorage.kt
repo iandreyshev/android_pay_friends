@@ -1,4 +1,4 @@
-package ru.iandreyshev.payfriends.data.realm
+package ru.iandreyshev.payfriends.data.storage.realm
 
 import io.realm.kotlin.MutableRealm
 import io.realm.kotlin.Realm
@@ -12,6 +12,7 @@ import ru.iandreyshev.payfriends.domain.computationsList.Storage
 import ru.iandreyshev.payfriends.domain.core.*
 import ru.iandreyshev.payfriends.domain.time.Date
 import ru.iandreyshev.payfriends.system.Dispatchers
+import java.lang.IllegalStateException
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -29,49 +30,45 @@ class RealmStorage
 
     override suspend fun save(computation: Computation): Computation =
         withContext(dispatchers.io) {
-            realm.write {
-                val existedEntity = realm.query<ComputationEntity>(query = "id == $0", computation.id.value)
-                    .find()
-                    .firstOrNull()
+
+            return@withContext realm.write {
+                val existedEntity: ComputationEntity? =
+                    findLatest((getImpl(computation.id) ?: throw IllegalStateException("Entity not found")))
 
                 if (existedEntity != null) {
-                    removeImpl(computation.id)
-                    return@write findLatest(existedEntity)
-                        ?.also {
-                            it.title = computation.title
-                            it.creationDate = computation.creationDate.asStorageModel()
-                            it.isCompleted = computation.isCompleted
-                            it.members = computation.members
-                                .map { member ->
-                                    member.asStorageModel()
-                                        .apply { id = newId() }
-                                }
-                                .toRealmList()
-                        }
-                        ?: throw IllegalStateException("Entity not found")
-                }
-
-                copyToRealm(ComputationEntity().also { newEntity ->
-                    newEntity.id = newId()
-                    newEntity.title = computation.title
-                    newEntity.creationDate = computation.creationDate.asStorageModel()
-                    newEntity.isCompleted = computation.isCompleted
-                    newEntity.members = computation.members
+                    existedEntity.title = computation.title
+                    existedEntity.creationDate = computation.creationDate.asStorageModel()
+                    existedEntity.isCompleted = computation.isCompleted
+                    existedEntity.members = computation.members
                         .map { member ->
                             member.asStorageModel()
                                 .apply { id = newId() }
                         }
                         .toRealmList()
-                })
+
+                    removeImpl(computation.id)
+                    copyToRealm(existedEntity)
+                }
+
+                val newEntity = ComputationEntity()
+                newEntity.id = newId()
+                newEntity.title = computation.title
+                newEntity.creationDate = computation.creationDate.asStorageModel()
+                newEntity.isCompleted = computation.isCompleted
+                newEntity.members = computation.members
+                    .map { member ->
+                        member.asStorageModel()
+                            .apply { id = newId() }
+                    }
+                    .toRealmList()
+
+                copyToRealm(newEntity)
             }.asDomainModel()
         }
 
     override suspend fun get(id: ComputationId): Computation? =
         withContext(dispatchers.io) {
-            realm.query<ComputationEntity>(query = "id = $0", id.value)
-                .find()
-                .firstOrNull()
-                ?.asDomainModel()
+            getImpl(id)?.asDomainModel()
         }
 
     override suspend fun remove(id: ComputationId) {
@@ -85,20 +82,22 @@ class RealmStorage
             .asFlow()
             .map { change -> change.list.map { it.asDomainModel() } }
 
+    private fun getImpl(id: ComputationId): ComputationEntity? =
+        realm.query<ComputationEntity>("id == $0", id.value)
+            .find()
+            .firstOrNull()
+
     private fun MutableRealm.removeImpl(id: ComputationId) {
-        val entity = realm.query<ComputationEntity>(query = "id = $0", id.value)
+        val entity = query<ComputationEntity>("id == $0", id.value)
             .find()
             .first()
 
-        entity.bills.forEach {
-            findLatest(it)?.let { latest -> delete(latest) }
+        entity.bills.forEach { bill ->
+            delete(bill.payments)
         }
-
-        entity.members.forEach {
-            findLatest(it)?.let { latest -> delete(latest) }
-        }
-
-        findLatest(entity)?.let { latest -> delete(latest) }
+        delete(entity.bills)
+        delete(entity.members)
+        delete(entity)
     }
 
     private fun ComputationEntity.asDomainModel() =

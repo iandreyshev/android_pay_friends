@@ -125,7 +125,6 @@ class RealmStorage
         receiver = receiver?.asDomainModel() ?: Member(""),
         cost = cost,
         description = description,
-        creationDate = creationDate.asDomainModel()
     )
 
     private fun Member.asStorageModel() = MemberEntity(name = name)

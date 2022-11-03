@@ -7,6 +7,5 @@ data class PaymentJson(
     var id: String,
     var receiver: MemberJson,
     var cost: Int,
-    var description: String,
-    var creationDate: String
+    var description: String
 )

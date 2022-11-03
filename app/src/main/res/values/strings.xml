@@ -32,6 +32,7 @@
     <string name="bill_editor_cost">Итог\n %1$d ₽</string>
     <string name="bill_editor_error_empty_name">Название должно содержать символы</string>
     <string name="bill_editor_error_invalid_cost">В чеке указана некорректная сумма</string>
+    <string name="bill_editor_bill_title">Чек от %1$s</string>
 
     <string name="computation_tab_result_title">Итог</string>
     <string name="computation_tab_history_title">История</string>

@@ -2,7 +2,6 @@ package ru.iandreyshev.payfriends.ui.computation
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -38,9 +37,6 @@ class ComputationResultAdapter : ListAdapter<Transfer, ComputationResultAdapter.
         binding.secondMember.text = transfer.participants.backer.name
 
         binding.cost.text = transfer.cost.toString()
-
-        binding.description.isVisible = false
-        binding.date.isVisible = false
     }
 
 }

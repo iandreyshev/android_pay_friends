@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import ru.iandreyshev.payfriends.R
 import ru.iandreyshev.payfriends.databinding.FragmentRecyclerViewBinding
+import ru.iandreyshev.payfriends.domain.core.HistoryBill
 import ru.iandreyshev.payfriends.presentation.computation.ComputationViewModel
 import ru.iandreyshev.payfriends.presentation.computation.State
 import ru.iandreyshev.payfriends.ui.utils.uiLazy
@@ -33,18 +34,31 @@ class ComputationResultFragment : Fragment(R.layout.fragment_recycler_view) {
     }
 
     private fun initRecyclerView() {
-        mBinding.recyclerView.adapter = when {
-            mIsResult -> mResultAdapter
-            else -> mHistoryAdapter
+        when {
+            mIsResult -> {
+                mBinding.recyclerView.adapter = mResultAdapter
+                val decoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+                decoration.setDrawable(ColorDrawable(ContextCompat.getColor(requireContext(), R.color.gray_dark)))
+                mBinding.recyclerView.addItemDecoration(decoration)
+            }
+            else -> {
+                mBinding.recyclerView.adapter = mHistoryAdapter
+            }
         }
-        val decoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
-        decoration.setDrawable(ColorDrawable(ContextCompat.getColor(requireContext(), R.color.gray_dark)))
-        mBinding.recyclerView.addItemDecoration(decoration)
     }
 
     private fun render(state: State) {
         mResultAdapter.submitList(state.result)
-        mHistoryAdapter.submitList(state.history)
+        mHistoryAdapter.submitList(state.history.flatMap { bill ->
+            bill.transfers.mapIndexed { i, transfer ->
+                ComputationHistoryAdapter.Item(
+                    transfer = transfer,
+                    isFirstInBill = i == 0,
+                    isLastInBill = i == bill.transfers.lastIndex,
+                    billDate = bill.date
+                )
+            }
+        })
     }
 
     companion object {

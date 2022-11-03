@@ -128,8 +128,7 @@ class JsonStorage
             id = it.id.value,
             receiver = it.receiver.asStorageBillsList(),
             cost = it.cost,
-            description = it.description,
-            creationDate = it.creationDate.asStorageDate()
+            description = it.description
         )
     }
 
@@ -165,8 +164,7 @@ class JsonStorage
             id = PaymentId(it.id),
             receiver = it.receiver.asDomainModel(),
             cost = it.cost,
-            description = it.description,
-            creationDate = it.creationDate.asDomainDate()
+            description = it.description
         )
     }
 

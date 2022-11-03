@@ -3,6 +3,7 @@ package ru.iandreyshev.payfriends.presentation.computation
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.iandreyshev.payfriends.domain.calc.CalcResultUseCase
+import ru.iandreyshev.payfriends.domain.computation.GetComputationHistoryUseCase
 import ru.iandreyshev.payfriends.domain.computation.GetComputationUseCase
 import ru.iandreyshev.payfriends.domain.core.ComputationId
 import ru.iandreyshev.payfriends.domain.core.ErrorType
@@ -12,7 +13,8 @@ import javax.inject.Inject
 class ComputationViewModel
 @Inject constructor(
     private val calcResult: CalcResultUseCase,
-    private val getComputation: GetComputationUseCase
+    private val getComputation: GetComputationUseCase,
+    private val getComputationHistory: GetComputationHistoryUseCase
 ) : SingleStateViewModel<State, Event>(State.default()) {
 
     fun onViewCreated(id: ComputationId, name: String) {
@@ -23,7 +25,7 @@ class ComputationViewModel
                 event { Event.Exit(ErrorType.Unknown) }
                 return@launch
             }
-            val history = computation.getHistory()
+            val history = getComputationHistory(computation)
             val result = calcResult(computation.bills)
 
             modifyState {

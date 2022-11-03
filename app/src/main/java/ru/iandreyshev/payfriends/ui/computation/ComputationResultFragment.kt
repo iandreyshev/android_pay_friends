@@ -49,12 +49,15 @@ class ComputationResultFragment : Fragment(R.layout.fragment_recycler_view) {
 
     private fun render(state: State) {
         mResultAdapter.submitList(state.result)
-        mHistoryAdapter.submitList(state.history.flatMap { bill ->
-            bill.transfers.mapIndexed { i, transfer ->
+        mHistoryAdapter.submitList(state.history.flatMapIndexed { billIndex, bill ->
+            bill.transfers.mapIndexed { transferIndex, transfer ->
+                val isLastInBill = transferIndex == bill.transfers.lastIndex
+                val isLastInLastBill = isLastInBill && billIndex == state.history.lastIndex
                 ComputationHistoryAdapter.Item(
                     transfer = transfer,
-                    isFirstInBill = i == 0,
-                    isLastInBill = i == bill.transfers.lastIndex,
+                    isFirstInBill = transferIndex == 0,
+                    isLastInBill = isLastInBill,
+                    isLastInLastBill = isLastInLastBill,
                     billDate = bill.date
                 )
             }

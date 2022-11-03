@@ -9,24 +9,4 @@ data class Computation(
     val members: List<Member>,
     val creationDate: Date,
     val isCompleted: Boolean,
-) {
-
-    fun getHistory() = bills.map { bill ->
-        HistoryBill(
-            transfers = bill.payments.map { payment ->
-                HistoryTransfer(
-                    transfer = Transfer(
-                        participants = Participants(
-                            bill.backer,
-                            payment.receiver
-                        ),
-                        cost = payment.cost
-                    ),
-                    description = payment.description,
-                )
-            },
-            date = bill.creationDate
-        )
-    }
-
-}
+)

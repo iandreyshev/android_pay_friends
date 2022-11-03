@@ -3,6 +3,7 @@ package ru.iandreyshev.payfriends.ui.computation
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ class ComputationHistoryAdapter :
         val transfer: HistoryTransfer,
         val isFirstInBill: Boolean,
         val isLastInBill: Boolean,
+        val isLastInLastBill: Boolean,
         val billDate: Date
     )
 
@@ -55,6 +57,15 @@ class ComputationHistoryAdapter :
         binding.billTitle.text = res.getString(R.string.bill_editor_bill_title, DateFormatter.format1(item.billDate))
 
         binding.bottomSeparator.isVisible = !item.isLastInBill
+
+        binding.root.updatePadding(bottom = when {
+            item.isLastInLastBill -> LAST_ITEM_BOTTOM_PADDING
+            else -> 0
+        })
+    }
+
+    companion object {
+        private const val LAST_ITEM_BOTTOM_PADDING = 300
     }
 
 }

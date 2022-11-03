@@ -1,5 +1,6 @@
 package ru.iandreyshev.payfriends.domain.core
 
+import org.threeten.bp.ZonedDateTime
 import ru.iandreyshev.payfriends.domain.time.Date
 
 data class Payment(
@@ -19,7 +20,7 @@ data class Payment(
             receiver = receiver,
             cost = 0,
             description = "",
-            creationDate = Date("")
+            creationDate = Date(ZonedDateTime.now())
         )
     }
 

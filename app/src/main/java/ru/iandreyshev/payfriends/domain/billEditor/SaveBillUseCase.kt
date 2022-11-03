@@ -19,6 +19,10 @@ class SaveBillUseCase
 
     suspend operator fun invoke(draft: BillDraft): Result<Unit> =
         withContext(dispatchers.io) {
+            if (draft.payments.any { it.cost <= 0 }) {
+                return@withContext Result.Error(ErrorType.InvalidCost)
+            }
+
             val computation = storage.get(draft.computationId)
                 ?: return@withContext Result.Error(ErrorType.Unknown)
             val existedBills = computation.bills.associateBy { it.id }

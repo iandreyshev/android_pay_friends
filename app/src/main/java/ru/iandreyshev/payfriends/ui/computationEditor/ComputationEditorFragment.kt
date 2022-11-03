@@ -112,6 +112,7 @@ class ComputationEditorFragment : Fragment(R.layout.fragment_computation_editor)
                     null -> Unit
                     else -> toast(R.string.computation_editor_error_empty_name)
                 }
+                ErrorType.InvalidCost,
                 ErrorType.Unknown -> toast(R.string.common_unknown_error)
             }
             is Event.BackWithError -> {

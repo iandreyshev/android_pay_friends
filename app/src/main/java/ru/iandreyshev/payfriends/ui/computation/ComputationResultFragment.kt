@@ -1,9 +1,12 @@
 package ru.iandreyshev.payfriends.ui.computation
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import ru.iandreyshev.payfriends.R
 import ru.iandreyshev.payfriends.databinding.FragmentRecyclerViewBinding
 import ru.iandreyshev.payfriends.presentation.computation.ComputationViewModel
@@ -18,7 +21,8 @@ class ComputationResultFragment : Fragment(R.layout.fragment_recycler_view) {
     )
     private val mBinding by viewBindings(FragmentRecyclerViewBinding::bind)
     private val mIsResult by uiLazy { arguments?.getBoolean(ARG_KEY, false) ?: false }
-    private val mAdapter by uiLazy { ComputationResultAdapter(mIsResult) }
+    private val mResultAdapter by uiLazy { ComputationResultAdapter() }
+    private val mHistoryAdapter by uiLazy { ComputationHistoryAdapter() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -29,16 +33,18 @@ class ComputationResultFragment : Fragment(R.layout.fragment_recycler_view) {
     }
 
     private fun initRecyclerView() {
-        mBinding.recyclerView.adapter = mAdapter
+        mBinding.recyclerView.adapter = when {
+            mIsResult -> mResultAdapter
+            else -> mHistoryAdapter
+        }
+        val decoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+        decoration.setDrawable(ColorDrawable(ContextCompat.getColor(requireContext(), R.color.gray_dark)))
+        mBinding.recyclerView.addItemDecoration(decoration)
     }
 
     private fun render(state: State) {
-        mAdapter.submitList(
-            when {
-                mIsResult -> state.result
-                else -> state.history
-            }
-        )
+        mResultAdapter.submitList(state.result)
+        mHistoryAdapter.submitList(state.history)
     }
 
     companion object {

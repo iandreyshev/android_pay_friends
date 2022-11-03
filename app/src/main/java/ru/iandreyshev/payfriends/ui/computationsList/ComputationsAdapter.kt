@@ -11,6 +11,7 @@ import ru.iandreyshev.payfriends.R
 import ru.iandreyshev.payfriends.databinding.ItemComputationBinding
 import ru.iandreyshev.payfriends.domain.core.ComputationId
 import ru.iandreyshev.payfriends.domain.computationsList.ComputationSummary
+import ru.iandreyshev.payfriends.ui.utils.DateFormatter
 
 class ComputationsAdapter(
     private val isCompleted: Boolean,
@@ -38,6 +39,7 @@ class ComputationsAdapter(
         holder.binding.contentLayout.setOnClickListener {
             onClick(item)
         }
+        holder.binding.date.text = DateFormatter.format2(item.date)
         holder.binding.addBillButton.isVisible = isCompleted
         holder.binding.addBillButton.setOnClickListener {
             onAddBill(item.id)

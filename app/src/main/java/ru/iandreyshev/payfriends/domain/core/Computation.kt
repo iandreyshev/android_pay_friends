@@ -11,14 +11,18 @@ data class Computation(
     val isCompleted: Boolean,
 ) {
 
-    fun getAllTransfers() = bills.flatMap { bill ->
+    fun getHistory() = bills.flatMap { bill ->
         bill.payments.map { payment ->
-            Transfer(
-                participants = Participants(
-                    bill.backer,
-                    payment.receiver
+            HistoryTransfer(
+                transfer = Transfer(
+                    participants = Participants(
+                        bill.backer,
+                        payment.receiver
+                    ),
+                    cost = payment.cost
                 ),
-                cost = payment.cost
+                description = payment.description,
+                date = payment.creationDate
             )
         }
     }

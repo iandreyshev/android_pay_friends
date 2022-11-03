@@ -89,9 +89,13 @@ class Executor(
     private fun onSave(getState: () -> State) {
         dispatch(Message.ChangeSavingState(true))
         scope.launch {
-            when (saveBill(getState().composeBillDraft())) {
+            when (val result = saveBill(getState().composeBillDraft())) {
                 is Result.Success -> publish(Label.Exit("Saving success"))
-                is Result.Error -> publish(Label.Error.Unknown)
+                is Result.Error -> publish(when (result.error) {
+                    ErrorType.InvalidCost -> Label.Error.InvalidCost
+                    is ErrorType.InvalidPaymentDraft,
+                    ErrorType.Unknown -> Label.Error.Unknown
+                })
             }
             dispatch(Message.ChangeSavingState(false))
         }
@@ -180,6 +184,15 @@ class Executor(
             else -> costStr.toInt()
         }
         val payment = payments[position].copy(cost = cost)
+        payments.removeAt(position)
+        payments.add(position, payment)
+        val totalCost = payments.sumOf { it.cost }
+        dispatch(Message.UpdatePayments(payments, totalCost))
+    }
+
+    private fun onDescriptionChanged(position: Int, description: String, getState: () -> State) {
+        val payments = getState().payments.toMutableList()
+        val payment = payments[position].copy(description = description)
         payments.removeAt(position)
         payments.add(position, payment)
         val totalCost = payments.sumOf { it.cost }

@@ -20,7 +20,8 @@ class GetComputationsListUseCase
                     .map { computation ->
                         ComputationSummary(
                             id = computation.id,
-                            title = computation.title
+                            title = computation.title,
+                            date = computation.creationDate
                         )
                     }
             }

@@ -1,6 +1,8 @@
 package ru.iandreyshev.payfriends.presentation.computation
 
+import org.threeten.bp.ZonedDateTime
 import ru.iandreyshev.payfriends.domain.core.ComputationId
+import ru.iandreyshev.payfriends.domain.core.HistoryTransfer
 import ru.iandreyshev.payfriends.domain.core.Transfer
 import ru.iandreyshev.payfriends.domain.time.Date
 
@@ -9,7 +11,7 @@ data class State(
     val name: String,
     val creationDate: Date,
     val result: List<Transfer>,
-    val history: List<Transfer>,
+    val history: List<HistoryTransfer>,
     val isLoading: Boolean
 ) {
 
@@ -17,7 +19,7 @@ data class State(
         fun default() = State(
             id = ComputationId(""),
             name = "",
-            creationDate = Date(""),
+            creationDate = Date(ZonedDateTime.now()),
             result = emptyList(),
             history = emptyList(),
             isLoading = true

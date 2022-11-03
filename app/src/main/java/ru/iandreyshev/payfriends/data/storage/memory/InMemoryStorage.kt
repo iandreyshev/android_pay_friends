@@ -2,6 +2,9 @@ package ru.iandreyshev.payfriends.data.storage.memory
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import ru.iandreyshev.payfriends.data.randomBillId
+import ru.iandreyshev.payfriends.data.randomComputationId
+import ru.iandreyshev.payfriends.data.randomPaymentId
 import ru.iandreyshev.payfriends.domain.computationsList.Storage
 import ru.iandreyshev.payfriends.domain.core.Computation
 import ru.iandreyshev.payfriends.domain.core.ComputationId
@@ -12,7 +15,7 @@ import javax.inject.Singleton
 class InMemoryStorage
 @Inject constructor() : Storage {
 
-    private val mCache: MutableStateFlow<List<Computation>> = MutableStateFlow(createMock1())
+    private val mCache: MutableStateFlow<List<Computation>> = MutableStateFlow(emptyList())
 
     override suspend fun save(computation: Computation): Computation {
         val ids = mCache.value

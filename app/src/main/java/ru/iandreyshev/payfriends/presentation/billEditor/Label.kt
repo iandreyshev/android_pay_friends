@@ -5,6 +5,7 @@ sealed interface Label {
     class Exit(val message: String? = null) : Label
     sealed interface Error : Label {
         object InvalidProducerCandidate : Error
+        object InvalidCost : Error
         object Unknown : Error
     }
 }

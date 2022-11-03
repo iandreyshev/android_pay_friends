@@ -13,6 +13,9 @@ sealed interface ErrorType {
         val errors: List<PaymentDraftError>
     ) : ErrorType
 
+    // Bill editor
+    object InvalidCost : ErrorType
+
     // Common
     object Unknown : ErrorType
 }

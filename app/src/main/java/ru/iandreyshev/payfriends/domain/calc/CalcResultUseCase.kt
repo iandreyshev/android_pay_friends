@@ -17,7 +17,10 @@ class CalcResultUseCase
         withContext(dispatchers.io) {
             val transfers = bills.flatMap { bill ->
                 bill.payments.map { payment ->
-                    Transfer(Participants(bill.backer, payment.receiver), payment.cost)
+                    Transfer(
+                        participants = Participants(bill.backer, payment.receiver),
+                        cost = payment.cost
+                    )
                 }
             }
             val totalCostOfParticipants: Map<Participants, Int> =

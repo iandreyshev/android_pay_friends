@@ -8,6 +8,7 @@ import io.realm.kotlin.ext.toRealmList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import org.threeten.bp.ZonedDateTime
 import ru.iandreyshev.payfriends.domain.computationsList.Storage
 import ru.iandreyshev.payfriends.domain.core.*
 import ru.iandreyshev.payfriends.domain.time.Date
@@ -37,7 +38,7 @@ class RealmStorage
 
                 if (existedEntity != null) {
                     existedEntity.title = computation.title
-                    existedEntity.creationDate = computation.creationDate.asStorageModel()
+                    //existedEntity.creationDate = computation.creationDate.asStorageModel()
                     existedEntity.isCompleted = computation.isCompleted
                     existedEntity.members = computation.members
                         .map { member ->
@@ -53,7 +54,7 @@ class RealmStorage
                 val newEntity = ComputationEntity()
                 newEntity.id = newId()
                 newEntity.title = computation.title
-                newEntity.creationDate = computation.creationDate.asStorageModel()
+                //newEntity.creationDate = computation.creationDate.asStorageModel()
                 newEntity.isCompleted = computation.isCompleted
                 newEntity.members = computation.members
                     .map { member ->
@@ -133,7 +134,7 @@ class RealmStorage
 
     private fun Date.asStorageModel() = value
 
-    private fun String.asDomainModel() = Date("")
+    private fun String.asDomainModel() = Date(ZonedDateTime.now())
 
     private fun newId() = UUID.randomUUID().toString()
 

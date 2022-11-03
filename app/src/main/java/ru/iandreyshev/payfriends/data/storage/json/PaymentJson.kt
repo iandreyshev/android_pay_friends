@@ -4,9 +4,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PaymentJson(
-    val id: String,
-    val receiver: MemberJson,
-    val cost: Int,
-    val description: String,
-    val creationDate: String
+    var id: String,
+    var receiver: MemberJson,
+    var cost: Int,
+    var description: String,
+    var creationDate: String
 )

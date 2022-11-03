@@ -231,6 +231,9 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
                     topMargin = mPaymentMarginVertical
                 }
             }
+            if (paymentItem.cost > 0) {
+                binding.costField.setTextIfChanged(paymentItem.cost.toString())
+            }
             binding.receiver.text = paymentItem.receiver.name
             mCostWatchers += binding.costField.doAfterTextChanged {
                 mViewModel(Intent.OnCostChanged(index, it.toString()))
@@ -247,6 +250,8 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
             Label.ExitWithWarning -> showExitDialog()
             Label.Error.InvalidProducerCandidate ->
                 toast(R.string.bill_editor_error_empty_name)
+            Label.Error.InvalidCost ->
+                toast(R.string.bill_editor_error_invalid_cost)
             Label.Error.Unknown ->
                 toast(R.string.common_unknown_error)
         }

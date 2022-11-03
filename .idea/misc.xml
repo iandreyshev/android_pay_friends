@@ -8,6 +8,7 @@
         <entry key="..\:/Dev/android_stale/app/src/main/res/layout/fragment_stub.xml" value="0.17249240121580547" />
         <entry key="..\:/Dev/android_stale/app/src/main/res/menu/menu_main.xml" value="0.25" />
         <entry key="..\:/Dev/android_stale/app/src/main/res/menu/menu_payment_options.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/background_computation_result_divider.xml" value="0.1305" />
         <entry key="app/src/main/res/drawable/background_main_menu.xml" value="0.2135" />
         <entry key="app/src/main/res/drawable/background_payment_editor_member.xml" value="0.1335" />
         <entry key="app/src/main/res/drawable/background_payment_item.xml" value="0.2135" />
@@ -30,6 +31,7 @@
         <entry key="app/src/main/res/layout/fragment_transaction_editor.xml" value="0.19545011167173032" />
         <entry key="app/src/main/res/layout/item_add_transaction_button.xml" value="0.125" />
         <entry key="app/src/main/res/layout/item_bill_editor_backer.xml" value="0.15520833333333334" />
+        <entry key="app/src/main/res/layout/item_bill_editor_payment.xml" value="0.16302083333333334" />
         <entry key="app/src/main/res/layout/item_computation.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/item_computation_result.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_payment.xml" value="0.25" />

@@ -23,14 +23,14 @@ class ComputationViewModel
                 event { Event.Exit(ErrorType.Unknown) }
                 return@launch
             }
-            val transfers = computation.getAllTransfers()
+            val history = computation.getHistory()
             val result = calcResult(computation.bills)
 
             modifyState {
                 copy(
                     name = computation.title,
                     creationDate = computation.creationDate,
-                    history = transfers,
+                    history = history,
                     result = result,
                     isLoading = false
                 )

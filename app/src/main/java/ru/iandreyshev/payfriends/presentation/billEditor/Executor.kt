@@ -40,7 +40,7 @@ class Executor(
             is Intent.OnReceiverCandidateSelected -> onReceiverCandidateSelected(intent.query, getState)
             // Transactions
             is Intent.OnCostChanged -> onCostChanged(intent.position, intent.cost, getState)
-            is Intent.OnDescriptionChanged -> TODO()
+            is Intent.OnDescriptionChanged -> onDescriptionChanged(intent.position, intent.description, getState)
             is Intent.OnRemovePayment -> onPaymentRemoved(intent.position, getState)
         }
     }
@@ -195,8 +195,7 @@ class Executor(
         val payment = payments[position].copy(description = description)
         payments.removeAt(position)
         payments.add(position, payment)
-        val totalCost = payments.sumOf { it.cost }
-        dispatch(Message.UpdatePayments(payments, totalCost))
+        dispatch(Message.UpdatePayments(payments, getState().backerField.cost))
     }
 
     private fun onPaymentRemoved(position: Int, getState: () -> State) {

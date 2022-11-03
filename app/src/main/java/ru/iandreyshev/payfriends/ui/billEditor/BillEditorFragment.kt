@@ -41,6 +41,7 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
 
     private var mAlertDialog: AlertDialog? = null
     private val mCostWatchers = mutableSetOf<TextWatcher>()
+    private val mDescriptionWatchers = mutableSetOf<TextWatcher>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -218,6 +219,9 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
             mCostWatchers.forEach { watcher ->
                 binding.costField.removeTextChangedListener(watcher)
             }
+            mDescriptionWatchers.forEach { watcher ->
+                binding.descriptionField.removeTextChangedListener(watcher)
+            }
         }
 
         payments.forEachIndexed { index, paymentItem ->
@@ -237,6 +241,9 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
             binding.receiver.text = paymentItem.receiver.name
             mCostWatchers += binding.costField.doAfterTextChanged {
                 mViewModel(Intent.OnCostChanged(index, it.toString()))
+            }
+            mDescriptionWatchers += binding.descriptionField.doAfterTextChanged {
+                mViewModel(Intent.OnDescriptionChanged(index, it.toString()))
             }
             binding.removeButton.setOnClickListener {
                 mViewModel(Intent.OnRemovePayment(index))

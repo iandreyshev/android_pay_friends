@@ -167,6 +167,7 @@ class Executor(
         val payments = getState().payments.toMutableList()
         payments.add(newPayment)
         dispatch(Message.UpdatePayments(payments, getState().backerField.cost))
+        publish(Label.ScrollToBottom)
     }
 
     private fun onReceiverCandidateSelected(query: String, getState: () -> State) {

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.TextWatcher
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.*
@@ -255,6 +256,10 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
         when (label) {
             is Label.Exit -> mNavController.popBackStack()
             Label.ExitWithWarning -> showExitDialog()
+            Label.ScrollToBottom ->
+                mBinding.root.post {
+                    mBinding.scrollView.fullScroll(ScrollView.FOCUS_DOWN)
+                }
             Label.Error.InvalidProducerCandidate ->
                 toast(R.string.bill_editor_error_empty_name)
             Label.Error.InvalidCost ->

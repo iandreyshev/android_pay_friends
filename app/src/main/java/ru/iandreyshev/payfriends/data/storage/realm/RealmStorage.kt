@@ -78,6 +78,10 @@ class RealmStorage
         }
     }
 
+    override suspend fun remove(id: BillId) {
+        TODO("remove not implemented")
+    }
+
     override fun observable(): Flow<List<Computation>> =
         realm.query<ComputationEntity>()
             .asFlow()

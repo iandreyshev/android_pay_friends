@@ -11,6 +11,7 @@ class GetComputationHistoryUseCase
             .sortedByDescending { it.creationDate.value }
             .map { bill ->
                 HistoryBill(
+                    id = bill.id,
                     transfers = bill.payments.map { payment ->
                         HistoryTransfer(
                             transfer = Transfer(

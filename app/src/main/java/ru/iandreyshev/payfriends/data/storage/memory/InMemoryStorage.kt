@@ -6,6 +6,7 @@ import ru.iandreyshev.payfriends.data.randomBillId
 import ru.iandreyshev.payfriends.data.randomComputationId
 import ru.iandreyshev.payfriends.data.randomPaymentId
 import ru.iandreyshev.payfriends.domain.computationsList.Storage
+import ru.iandreyshev.payfriends.domain.core.BillId
 import ru.iandreyshev.payfriends.domain.core.Computation
 import ru.iandreyshev.payfriends.domain.core.ComputationId
 import javax.inject.Inject
@@ -54,6 +55,10 @@ class InMemoryStorage
         val newList = mCache.value.toMutableList()
         newList.removeIf { it.id == id }
         mCache.emit(newList)
+    }
+
+    override suspend fun remove(id: BillId) {
+        TODO("remove not implemented")
     }
 
     override fun observable(): Flow<List<Computation>> = mCache

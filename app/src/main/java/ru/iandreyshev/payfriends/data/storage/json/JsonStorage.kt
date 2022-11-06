@@ -78,6 +78,14 @@ class JsonStorage
         saveInMemory(computations)
     }
 
+    override suspend fun remove(id: BillId) {
+        val computations = getComputations()
+        computations.forEach { computationJson ->
+            computationJson.bills.removeAll { it.id == id.value }
+        }
+        saveInMemory(computations)
+    }
+
     override fun observable(): Flow<List<Computation>> = sharedFlow
 
     private fun saveInMemory(list: List<ComputationJson>) {

@@ -14,8 +14,8 @@
 
     <string name="computations_option_complete_title">Завершить</string>
     <string name="computations_option_edit_title">Редактировать</string>
-    <string name="computations_option_make_active_title">Вернуть в активные</string>
     <string name="computations_option_delete_title">Удалить</string>
+    <string name="computations_option_make_active_title">Вернуть в активные</string>
     <string name="computations_empty_view_text">В этом расчете ещё нет чеков</string>
     <string name="computations_new_bill_button">Добавить чек</string>
 
@@ -35,9 +35,12 @@
     <string name="bill_editor_bill_title">Чек от %1$s</string>
 
     <string name="computation_tab_result_title">Итог</string>
-    <string name="computation_tab_history_title">История</string>
+    <string name="computation_tab_history_title">Чеки</string>
     <string name="computation_receiver_title">Должник</string>
     <string name="computation_producer_title">Спонсор</string>
     <string name="computation_result_producer_title">Получатель</string>
     <string name="computation_cost">Сумма</string>
+
+    <string name="bill_history_option_edit_title">Редактировать</string>
+    <string name="bill_history_option_delete_title">Удалить</string>
 </resources>

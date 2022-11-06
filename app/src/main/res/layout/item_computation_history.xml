@@ -6,13 +6,25 @@
     android:layout_height="wrap_content"
     android:paddingHorizontal="@dimen/step_16">
 
+    <ImageButton
+        android:id="@+id/optionsButton"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:text="+"
+        app:layout_constraintBottom_toBottomOf="@id/billTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/billTitle"
+        app:srcCompat="@drawable/ic_baseline_more_vert_24"
+        app:tint="@color/gray_dark" />
+
     <TextView
         android:id="@+id/billTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingTop="@dimen/step_12"
-        android:paddingBottom="@dimen/step_4"
+        android:paddingTop="@dimen/step_16"
+        android:paddingBottom="@dimen/step_8"
         android:text="@string/bill_editor_bill_title"
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_3"

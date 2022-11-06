@@ -6,7 +6,7 @@ data class Transfer(
 ) {
 
     fun isMirrorOf(other: Transfer) =
-        this == other.mirror()
+        participants == other.mirror().participants
 
     private fun mirror() = copy(participants = participants.mirror())
 

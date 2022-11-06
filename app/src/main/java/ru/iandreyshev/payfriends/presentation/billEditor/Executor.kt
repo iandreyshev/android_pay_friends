@@ -3,11 +3,12 @@ package ru.iandreyshev.payfriends.presentation.billEditor
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.iandreyshev.payfriends.domain.core.*
-import ru.iandreyshev.payfriends.domain.computationEditor.ValidateMemberUseCase
-import ru.iandreyshev.payfriends.domain.computationsList.Storage
+import ru.iandreyshev.payfriends.domain.billEditor.BillDraft
 import ru.iandreyshev.payfriends.domain.billEditor.FilterMembersUseCase
 import ru.iandreyshev.payfriends.domain.billEditor.SaveBillUseCase
+import ru.iandreyshev.payfriends.domain.computationEditor.ValidateMemberUseCase
+import ru.iandreyshev.payfriends.domain.computationsList.Storage
+import ru.iandreyshev.payfriends.domain.core.*
 import ru.iandreyshev.payfriends.system.Dispatchers
 
 class Executor(
@@ -15,7 +16,8 @@ class Executor(
     private val storage: Storage,
     private val filterMembers: FilterMembersUseCase,
     private val validateMember: ValidateMemberUseCase,
-    private val saveBill: SaveBillUseCase
+    private val saveBill: SaveBillUseCase,
+    private val getDefaultTitle: DefaultBillTitleProvider
 ) : CoroutineExecutor<Intent, Action, State, Message, Label>() {
 
     override fun executeAction(action: Action, getState: () -> State) {
@@ -29,6 +31,8 @@ class Executor(
             // Common
             Intent.OnSave -> onSave(getState)
             Intent.OnBack -> onBack(getState)
+            // Title
+            is Intent.OnTitleChanged -> onTitleChanged(intent.text)
             // Producer field
             is Intent.OnProducerFieldChanged -> onProducerFieldChanged(intent.query, getState)
             is Intent.OnProducerSelected -> onBackerSelected(intent.producer, getState)
@@ -47,18 +51,18 @@ class Executor(
 
     private fun onStart(action: Action.OnStart, getState: () -> State) {
         scope.launch {
-            val payment = withContext(dispatchers.io) { storage.get(action.computationId) }
+            val computation = withContext(dispatchers.io) { storage.get(action.computationId) }
                 ?: run {
                     publish(Label.Exit("Payment not found"))
                     return@launch
                 }
-            val bill = payment.bills
+            val bill = computation.bills
                 .firstOrNull { it.id == action.billId }
             val backer = bill?.backer
             val totalCost = bill?.payments.orEmpty().sumOf { it.cost }
             val newPaymentsReceiverSuggestions = when (backer) {
-                null -> payment.members
-                else -> payment.members
+                null -> computation.members
+                else -> computation.members
                     .toMutableList().apply {
                         removeAll { it.name == backer.name }
                     }
@@ -68,9 +72,10 @@ class Executor(
                 Message.Started(
                     getState().copy(
                         billId = bill?.id ?: BillId.none(),
+                        number = computation.bills.count() + 1,
                         backerField = getState().backerField.copy(
                             backer = backer,
-                            suggestions = payment.members,
+                            suggestions = computation.members,
                             cost = totalCost,
                         ),
                         receiverField = getState().receiverField.copy(
@@ -78,7 +83,7 @@ class Executor(
                             suggestions = newPaymentsReceiverSuggestions
                         ),
                         payments = bill?.payments.orEmpty(),
-                        members = payment.members,
+                        members = computation.members,
                         isStarted = true
                     )
                 )
@@ -91,11 +96,13 @@ class Executor(
         scope.launch {
             when (val result = saveBill(getState().composeBillDraft())) {
                 is Result.Success -> publish(Label.Exit("Saving success"))
-                is Result.Error -> publish(when (result.error) {
-                    ErrorType.InvalidCost -> Label.Error.InvalidCost
-                    is ErrorType.InvalidPaymentDraft,
-                    ErrorType.Unknown -> Label.Error.Unknown
-                })
+                is Result.Error -> publish(
+                    when (result.error) {
+                        ErrorType.InvalidCost -> Label.Error.InvalidCost
+                        is ErrorType.InvalidPaymentDraft,
+                        ErrorType.Unknown -> Label.Error.Unknown
+                    }
+                )
             }
             dispatch(Message.ChangeSavingState(false))
         }
@@ -106,6 +113,10 @@ class Executor(
             true -> publish(Label.Exit())
             else -> publish(Label.ExitWithWarning)
         }
+    }
+
+    private fun onTitleChanged(title: String) {
+        dispatch(Message.ChangeTitle(title))
     }
 
     private fun onProducerFieldChanged(query: String, getState: () -> State) {
@@ -204,6 +215,21 @@ class Executor(
         payments.removeAt(position)
         val totalCost = payments.sumOf { it.cost }
         dispatch(Message.UpdatePayments(payments, totalCost))
+    }
+
+    private fun State.composeBillDraft(): BillDraft {
+        val title = when {
+            title.isBlank() -> getDefaultTitle(number)
+            else -> title
+        }
+
+        return BillDraft(
+            computationId = computationId,
+            id = billId,
+            title = title,
+            backer = backerField.backer,
+            payments = payments
+        )
     }
 
 }

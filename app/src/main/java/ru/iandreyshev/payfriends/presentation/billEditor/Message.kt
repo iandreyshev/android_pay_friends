@@ -12,6 +12,8 @@ sealed interface Message {
         val suggestions: List<Member>,
     ) : Message
 
+    data class ChangeTitle(val title: String) : Message
+
     data class UpdateReceiverSuggestions(
         val candidateQuery: String,
         val candidate: String,

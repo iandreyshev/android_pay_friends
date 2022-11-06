@@ -63,6 +63,8 @@ class ComputationResultFragment : Fragment(R.layout.fragment_recycler_view) {
                 val isLastInLastBill = isLastInBill && billIndex == state.history.lastIndex
                 ComputationHistoryAdapter.Item(
                     id = bill.id,
+                    title = bill.title,
+                    number = bill.number,
                     transfer = transfer,
                     isFirstInBill = transferIndex == 0,
                     isLastInBill = isLastInBill,

@@ -13,6 +13,9 @@ sealed interface Intent {
     data class OnProducerCandidateSelected(val query: String) : Intent
     object OnRemoveProducer : Intent
 
+    // Title
+    data class OnTitleChanged(val text: String) : Intent
+
     // Receiver field
     data class OnReceiverFieldChanged(val query: String) : Intent
     data class OnReceiverSelected(val receiver: Member) : Intent

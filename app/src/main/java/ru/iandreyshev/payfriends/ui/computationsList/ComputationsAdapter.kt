@@ -47,6 +47,8 @@ class ComputationsAdapter(
         holder.binding.optionsButton.setOnClickListener {
             onOptionsMenuOpen(holder.binding.optionsButton, item.id)
         }
+        holder.binding.totalCost.text =
+            holder.binding.root.resources.getString(R.string.computation_list_total_cost, item.totalCost)
     }
 
 }

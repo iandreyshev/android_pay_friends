@@ -9,9 +9,11 @@ class GetComputationHistoryUseCase
     operator fun invoke(computation: Computation): List<HistoryBill> =
         computation.bills
             .sortedByDescending { it.creationDate.value }
-            .map { bill ->
+            .mapIndexed { i, bill ->
                 HistoryBill(
                     id = bill.id,
+                    title = bill.title,
+                    number = i + 1,
                     transfers = bill.payments.map { payment ->
                         HistoryTransfer(
                             transfer = Transfer(

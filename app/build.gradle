@@ -14,8 +14,8 @@ android {
         applicationId "ru.iandreyshev.payfriends"
         minSdk 24
         targetSdk 33
-        versionCode 4
-        versionName "1.0.2"
+        versionCode 6
+        versionName "1.0.4"
     }
 
     buildTypes {

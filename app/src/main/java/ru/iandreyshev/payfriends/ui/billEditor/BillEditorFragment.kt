@@ -23,10 +23,7 @@ import ru.iandreyshev.payfriends.databinding.FragmentBillEditorBinding
 import ru.iandreyshev.payfriends.databinding.ItemBillEditorPaymentBinding
 import ru.iandreyshev.payfriends.domain.core.BillId
 import ru.iandreyshev.payfriends.domain.core.ComputationId
-import ru.iandreyshev.payfriends.presentation.billEditor.BillEditorViewModel
-import ru.iandreyshev.payfriends.presentation.billEditor.Intent
-import ru.iandreyshev.payfriends.presentation.billEditor.Label
-import ru.iandreyshev.payfriends.presentation.billEditor.State
+import ru.iandreyshev.payfriends.presentation.billEditor.*
 import ru.iandreyshev.payfriends.ui.billEditor.items.*
 import ru.iandreyshev.payfriends.ui.members.MembersAdapter
 import ru.iandreyshev.payfriends.ui.utils.*
@@ -34,15 +31,16 @@ import kotlin.math.abs
 
 class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
 
-    private val mViewModel by viewModelsDiFactory<BillEditorViewModel>()
-    private val mNavController by uiLazy { findNavController() }
-    private val mBinding by viewBindings(FragmentBillEditorBinding::bind)
-    private val mPaymentMarginHorizontal by uiLazy { resources.getDimensionPixelSize(R.dimen.step_16) }
-    private val mPaymentMarginVertical by uiLazy { resources.getDimensionPixelSize(R.dimen.step_8) }
+    private val viewModel by viewModelsDiFactory<BillEditorViewModel>()
+    private val navController by uiLazy { findNavController() }
+    private val binding by viewBindings(FragmentBillEditorBinding::bind)
+    private val paymentMarginHorizontal by uiLazy { resources.getDimensionPixelSize(R.dimen.step_16) }
+    private val paymentMarginVertical by uiLazy { resources.getDimensionPixelSize(R.dimen.step_8) }
+    private val getDefaultTitle by uiLazy { DefaultBillTitleProvider(resources) }
 
-    private var mAlertDialog: AlertDialog? = null
-    private val mCostWatchers = mutableSetOf<TextWatcher>()
-    private val mDescriptionWatchers = mutableSetOf<TextWatcher>()
+    private var alertDialog: AlertDialog? = null
+    private val costWatchers = mutableSetOf<TextWatcher>()
+    private val descriptionWatchers = mutableSetOf<TextWatcher>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,12 +48,13 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
         initAppBar()
         initGestures()
         initTextFields()
+        initTitle()
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            mViewModel.state
+            viewModel.state
                 .onEach(::render)
                 .launchIn(this)
-            mViewModel.labels
+            viewModel.labels
                 .onEach(::handleLabel)
                 .launchIn(this)
         }
@@ -64,38 +63,44 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
             val args = navArgs<BillEditorFragmentArgs>().value
             val computationId = ComputationId(args.paymentId)
             val billId = args.billId?.let { BillId(it) }
-            mViewModel.onViewCreated(computationId, billId)
-            mBinding.producerView.producerField.showKeyboard()
+            viewModel.onViewCreated(computationId, billId)
+            binding.title.titleField.showKeyboard()
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        mAlertDialog.dismissOnDestroy()
+        alertDialog.dismissOnDestroy()
     }
 
     private fun initGestures() {
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner) {
-            mViewModel(Intent.OnBack)
+            viewModel(Intent.OnBack)
         }
     }
 
     private fun initAppBar() {
-        mBinding.toolbar.setNavigationOnClickListener { mViewModel(Intent.OnBack) }
-        mBinding.toolbar.setOnMenuItemClickListener { item ->
+        binding.toolbar.setNavigationOnClickListener { viewModel(Intent.OnBack) }
+        binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.billEditorMenuSave -> mViewModel(Intent.OnSave)
+                R.id.billEditorMenuSave -> viewModel(Intent.OnSave)
             }
             return@setOnMenuItemClickListener true
         }
     }
 
     private fun initTextFields() {
-        mBinding.producerView.producerField.doAfterTextChanged {
-            mViewModel(Intent.OnProducerFieldChanged(it.toString()))
+        binding.producerView.producerField.doAfterTextChanged {
+            viewModel(Intent.OnProducerFieldChanged(it.toString()))
         }
-        mBinding.receiverView.receiverField.doAfterTextChanged {
-            mViewModel(Intent.OnReceiverFieldChanged(it.toString()))
+        binding.receiverView.receiverField.doAfterTextChanged {
+            viewModel(Intent.OnReceiverFieldChanged(it.toString()))
+        }
+    }
+
+    private fun initTitle() {
+        binding.title.titleField.doAfterTextChanged {
+            viewModel(Intent.OnTitleChanged(it.toString()))
         }
     }
 
@@ -119,6 +124,11 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
             )
         })
 
+        binding.toolbar.title = when {
+            state.title.isBlank() -> getDefaultTitle(state.number)
+            else -> state.title
+        }
+
         if (state.receiverField.isEnabled) {
             renderReceiverField(
                 ReceiverFieldItem(
@@ -131,11 +141,11 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
     }
 
     private fun renderBackerField(item: BackerFieldItem) {
-        val binding = mBinding.producerView
+        val binding = binding.producerView
 
         binding.backer.isVisible = item.backer != null
         binding.backer.setState(name = item.backer?.name.orEmpty()) {
-            mViewModel(Intent.OnRemoveProducer)
+            viewModel(Intent.OnRemoveProducer)
         }
 
         binding.producerField.isVisible = item.backer == null
@@ -144,7 +154,7 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
         val adapter = binding.suggestions.adapter as? MembersAdapter ?: run {
             val newAdapter = MembersAdapter(
                 onMemberClick = { member, _ ->
-                    mViewModel(Intent.OnProducerSelected(member))
+                    viewModel(Intent.OnProducerSelected(member))
                 }
             )
             newAdapter.submitList(item.suggestions)
@@ -161,7 +171,7 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
         binding.addMemberButton.isVisible = item.backer == null && item.candidate.isNotEmpty()
         binding.addMemberButton.setState(name = item.candidate) {
             binding.producerField.text.toString()
-            mViewModel(Intent.OnProducerCandidateSelected(binding.producerField.text.toString()))
+            viewModel(Intent.OnProducerCandidateSelected(binding.producerField.text.toString()))
         }
 
         binding.paymentsEmptyView.isVisible = item.isPaymentsEmptyViewVisible
@@ -171,13 +181,13 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
     }
 
     private fun renderReceiverField(item: ReceiverFieldItem) {
-        val binding = mBinding.receiverView
+        val binding = binding.receiverView
 
         binding.suggestions.isVisible = item.hasSuggestions
         val adapter = binding.suggestions.adapter as? MembersAdapter ?: run {
             val newAdapter = MembersAdapter(
                 onMemberClick = { member, _ ->
-                    mViewModel(Intent.OnReceiverSelected(member))
+                    viewModel(Intent.OnReceiverSelected(member))
                 }
             )
             val layoutManager = FlexboxLayoutManager(context)
@@ -197,68 +207,68 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
         binding.addMemberButton.isVisible = item.candidate.isNotEmpty()
         binding.addMemberButton.setState(name = item.candidate) {
             binding.receiverField.text.toString()
-            mViewModel(Intent.OnReceiverCandidateSelected(binding.receiverField.text.toString()))
+            viewModel(Intent.OnReceiverCandidateSelected(binding.receiverField.text.toString()))
         }
     }
 
     private fun renderPayments(payments: List<PaymentItem>) {
-        val viewCount = mBinding.payments.childCount
+        val viewCount = binding.payments.childCount
         val countDiff = abs(payments.count() - viewCount)
 
         when {
             viewCount < payments.count() -> repeat(countDiff) {
                 ItemBillEditorPaymentBinding
-                    .inflate(layoutInflater, mBinding.payments, true)
+                    .inflate(layoutInflater, binding.payments, true)
             }
             viewCount > payments.count() -> repeat(countDiff) {
-                mBinding.payments.removeViewAt(viewCount - 1 - it)
+                binding.payments.removeViewAt(viewCount - 1 - it)
             }
         }
 
-        mBinding.payments.forEach { view ->
+        binding.payments.forEach { view ->
             val binding = ItemBillEditorPaymentBinding.bind(view)
-            mCostWatchers.forEach { watcher ->
+            costWatchers.forEach { watcher ->
                 binding.costField.removeTextChangedListener(watcher)
             }
-            mDescriptionWatchers.forEach { watcher ->
+            descriptionWatchers.forEach { watcher ->
                 binding.descriptionField.removeTextChangedListener(watcher)
             }
         }
 
         payments.forEachIndexed { index, paymentItem ->
-            val view = mBinding.payments[index]
+            val view = binding.payments[index]
             val binding = ItemBillEditorPaymentBinding.bind(view)
             binding.root.updateLayoutParams<LinearLayout.LayoutParams> {
-                marginStart = mPaymentMarginHorizontal
-                marginEnd = mPaymentMarginHorizontal
-                bottomMargin = mPaymentMarginVertical
+                marginStart = paymentMarginHorizontal
+                marginEnd = paymentMarginHorizontal
+                bottomMargin = paymentMarginVertical
                 if (index == 0) {
-                    topMargin = mPaymentMarginVertical
+                    topMargin = paymentMarginVertical
                 }
             }
             if (paymentItem.cost > 0) {
                 binding.costField.setTextIfChanged(paymentItem.cost.toString())
             }
             binding.receiver.text = paymentItem.receiver.name
-            mCostWatchers += binding.costField.doAfterTextChanged {
-                mViewModel(Intent.OnCostChanged(index, it.toString()))
+            costWatchers += binding.costField.doAfterTextChanged {
+                viewModel(Intent.OnCostChanged(index, it.toString()))
             }
-            mDescriptionWatchers += binding.descriptionField.doAfterTextChanged {
-                mViewModel(Intent.OnDescriptionChanged(index, it.toString()))
+            descriptionWatchers += binding.descriptionField.doAfterTextChanged {
+                viewModel(Intent.OnDescriptionChanged(index, it.toString()))
             }
             binding.removeButton.setOnClickListener {
-                mViewModel(Intent.OnRemovePayment(index))
+                viewModel(Intent.OnRemovePayment(index))
             }
         }
     }
 
     private fun handleLabel(label: Label) {
         when (label) {
-            is Label.Exit -> mNavController.popBackStack()
+            is Label.Exit -> navController.popBackStack()
             Label.ExitWithWarning -> showExitDialog()
             Label.ScrollToBottom ->
-                mBinding.root.post {
-                    mBinding.scrollView.fullScroll(ScrollView.FOCUS_DOWN)
+                binding.root.post {
+                    binding.scrollView.fullScroll(ScrollView.FOCUS_DOWN)
                 }
             Label.Error.InvalidProducerCandidate ->
                 toast(R.string.bill_editor_error_empty_name)
@@ -270,8 +280,8 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
     }
 
     private fun showExitDialog() {
-        mAlertDialog.dismissOnDestroy()
-        mAlertDialog = AlertDialog.Builder(requireContext())
+        alertDialog.dismissOnDestroy()
+        alertDialog = AlertDialog.Builder(requireContext())
             .setTitle("Выход")
             .setMessage("После выхода все изменения будут потеряны")
             .setNegativeButton("Отмена") { dialog, _ ->
@@ -279,7 +289,7 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
             }
             .setPositiveButton("Выйти") { dialog, _ ->
                 dialog.cancel()
-                mNavController.popBackStack()
+                navController.popBackStack()
             }
             .show()
     }

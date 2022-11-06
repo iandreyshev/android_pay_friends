@@ -1,11 +1,14 @@
 package ru.iandreyshev.payfriends.presentation.billEditor
 
-import ru.iandreyshev.payfriends.domain.core.*
-import ru.iandreyshev.payfriends.domain.billEditor.BillDraft
+import ru.iandreyshev.payfriends.domain.core.BillId
+import ru.iandreyshev.payfriends.domain.core.ComputationId
+import ru.iandreyshev.payfriends.domain.core.Member
+import ru.iandreyshev.payfriends.domain.core.Payment
 
 data class State(
     val computationId: ComputationId,
     val billId: BillId?,
+    val number: Int,
     val title: String,
     val backerField: BackerFieldState,
     val receiverField: ReceiverFieldState,
@@ -15,19 +18,12 @@ data class State(
     val isSaving: Boolean
 ) {
 
-    fun composeBillDraft() = BillDraft(
-        computationId = computationId,
-        id = billId,
-        title = title,
-        backer = backerField.backer,
-        payments = payments
-    )
-
     companion object {
         fun default() = State(
             computationId = ComputationId.none(),
             billId = null,
             title = "",
+            number = 0,
             backerField = BackerFieldState.default(),
             members = listOf(),
             payments = listOf(),

@@ -1,5 +1,6 @@
 package ru.iandreyshev.payfriends.presentation.billEditor
 
+import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
@@ -22,7 +23,8 @@ class BillEditorViewModel
     private val dispatchers: Dispatchers,
     private val filterMembers: FilterMembersUseCase,
     private val saveBills: SaveBillUseCase,
-    private val validateMembers: ValidateMemberUseCase
+    private val validateMembers: ValidateMemberUseCase,
+    private val resources: Resources
 ) : ViewModel() {
 
     val state by uiLazy { mStore.states }
@@ -44,7 +46,8 @@ class BillEditorViewModel
                         storage = storage,
                         filterMembers = filterMembers,
                         validateMember = validateMembers,
-                        saveBill = saveBills
+                        saveBill = saveBills,
+                        getDefaultTitle = DefaultBillTitleProvider(resources)
                     )
                 },
                 reducer = Reducer,

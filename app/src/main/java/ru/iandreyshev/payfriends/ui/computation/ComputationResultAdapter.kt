@@ -36,7 +36,7 @@ class ComputationResultAdapter : ListAdapter<Transfer, ComputationResultAdapter.
         binding.secondMemberTitle.text = res.getString(R.string.computation_result_producer_title)
         binding.secondMember.text = transfer.participants.backer.name
 
-        binding.cost.text = transfer.cost.toString()
+        binding.cost.text = binding.root.resources.getString(R.string.common_cost_template, transfer.cost)
     }
 
 }

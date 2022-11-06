@@ -32,6 +32,10 @@
             android:paddingBottom="@dimen/step_20">
 
             <include
+                android:id="@+id/title"
+                layout="@layout/item_bill_editor_title" />
+
+            <include
                 android:id="@+id/producerView"
                 layout="@layout/item_bill_editor_backer" />
 

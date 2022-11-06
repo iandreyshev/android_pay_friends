@@ -13,7 +13,6 @@ import ru.iandreyshev.payfriends.databinding.ItemComputationHistoryBinding
 import ru.iandreyshev.payfriends.domain.core.BillId
 import ru.iandreyshev.payfriends.domain.core.HistoryTransfer
 import ru.iandreyshev.payfriends.domain.time.Date
-import ru.iandreyshev.payfriends.ui.utils.DateFormatter
 
 class ComputationHistoryAdapter(
     private val onOpenOptionsMenu: (View, BillId) -> Unit
@@ -23,6 +22,8 @@ class ComputationHistoryAdapter(
 
     data class Item(
         val id: BillId,
+        val title: String,
+        val number: Int,
         val transfer: HistoryTransfer,
         val isFirstInBill: Boolean,
         val isLastInBill: Boolean,
@@ -52,30 +53,31 @@ class ComputationHistoryAdapter(
         binding.secondMemberTitle.text = res.getString(R.string.computation_receiver_title)
         binding.secondMember.text = item.transfer.transfer.participants.receiver.name
 
-        binding.cost.text = item.transfer.transfer.cost.toString()
+        binding.cost.text = binding.root.resources.getString(R.string.common_cost_template, item.transfer.transfer.cost)
 
         binding.description.isVisible = item.transfer.description.isNotBlank()
         binding.description.text = item.transfer.description
 
         binding.billTitle.isVisible = item.isFirstInBill
-        binding.billTitle.text = res.getString(R.string.bill_editor_bill_title, DateFormatter.format1(item.billDate))
+        binding.billTitle.text = when {
+            item.title.isNotBlank() -> item.title
+            else -> res.getString(R.string.bill_editor_bill_default_title, item.number)
+        }
 
         binding.bottomSeparator.isVisible = !item.isLastInBill
 
+        binding.optionsButton.isVisible = item.isFirstInBill
         binding.optionsButton.setOnClickListener {
             onOpenOptionsMenu(it, item.id)
         }
 
         binding.root.updatePadding(
             bottom = when {
-                item.isLastInLastBill -> LAST_ITEM_BOTTOM_PADDING
+                item.isLastInBill -> binding.root.resources.getDimensionPixelSize(R.dimen.step_20)
+                item.isLastInLastBill -> binding.root.resources.getDimensionPixelSize(R.dimen.step_64)
                 else -> 0
             }
         )
-    }
-
-    companion object {
-        private const val LAST_ITEM_BOTTOM_PADDING = 300
     }
 
 }

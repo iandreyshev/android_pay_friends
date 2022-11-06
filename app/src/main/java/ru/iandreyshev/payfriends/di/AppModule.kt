@@ -1,6 +1,7 @@
 package ru.iandreyshev.payfriends.di
 
 import android.content.Context
+import android.content.res.Resources
 import dagger.Module
 import dagger.Provides
 import io.realm.kotlin.RealmConfiguration
@@ -18,6 +19,9 @@ class AppModule(
 
     @Provides
     fun provideContext(): Context = context
+
+    @Provides
+    fun provideResources(): Resources = context.resources
 
     @Provides
     fun provideDispatchers(): Dispatchers = AppDispatchers

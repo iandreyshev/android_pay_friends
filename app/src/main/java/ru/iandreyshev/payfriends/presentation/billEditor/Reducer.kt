@@ -12,6 +12,7 @@ val Reducer = Reducer<State, Message> { message ->
                 suggestions = message.suggestions,
             )
         )
+        is Message.ChangeTitle -> copy(title = message.title)
         is Message.UpdateBacker -> copy(
             backerField = backerField.copy(backer = message.backer),
             receiverField = receiverField.copy(suggestions = message.receiverSuggestions),

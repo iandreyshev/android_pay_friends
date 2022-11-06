@@ -21,6 +21,9 @@ class GetComputationsListUseCase
                         ComputationSummary(
                             id = computation.id,
                             title = computation.title,
+                            totalCost = computation.bills
+                                .flatMap { it.payments }
+                                .sumOf { it.cost },
                             date = computation.creationDate
                         )
                     }

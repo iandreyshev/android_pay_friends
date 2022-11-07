@@ -7,17 +7,26 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import ru.iandreyshev.payfriends.R
+import ru.iandreyshev.payfriends.data.settings.AppSettings
 import ru.iandreyshev.payfriends.databinding.FragmentSettingsBinding
+import ru.iandreyshev.payfriends.ui.utils.uiLazy
 import ru.iandreyshev.payfriends.ui.utils.viewBindings
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
-    private val mBinding by viewBindings(FragmentSettingsBinding::bind)
+    private val binding by viewBindings(FragmentSettingsBinding::bind)
+    private val settings by uiLazy { AppSettings(requireContext()) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mBinding.icon.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.mipmap.ic_launcher))
-        mBinding.version.text = requireContext().getAppVersionInfo()
+
+        binding.icon.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.mipmap.ic_launcher))
+        binding.version.text = requireContext().getAppVersionInfo()
+
+        binding.calcModeSwitch.isChecked = settings.get().isSmartAlgorithm
+        binding.calcModeSwitch.setOnCheckedChangeListener { _, b ->
+            settings.save(settings.get().copy(isSmartAlgorithm = b))
+        }
     }
 
     private fun Context.getAppVersionInfo(): String {

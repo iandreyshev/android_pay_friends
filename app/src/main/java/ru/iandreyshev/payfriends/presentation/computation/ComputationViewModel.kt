@@ -4,7 +4,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import ru.iandreyshev.payfriends.data.settings.AppSettings
 import ru.iandreyshev.payfriends.domain.calc.CalcResultUseCase
+import ru.iandreyshev.payfriends.domain.calc.CalcResultWithSmartAlgorithmUseCase
 import ru.iandreyshev.payfriends.domain.computation.DeleteBillUseCase
 import ru.iandreyshev.payfriends.domain.computation.GetComputationHistoryUseCase
 import ru.iandreyshev.payfriends.domain.computation.GetComputationUseCase
@@ -17,7 +19,9 @@ import javax.inject.Inject
 
 class ComputationViewModel
 @Inject constructor(
+    private val settings: AppSettings,
     private val calcResult: CalcResultUseCase,
+    private val calcResultSmart: CalcResultWithSmartAlgorithmUseCase,
     private val getComputation: GetComputationUseCase,
     private val getComputationHistory: GetComputationHistoryUseCase,
     private val deleteBill: DeleteBillUseCase,
@@ -25,8 +29,9 @@ class ComputationViewModel
 ) : SingleStateViewModel<State, Event>(State.default()) {
 
     fun onViewCreated(id: ComputationId, name: String) {
-        modifyState { copy(id = id, name = name) }
-        loadData()
+        modifyState {
+            copy(id = id, name = name, isSmartAlgorithm = settings.get().isSmartAlgorithm)
+        }
 
         getComputationsList.invoke(GetComputationsListUseCase.Filter(false))
             .onEach { loadData() }
@@ -57,7 +62,10 @@ class ComputationViewModel
                 return@launch
             }
             val history = getComputationHistory(computation)
-            val result = calcResult(computation.bills)
+            val result = when {
+                getState().isSmartAlgorithm -> calcResultSmart(computation.bills)
+                else -> calcResult(computation.bills)
+            }
 
             modifyState {
                 copy(

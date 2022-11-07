@@ -20,6 +20,7 @@ class ComputationsListViewModel
 ) : SingleStateViewModel<State, Event>(State.default()) {
 
     fun onViewCreated(isCompleted: Boolean) {
+        modifyState { copy(isCompleted = isCompleted) }
         getList(filter = GetComputationsListUseCase.Filter(isCompleted))
             .onEach { modifyState { copy(computations = it) } }
             .launchIn(viewModelScope)

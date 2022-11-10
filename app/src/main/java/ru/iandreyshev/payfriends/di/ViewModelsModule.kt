@@ -8,6 +8,7 @@ import ru.iandreyshev.payfriends.presentation.billEditor.BillEditorViewModel
 import ru.iandreyshev.payfriends.presentation.computation.ComputationViewModel
 import ru.iandreyshev.payfriends.presentation.computationEditor.ComputationEditorViewModel
 import ru.iandreyshev.payfriends.presentation.computationsList.ComputationsListViewModel
+import ru.iandreyshev.payfriends.presentation.settings.SettingsViewModel
 
 @Module
 interface ViewModelsModule {
@@ -27,5 +28,9 @@ interface ViewModelsModule {
     @Binds
     @[IntoMap ViewModelKey(BillEditorViewModel::class)]
     fun bindBillEditor(viewModel: BillEditorViewModel): ViewModel
+
+    @Binds
+    @[IntoMap ViewModelKey(SettingsViewModel::class)]
+    fun bindSettings(viewModel: SettingsViewModel): ViewModel
 
 }

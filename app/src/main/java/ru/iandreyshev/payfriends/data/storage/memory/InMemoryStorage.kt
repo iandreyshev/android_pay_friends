@@ -9,6 +9,7 @@ import ru.iandreyshev.payfriends.domain.computationsList.Storage
 import ru.iandreyshev.payfriends.domain.core.BillId
 import ru.iandreyshev.payfriends.domain.core.Computation
 import ru.iandreyshev.payfriends.domain.core.ComputationId
+import ru.iandreyshev.payfriends.domain.settings.ImportedComputations
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -62,5 +63,9 @@ class InMemoryStorage
     }
 
     override fun observable(): Flow<List<Computation>> = mCache
+
+    override suspend fun import(computations: ImportedComputations): Boolean {
+        TODO("import not implemented")
+    }
 
 }

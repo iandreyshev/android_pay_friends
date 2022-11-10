@@ -12,14 +12,15 @@
     <string name="computations_list_empty_view_text_active">У вас ещё нет расчётов</string>
     <string name="computations_list_empty_view_button">Добавить</string>
     <string name="computation_list_new_computation_button">Расчёт</string>
-    <string name="computation_list_total_cost">Потрачено %1$d</string>
+    <string name="computation_list_total_cost">Потрачено: %1$d</string>
 
     <string name="computations_option_complete_title">Завершить</string>
     <string name="computations_option_edit_title">Редактировать</string>
     <string name="computations_option_delete_title">Удалить</string>
     <string name="computations_option_make_active_title">Вернуть в активные</string>
     <string name="computations_empty_view_text">В этом расчете ещё нет чеков</string>
-    <string name="computations_new_bill_button">Чек</string>
+    <string name="computations_new_bill_button">Добавить чек</string>
+    <string name="computations_new_bill_fab_button">Чек</string>
 
     <string name="computation_editor_title">Новый расчёт</string>
     <string name="computation_editor_name_title">Название</string>
@@ -45,4 +46,6 @@
 
     <string name="bill_history_option_edit_title">Редактировать</string>
     <string name="bill_history_option_delete_title">Удалить</string>
+
+    <string name="export_result_success">Сохранено в Downloads/%1$s</string>
 </resources>

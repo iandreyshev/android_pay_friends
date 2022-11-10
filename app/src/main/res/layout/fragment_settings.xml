@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
@@ -35,28 +34,62 @@
         android:layout_marginTop="@dimen/step_20"
         android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <FrameLayout
             android:id="@+id/calcModeSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/step_16">
+            android:background="?attr/selectableItemBackground"
+            android:orientation="horizontal">
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/calcModeSwitch"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/step_16"
                 android:text="Использовать умный алгоритм подсчета"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_3"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="@dimen/text_size_3" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </FrameLayout>
 
+        <FrameLayout
+            android:id="@+id/importMemoryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?attr/selectableItemBackground"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/step_16"
+                android:layout_marginVertical="@dimen/step_12"
+                android:text="Импорт рассчетов"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_3" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/exportMemoryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?attr/selectableItemBackground"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/step_16"
+                android:layout_marginVertical="@dimen/step_12"
+                android:text="Экспорт рассчетов"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_3" />
+
+        </FrameLayout>
 
     </LinearLayout>
 

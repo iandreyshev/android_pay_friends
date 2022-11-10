@@ -1,6 +1,8 @@
 package ru.iandreyshev.payfriends.data.storage.json
 
 import android.content.Context
+import android.net.Uri
+import androidx.core.net.toUri
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.serialization.decodeFromString
@@ -10,6 +12,8 @@ import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import ru.iandreyshev.payfriends.domain.computationsList.Storage
 import ru.iandreyshev.payfriends.domain.core.*
+import ru.iandreyshev.payfriends.domain.settings.ImportedComputations
+import ru.iandreyshev.payfriends.domain.settings.JsonComputations
 import ru.iandreyshev.payfriends.domain.time.Date
 import java.io.File
 import java.util.*
@@ -22,9 +26,10 @@ class JsonStorage
     context: Context
 ) : Storage {
 
-    private val memoryFile = File(context.filesDir, MEMORY_FILE_NAME)
     private val sharedFlow: MutableStateFlow<List<Computation>>
     private val dateFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+
+    val memoryFile = File(context.filesDir, MEMORY_FILE_NAME)
 
     init {
         if (!memoryFile.exists()) {
@@ -88,10 +93,24 @@ class JsonStorage
 
     override fun observable(): Flow<List<Computation>> = sharedFlow
 
+    override suspend fun import(computations: ImportedComputations): Boolean {
+        when (computations) {
+            is JsonComputations -> {
+                saveInMemory(computations.text)
+                return true
+            }
+        }
+    }
+
     private fun saveInMemory(list: List<ComputationJson>) {
+        val json = Json.encodeToString(list)
+        saveInMemory(json)
+    }
+
+    private fun saveInMemory(json: String) {
         memoryFile.writer().use {
             it.write("")
-            it.write(Json.encodeToString(list))
+            it.write(json)
         }
 
         sharedFlow.tryEmit(getComputations().asDomainModel())

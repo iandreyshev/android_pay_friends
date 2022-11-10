@@ -11,6 +11,7 @@ import kotlinx.coroutines.withContext
 import org.threeten.bp.ZonedDateTime
 import ru.iandreyshev.payfriends.domain.computationsList.Storage
 import ru.iandreyshev.payfriends.domain.core.*
+import ru.iandreyshev.payfriends.domain.settings.ImportedComputations
 import ru.iandreyshev.payfriends.domain.time.Date
 import ru.iandreyshev.payfriends.system.Dispatchers
 import java.lang.IllegalStateException
@@ -86,6 +87,10 @@ class RealmStorage
         realm.query<ComputationEntity>()
             .asFlow()
             .map { change -> change.list.map { it.asDomainModel() } }
+
+    override suspend fun import(computations: ImportedComputations): Boolean {
+        TODO("import not implemented")
+    }
 
     private fun getImpl(id: ComputationId): ComputationEntity? =
         realm.query<ComputationEntity>("id == $0", id.value)

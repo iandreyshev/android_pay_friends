@@ -14,13 +14,28 @@ android {
         applicationId "ru.iandreyshev.payfriends"
         minSdk 24
         targetSdk 33
-        versionCode 8
-        versionName "1.0.6"
+        versionCode 9
+        versionName "1.0.7"
+    }
+
+    signingConfigs {
+        release {
+            file("../../signing/checks/keys.properties").withReader {
+                def props = new Properties()
+                props.load(it)
+
+                storeFile file("../../signing/checks/keystore.jks")
+                storePassword props.STORE_PASSWORD
+                keyAlias props.KEY_ALIAS
+                keyPassword props.KEY_PASSWORD
+            }
+        }
     }
 
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {

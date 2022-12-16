@@ -2,10 +2,7 @@ package ru.iandreyshev.payfriends.domain.billEditor
 
 import kotlinx.coroutines.withContext
 import ru.iandreyshev.payfriends.domain.computationsList.Storage
-import ru.iandreyshev.payfriends.domain.core.Bill
-import ru.iandreyshev.payfriends.domain.core.BillId
-import ru.iandreyshev.payfriends.domain.core.ErrorType
-import ru.iandreyshev.payfriends.domain.core.Result
+import ru.iandreyshev.payfriends.domain.core.*
 import ru.iandreyshev.payfriends.domain.time.DateProvider
 import ru.iandreyshev.payfriends.system.Dispatchers
 import javax.inject.Inject
@@ -34,11 +31,24 @@ class SaveBillUseCase
                 payments = draft.payments,
                 creationDate = existedBill?.creationDate ?: dateProvider.currentDate()
             )
+
+            val newMembers = mutableListOf<Member>()
+            if (!computation.members.contains(newBill.backer)) {
+                newMembers.add(newBill.backer)
+            }
+
+            newBill.payments.forEach { payment ->
+                if (!computation.members.contains(payment.receiver)) {
+                    newMembers.add(payment.receiver)
+                }
+            }
+
             val newComputation = computation.copy(
                 bills = existedBills.toMutableMap()
                     .apply { put(newBill.id, newBill) }
                     .values
-                    .toList()
+                    .toList(),
+                members = computation.members + newMembers
             )
 
             storage.save(newComputation)

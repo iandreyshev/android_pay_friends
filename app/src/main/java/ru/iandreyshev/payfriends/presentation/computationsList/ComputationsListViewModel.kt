@@ -27,7 +27,7 @@ class ComputationsListViewModel
     }
 
     fun onOpen(computation: ComputationSummary) {
-        event(Event.NavigateToPayment(computation.id, computation.title))
+        event(Event.NavigateToComputation(computation.id, computation.title))
     }
 
     fun onAddBill(id: ComputationId) {

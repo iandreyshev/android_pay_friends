@@ -21,7 +21,7 @@ class ComputationsListFragment : Fragment(R.layout.fragment_computations_list) {
 
     private val mBinding by viewBindings(FragmentComputationsListBinding::bind)
     private val mViewModel by viewModelsDiFactory<ComputationsListViewModel>()
-    private val isCompleted by uiLazy { arguments?.getBoolean(ARG_IS_COMPLETED, true) ?: true }
+    private val isCompleted by uiLazy { arguments?.getBoolean(ARG_IS_ACTIVE, true) ?: true }
     private val mAdapter by uiLazy {
         ComputationsAdapter(
             isCompleted = isCompleted,
@@ -93,7 +93,7 @@ class ComputationsListFragment : Fragment(R.layout.fragment_computations_list) {
 
     private fun handleEvent(event: Event) {
         when (event) {
-            is Event.NavigateToPayment ->
+            is Event.NavigateToComputation ->
                 ComputationsListFragmentDirections
                     .actionOpenPayment(event.id.value, event.name)
                     .let(mNavController::navigate)
@@ -131,10 +131,10 @@ class ComputationsListFragment : Fragment(R.layout.fragment_computations_list) {
     }
 
     companion object {
-        private const val ARG_IS_COMPLETED = "is_completed"
+        private const val ARG_IS_ACTIVE = "is_active"
 
-        fun args(isListOfActivePayments: Boolean) = Bundle().apply {
-            putBoolean(ARG_IS_COMPLETED, isListOfActivePayments)
+        fun args(isListOfActive: Boolean) = Bundle().apply {
+            putBoolean(ARG_IS_ACTIVE, isListOfActive)
         }
     }
 

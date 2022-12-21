@@ -18,14 +18,8 @@
             app:destination="@id/billEditorFragment" />
         <action
             android:id="@+id/actionOpenPayment"
-            app:destination="@id/paymentFragment" />
+            app:destination="@id/computationFragment" />
     </fragment>
-
-    <fragment
-        android:id="@+id/completedPaymentsListDest"
-        android:name="ru.iandreyshev.payfriends.ui.computationsList.ComputationsListFragment"
-        android:label="CompletedFragment"
-        tools:layout="@layout/fragment_computations_list" />
 
     <fragment
         android:id="@+id/settingsDest"
@@ -33,9 +27,9 @@
         android:label="SettingsFragment" />
 
     <fragment
-        android:id="@+id/paymentFragment"
+        android:id="@+id/computationFragment"
         android:name="ru.iandreyshev.payfriends.ui.computation.ComputationFragment"
-        android:label="PaymentFragment"
+        android:label="ComputationFragment"
         tools:layout="@layout/fragment_computation">
         <argument
             android:name="id"
@@ -74,7 +68,7 @@
             app:nullable="true" />
         <action
             android:id="@+id/actionBackToNewComputation"
-            app:destination="@id/paymentFragment"
+            app:destination="@id/computationFragment"
             app:popUpTo="@id/computationEditorFragment"
             app:popUpToInclusive="true" />
     </fragment>

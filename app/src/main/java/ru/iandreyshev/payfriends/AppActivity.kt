@@ -33,12 +33,19 @@ class AppActivity : AppCompatActivity() {
     private fun initMenu() {
         mBinding.menuView.setupWithNavController(mNavController)
         mBinding.menuView.setOnItemSelectedListener { item ->
-            val args = when (item.itemId) {
-                R.id.activePaymentsListDest -> ComputationsListFragment.args(isListOfActivePayments = true)
-                R.id.completedPaymentsListDest -> ComputationsListFragment.args(isListOfActivePayments = false)
-                else -> bundleOf()
+            var navId = item.itemId
+            var args = bundleOf()
+
+            when (item.itemId) {
+                R.id.activePaymentsListDest -> {
+                    args = ComputationsListFragment.args(isListOfActive = true)
+                }
+                R.id.completedPaymentsListDest -> {
+                    navId = R.id.activePaymentsListDest
+                    args = ComputationsListFragment.args(isListOfActive = false)
+                }
             }
-            mNavController.navigate(item.itemId, args)
+            mNavController.navigate(navId, args)
             true
         }
         mNavController.addOnDestinationChangedListener { _, destination, _ ->

@@ -11,6 +11,10 @@ sealed interface Intent {
     data class OnProducerFieldChanged(val query: String) : Intent
     data class OnProducerSelected(val producer: Member) : Intent
     data class OnProducerCandidateSelected(val query: String) : Intent
+    data class OnCommonBillToggle(val isTurnOn: Boolean) : Intent
+    data class OnCommonBillForUserToggle(val isTurnOn: Boolean) : Intent
+    data class OnCommonBillCostChanged(val cost: Int) : Intent
+    data class OnCommonBillRemoveMember(val member: Member) : Intent
     object OnRemoveProducer : Intent
 
     // Title
@@ -24,5 +28,5 @@ sealed interface Intent {
     // Payments
     data class OnRemovePayment(val position: Int) : Intent
     data class OnCostChanged(val position: Int, val cost: String) : Intent
-    data class OnDescriptionChanged(val position: Int, val description: String): Intent
+    data class OnDescriptionChanged(val position: Int, val description: String) : Intent
 }

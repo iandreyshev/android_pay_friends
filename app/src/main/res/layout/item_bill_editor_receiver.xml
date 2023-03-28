@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/step_16"
-        android:layout_marginTop="@dimen/step_16"
+        android:layout_marginTop="@dimen/step_20"
         android:text="Участники"
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_4"
@@ -31,7 +31,7 @@
         android:paddingVertical="@dimen/step_4"
         android:textColor="@color/black"
         android:textColorHint="@color/gray_dark"
-        android:textSize="@dimen/text_size_6"
+        android:textSize="@dimen/text_size_5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title" />

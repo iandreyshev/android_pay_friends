@@ -43,12 +43,12 @@ class CalcResultWithSmartAlgorithmUseCase
                 }
 
                 when {
-                    table.containsKey(bill.backer) ->
-                        when (val debt = table[bill.backer]!! + cost) {
-                            0 -> table.remove(bill.backer)
-                            else -> table[bill.backer] = debt
+                    table.containsKey(bill.producer) ->
+                        when (val debt = table[bill.producer]!! + cost) {
+                            0 -> table.remove(bill.producer)
+                            else -> table[bill.producer] = debt
                         }
-                    else -> table[bill.backer] = cost
+                    else -> table[bill.producer] = cost
                 }
             }
         }

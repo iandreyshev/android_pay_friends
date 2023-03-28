@@ -9,6 +9,6 @@ data class BillDraft(
     val computationId: ComputationId,
     val id: BillId?,
     val title: String,
-    val backer: Member?,
+    val producer: Member?,
     val payments: List<Payment>,
 )

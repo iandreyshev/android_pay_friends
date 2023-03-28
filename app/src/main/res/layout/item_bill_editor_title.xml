@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/step_16"
         android:layout_marginTop="@dimen/step_20"
-        android:text="Название чека"
+        android:text="Название"
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_4" />
 
@@ -21,7 +21,6 @@
         android:layout_marginHorizontal="@dimen/step_16"
         android:layout_marginTop="@dimen/step_4"
         android:background="@null"
-        android:hint="Название"
         android:inputType="textCapSentences|textMultiLine"
         android:maxLength="100"
         android:textColor="@color/black"

@@ -124,7 +124,7 @@ class RealmStorage
         Bill(
             id = BillId(id),
             title = title,
-            backer = backer?.asDomainModel() ?: Member(""),
+            producer = backer?.asDomainModel() ?: Member(""),
             payments = payments.map { it.asDomainModel() },
             creationDate = creationDate.asDomainModel()
         )

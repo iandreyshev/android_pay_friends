@@ -35,12 +35,16 @@ class Executor(
             is Intent.OnTitleChanged -> onTitleChanged(intent.text)
             // Producer field
             is Intent.OnProducerFieldChanged -> onProducerFieldChanged(intent.query, getState)
-            is Intent.OnProducerSelected -> onBackerSelected(intent.producer, getState)
+            is Intent.OnProducerSelected -> onProducerSelected(intent.producer, getState)
             is Intent.OnProducerCandidateSelected -> onProducerCandidateSelected(intent.query, getState)
-            Intent.OnRemoveProducer -> onBackerSelected(null, getState)
+            is Intent.OnCommonBillToggle -> onCommonBillToggle(intent.isTurnOn, getState)
+            is Intent.OnCommonBillForUserToggle -> onCommonBillForUserToggle(intent.isTurnOn, getState)
+            is Intent.OnCommonBillCostChanged -> onCommonBillCostChanged(intent.cost, getState)
+            is Intent.OnCommonBillRemoveMember -> onCommonBillRemoveMember(intent.member, getState)
+            Intent.OnRemoveProducer -> onProducerSelected(null, getState)
             // Receiver field
             is Intent.OnReceiverFieldChanged -> onReceiverFieldChanged(intent.query, getState)
-            is Intent.OnReceiverSelected -> onAddNewPayment(intent.receiver, getState)
+            is Intent.OnReceiverSelected -> onReceiverSelected(intent.receiver, getState)
             is Intent.OnReceiverCandidateSelected -> onReceiverCandidateSelected(intent.query, getState)
             // Transactions
             is Intent.OnCostChanged -> onCostChanged(intent.position, intent.cost, getState)
@@ -58,13 +62,13 @@ class Executor(
                 }
             val bill = computation.bills
                 .firstOrNull { it.id == action.billId }
-            val backer = bill?.backer
+            val producer = bill?.producer
             val totalCost = bill?.payments.orEmpty().sumOf { it.cost }
-            val newPaymentsReceiverSuggestions = when (backer) {
+            val newPaymentsReceiverSuggestions = when (producer) {
                 null -> computation.members
                 else -> computation.members
                     .toMutableList().apply {
-                        removeAll { it.name == backer.name }
+                        removeAll { it.name == producer.name }
                     }
             }
 
@@ -73,8 +77,8 @@ class Executor(
                     getState().copy(
                         billId = bill?.id ?: BillId.none(),
                         number = computation.bills.count() + 1,
-                        backerField = getState().backerField.copy(
-                            backer = backer,
+                        producerField = getState().producerField.copy(
+                            producer = producer,
                             suggestions = computation.members,
                             cost = totalCost,
                         ),
@@ -120,7 +124,7 @@ class Executor(
     }
 
     private fun onProducerFieldChanged(query: String, getState: () -> State) {
-        val message = when (getState().backerField.backer) {
+        val message = when (getState().producerField.producer) {
             null -> {
                 var candidate = query.trim()
                 val filters = FilterMembersUseCase.Filters(candidate)
@@ -137,27 +141,64 @@ class Executor(
         val producer = Member(query.trim())
 
         when {
-            validateMember(producer) -> onBackerSelected(producer, getState)
+            validateMember(producer) -> onProducerSelected(producer, getState)
             else -> publish(Label.Error.InvalidProducerCandidate)
         }
     }
 
-    private fun onBackerSelected(backer: Member?, getState: () -> State) {
-        if (backer == null) {
+    private fun onCommonBillToggle(isTurnOn: Boolean, getState: () -> State) {
+        val state = getState()
+
+        when {
+            isTurnOn -> {
+                val cost = state.payments.firstOrNull()?.cost ?: 0
+                val newCommonBill = state.commonBill
+                    .copy(isTurnedOn = true, isUserInBill = true, cost = cost, members = emptyList())
+                dispatch(Message.UpdateCommonBill(newCommonBill))
+                dispatch(Message.UpdatePayments(emptyList(), cost))
+            }
+            else -> {
+                val newCommonBill = state.commonBill.copy(isTurnedOn = false, cost = 0)
+                dispatch(Message.UpdateCommonBill(newCommonBill))
+                dispatch(Message.UpdatePayments(emptyList(), 0))
+            }
+        }
+    }
+
+    private fun onCommonBillForUserToggle(isTurnOn: Boolean, getState: () -> State) {
+        val newCommonBill = getState().commonBill.copy(isUserInBill = isTurnOn)
+        dispatch(Message.UpdateCommonBill(newCommonBill))
+    }
+
+    private fun onCommonBillCostChanged(cost: Int, getState: () -> State) {
+        val newCommonBill = getState().commonBill.copy(cost = cost)
+        dispatch(Message.UpdateCommonBill(newCommonBill))
+    }
+
+    private fun onCommonBillRemoveMember(member: Member, getState: () -> State) {
+        val commonBill = getState().commonBill
+        val newMembers = commonBill.members.toMutableList()
+            .apply { remove(member) }
+        val newCommonBill = commonBill.copy(members = newMembers)
+        dispatch(Message.UpdateCommonBill(newCommonBill))
+    }
+
+    private fun onProducerSelected(producer: Member?, getState: () -> State) {
+        if (producer == null) {
             val query = getState().receiverField.candidateQuery
             val suggestions = getProducerSuggestions(query, null, getState().members)
-            dispatch(Message.UpdateBacker(null, suggestions))
+            dispatch(Message.UpdateProducer(null, suggestions))
             return
         }
 
         val query = getState().receiverField.candidateQuery
-        val suggestions = getProducerSuggestions(query, backer, getState().members)
-        dispatch(Message.UpdateBacker(backer, suggestions))
+        val suggestions = getProducerSuggestions(query, producer, getState().members)
+        dispatch(Message.UpdateProducer(producer, suggestions))
     }
 
     private fun onReceiverFieldChanged(query: String, getState: () -> State) {
         var candidate = query.trim()
-        val producer = getState().backerField.backer
+        val producer = getState().producerField.producer
         val suggestions = getProducerSuggestions(query, producer, getState().members)
         candidate = if (suggestions.isEmpty()) candidate else ""
         dispatch(Message.UpdateReceiverSuggestions(query, candidate, suggestions))
@@ -173,18 +214,31 @@ class Executor(
         return filterMembers(newMembers, filters)
     }
 
-    private fun onAddNewPayment(receiver: Member, getState: () -> State) {
-        val newPayment = Payment.empty(receiver = receiver)
-        val payments = getState().payments.toMutableList()
-        payments.add(newPayment)
-        dispatch(Message.UpdatePayments(payments, getState().backerField.cost))
-        publish(Label.ScrollToBottom)
+    private fun onReceiverSelected(receiver: Member, getState: () -> State) {
+        when {
+            getState().isCommonBill -> {
+                val currentBill = getState().commonBill
+                val newMembers = currentBill.members.toMutableList()
+                    .apply { this += receiver }
+                val newBill = currentBill.copy(members = newMembers)
+
+                dispatch(Message.UpdateCommonBill(newBill))
+            }
+            else -> {
+                val newPayment = Payment.empty(receiver = receiver)
+                val payments = getState().payments.toMutableList()
+                payments.add(newPayment)
+                dispatch(Message.UpdatePayments(payments, getState().producerField.cost))
+                dispatch(Message.UpdateCommonBill(getState().commonBill.copy(isEnabled = payments.count() <= 1)))
+                publish(Label.ScrollToBottom)
+            }
+        }
     }
 
     private fun onReceiverCandidateSelected(query: String, getState: () -> State) {
         val receiver = Member(query.trim())
         when {
-            validateMember(receiver) -> onAddNewPayment(receiver, getState)
+            validateMember(receiver) -> onReceiverSelected(receiver, getState)
             else -> publish(Label.Error.InvalidProducerCandidate)
         }
     }
@@ -207,7 +261,7 @@ class Executor(
         val payment = payments[position].copy(description = description)
         payments.removeAt(position)
         payments.add(position, payment)
-        dispatch(Message.UpdatePayments(payments, getState().backerField.cost))
+        dispatch(Message.UpdatePayments(payments, getState().producerField.cost))
     }
 
     private fun onPaymentRemoved(position: Int, getState: () -> State) {
@@ -215,6 +269,10 @@ class Executor(
         payments.removeAt(position)
         val totalCost = payments.sumOf { it.cost }
         dispatch(Message.UpdatePayments(payments, totalCost))
+
+        val newCommonBillState = getState().commonBill
+            .copy(isEnabled = payments.count() <= 1)
+        dispatch(Message.UpdateCommonBill(newCommonBillState))
     }
 
     private fun State.composeBillDraft(): BillDraft {
@@ -227,7 +285,7 @@ class Executor(
             computationId = computationId,
             id = billId,
             title = title,
-            backer = backerField.backer,
+            producer = producerField.producer,
             payments = payments
         )
     }

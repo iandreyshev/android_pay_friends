@@ -18,7 +18,7 @@ class CalcResultUseCase
             val transfers = bills.flatMap { bill ->
                 bill.payments.map { payment ->
                     Transfer(
-                        participants = Participants(bill.backer, payment.receiver),
+                        participants = Participants(bill.producer, payment.receiver),
                         cost = payment.cost
                     )
                 }

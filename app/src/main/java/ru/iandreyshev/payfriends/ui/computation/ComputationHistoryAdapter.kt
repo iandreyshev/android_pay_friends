@@ -48,7 +48,7 @@ class ComputationHistoryAdapter(
         val binding = holder.binding
         val res = binding.root.resources
         binding.firstMemberTitle.text = res.getString(R.string.computation_producer_title)
-        binding.firstMember.text = item.transfer.transfer.participants.backer.name
+        binding.firstMember.text = item.transfer.transfer.participants.producer.name
 
         binding.secondMemberTitle.text = res.getString(R.string.computation_receiver_title)
         binding.secondMember.text = item.transfer.transfer.participants.receiver.name

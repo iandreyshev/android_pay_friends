@@ -142,7 +142,7 @@ class JsonStorage
         BillJson(
             id = it.id.value,
             title = it.title,
-            backer = it.backer.asStorageBillsList(),
+            backer = it.producer.asStorageBillsList(),
             payments = it.payments.asStoragePaymentsList(),
             creationDate = it.creationDate.asStorageDate()
         )
@@ -178,7 +178,7 @@ class JsonStorage
         Bill(
             id = BillId(it.id),
             title = it.title,
-            backer = it.backer.asDomainModel(),
+            producer = it.backer.asDomainModel(),
             payments = it.payments.asDomainPayments(),
             creationDate = it.creationDate.asDomainDate()
         )

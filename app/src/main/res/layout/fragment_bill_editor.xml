@@ -32,23 +32,16 @@
             android:paddingBottom="@dimen/step_20">
 
             <include
-                android:id="@+id/title"
-                layout="@layout/item_bill_editor_title" />
-
-            <include
                 android:id="@+id/producerView"
-                layout="@layout/item_bill_editor_backer" />
-
-            <LinearLayout
-                android:id="@+id/payments"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                layout="@layout/item_bill_editor_producer" />
 
             <include
                 android:id="@+id/receiverView"
                 layout="@layout/item_bill_editor_receiver" />
 
+            <include
+                android:id="@+id/title1"
+                layout="@layout/item_bill_editor_title" />
 
         </LinearLayout>
 

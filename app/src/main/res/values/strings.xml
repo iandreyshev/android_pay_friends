@@ -36,6 +36,7 @@
     <string name="bill_editor_error_empty_name">Название должно содержать символы</string>
     <string name="bill_editor_error_invalid_cost">В чеке указана некорректная сумма</string>
     <string name="bill_editor_bill_default_title">Чек #%1$d</string>
+    <string name="bill_editor_payment_receiver_text">Выберите участника, за которого заплатили</string>
 
     <string name="computation_tab_result_title">Итог</string>
     <string name="computation_tab_history_title">Чеки</string>

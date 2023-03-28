@@ -18,7 +18,7 @@ class GetComputationHistoryUseCase
                         HistoryTransfer(
                             transfer = Transfer(
                                 participants = Participants(
-                                    bill.backer,
+                                    bill.producer,
                                     payment.receiver
                                 ),
                                 cost = payment.cost

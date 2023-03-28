@@ -6,15 +6,15 @@ val Reducer = Reducer<State, Message> { message ->
     when (message) {
         is Message.Started -> message.startedState
         is Message.UpdateProducerSuggestions -> copy(
-            backerField = backerField.copy(
+            producerField = producerField.copy(
                 candidateQuery = message.candidateQuery,
                 candidate = message.candidate,
                 suggestions = message.suggestions,
             )
         )
         is Message.ChangeTitle -> copy(title = message.title)
-        is Message.UpdateBacker -> copy(
-            backerField = backerField.copy(backer = message.backer),
+        is Message.UpdateProducer -> copy(
+            producerField = producerField.copy(producer = message.producer),
             receiverField = receiverField.copy(suggestions = message.receiverSuggestions),
         )
         is Message.UpdateReceiverSuggestions -> copy(
@@ -26,8 +26,9 @@ val Reducer = Reducer<State, Message> { message ->
         )
         is Message.UpdatePayments -> copy(
             payments = message.payments,
-            backerField = backerField.copy(cost = message.totalCost)
+            producerField = producerField.copy(cost = message.totalCost)
         )
         is Message.ChangeSavingState -> copy(isSaving = message.isSaving)
+        is Message.UpdateCommonBill -> copy(commonBill = message.state)
     }
 }

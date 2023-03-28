@@ -5,7 +5,7 @@ import ru.iandreyshev.payfriends.domain.core.Payment
 
 sealed interface Message {
     data class Started(val startedState: State) : Message
-    data class UpdateBacker(val backer: Member?, val receiverSuggestions: List<Member>) : Message
+    data class UpdateProducer(val producer: Member?, val receiverSuggestions: List<Member>) : Message
     data class UpdateProducerSuggestions(
         val candidateQuery: String,
         val candidate: String,
@@ -22,4 +22,6 @@ sealed interface Message {
 
     data class UpdatePayments(val payments: List<Payment>, val totalCost: Int) : Message
     data class ChangeSavingState(val isSaving: Boolean) : Message
+
+    data class UpdateCommonBill(val state: CommonBillState) : Message
 }

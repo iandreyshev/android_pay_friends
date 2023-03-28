@@ -10,13 +10,16 @@ data class State(
     val billId: BillId?,
     val number: Int,
     val title: String,
-    val backerField: BackerFieldState,
+    val producerField: ProducerFieldState,
     val receiverField: ReceiverFieldState,
     val payments: List<Payment>,
     val members: List<Member>,
     val isStarted: Boolean,
-    val isSaving: Boolean
+    val isSaving: Boolean,
+    val commonBill: CommonBillState
 ) {
+
+    val isCommonBill = commonBill.isEnabled && commonBill.isTurnedOn
 
     companion object {
         fun default() = State(
@@ -24,19 +27,26 @@ data class State(
             billId = null,
             title = "",
             number = 0,
-            backerField = BackerFieldState.default(),
+            producerField = ProducerFieldState.default(),
             members = listOf(),
             payments = listOf(),
             receiverField = ReceiverFieldState.default(),
             isStarted = false,
-            isSaving = false
+            isSaving = false,
+            commonBill = CommonBillState(
+                isEnabled = true,
+                isTurnedOn = false,
+                isUserInBill = true,
+                cost = 0,
+                members = emptyList()
+            ),
         )
     }
 
 }
 
-data class BackerFieldState(
-    val backer: Member?,
+data class ProducerFieldState(
+    val producer: Member?,
     val suggestions: List<Member>,
     val candidateQuery: String,
     val candidate: String,
@@ -44,8 +54,8 @@ data class BackerFieldState(
 ) {
 
     companion object {
-        fun default() = BackerFieldState(
-            backer = null,
+        fun default() = ProducerFieldState(
+            producer = null,
             candidateQuery = "",
             candidate = "",
             suggestions = listOf(),
@@ -54,6 +64,14 @@ data class BackerFieldState(
     }
 
 }
+
+data class CommonBillState(
+    val isEnabled: Boolean,
+    val isTurnedOn: Boolean,
+    val isUserInBill: Boolean,
+    val cost: Int,
+    val members: List<Member>
+)
 
 data class ReceiverFieldState(
     val isEnabled: Boolean,

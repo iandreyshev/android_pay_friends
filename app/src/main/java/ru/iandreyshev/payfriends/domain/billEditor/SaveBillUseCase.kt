@@ -27,14 +27,14 @@ class SaveBillUseCase
             val newBill = Bill(
                 id = existedBill?.id ?: BillId.none(),
                 title = draft.title,
-                backer = draft.backer ?: return@withContext Result.Error(ErrorType.Unknown),
+                producer = draft.producer ?: return@withContext Result.Error(ErrorType.Unknown),
                 payments = draft.payments,
                 creationDate = existedBill?.creationDate ?: dateProvider.currentDate()
             )
 
             val newMembers = mutableListOf<Member>()
-            if (!computation.members.contains(newBill.backer)) {
-                newMembers.add(newBill.backer)
+            if (!computation.members.contains(newBill.producer)) {
+                newMembers.add(newBill.producer)
             }
 
             newBill.payments.forEach { payment ->

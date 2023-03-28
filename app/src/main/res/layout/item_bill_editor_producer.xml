@@ -10,8 +10,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/step_16"
-        android:layout_marginTop="@dimen/step_16"
-        android:text="Платил"
+        android:layout_marginTop="@dimen/step_20"
+        android:text="Кто платил"
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_4"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,14 +31,13 @@
         android:paddingVertical="@dimen/step_4"
         android:textColor="@color/black"
         android:textColorHint="@color/gray_dark"
-        android:textSize="@dimen/text_size_6"
+        android:textSize="@dimen/text_size_5"
         app:layout_constraintEnd_toStartOf="@id/cost"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        tools:visibility="gone" />
+        app:layout_constraintTop_toBottomOf="@id/title" />
 
     <ru.iandreyshev.payfriends.ui.members.EditableMemberView
-        android:id="@+id/backer"
+        android:id="@+id/producer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/step_16"
@@ -59,9 +58,9 @@
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_3"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/backer"
+        app:layout_constraintBottom_toBottomOf="@id/producer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/backer"
+        app:layout_constraintTop_toTopOf="@id/producer"
         tools:text="Итог\n37.000 ₽" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -97,15 +96,15 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="addMemberButton, backer" />
+        app:constraint_referenced_ids="addMemberButton, producer" />
 
     <TextView
         android:id="@+id/paymentsTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/step_16"
-        android:layout_marginTop="@dimen/step_16"
-        android:text="Оплаты"
+        android:layout_marginTop="@dimen/step_20"
+        android:text="За что платил"
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_4"
         app:layout_constraintEnd_toEndOf="parent"
@@ -119,12 +118,110 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/step_16"
         android:layout_marginVertical="@dimen/step_4"
-        android:text="Выберите участника, за которого заплатили, чтобы записать оплату"
+        android:text="@string/bill_editor_payment_receiver_text"
         android:textColor="@color/gray_dark"
         android:textSize="@dimen/text_size_3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/paymentsTitle"
         app:layout_goneMarginBaseline="0dp" />
+
+    <EditText
+        android:id="@+id/commonBillCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/step_4"
+        android:layout_marginStart="@dimen/step_16"
+        android:background="@null"
+        android:hint="Введите сумму..."
+        android:inputType="number"
+        android:maxLength="10"
+        android:paddingVertical="@dimen/step_6"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray_dark"
+        android:textSize="@dimen/text_size_4"
+        app:layout_constraintEnd_toStartOf="@id/commonBillCostPerUser"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/paymentsEmptyView" />
+
+    <TextView
+        android:id="@+id/commonBillCostPerUser"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/step_8"
+        android:layout_marginEnd="@dimen/step_16"
+        android:gravity="start|center"
+        android:textColor="@color/gray_dark"
+        android:textSize="@dimen/text_size_4"
+        app:layout_constraintBottom_toBottomOf="@id/commonBillCost"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/commonBillCost"
+        app:layout_constraintTop_toTopOf="@id/commonBillCost"
+        tools:text="(200₽ с каждого)" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/commonBillMembers"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/step_16"
+        android:layout_marginVertical="@dimen/step_4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/commonBillCost"
+        tools:itemCount="7"
+        tools:listitem="@layout/view_editable_member" />
+
+    <LinearLayout
+        android:id="@+id/payments"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/step_4"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/commonBillMembers" />
+
+    <FrameLayout
+        android:id="@+id/commonBillSwitchGroup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/step_16"
+        android:layout_marginVertical="@dimen/step_4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/payments">
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/commonBillSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-7dp"
+            android:minHeight="0dp"
+            android:paddingVertical="@dimen/step_6"
+            android:text="Разделить сумму поровну" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/commonBillSwitchForUserGroup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/step_16"
+        android:layout_marginVertical="@dimen/step_4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/commonBillSwitchGroup">
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/commonBillSwitchForUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-7dp"
+            android:minHeight="0dp"
+            android:paddingVertical="@dimen/step_6"
+            android:text="Посчитать себя" />
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

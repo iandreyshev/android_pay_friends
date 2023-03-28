@@ -3,6 +3,7 @@ package ru.iandreyshev.payfriends.ui.billEditor
 import android.os.Bundle
 import android.text.TextWatcher
 import android.view.View
+import android.widget.CompoundButton
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import androidx.activity.addCallback
@@ -10,14 +11,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.*
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import ru.iandreyshev.payfriends.R
 import ru.iandreyshev.payfriends.databinding.FragmentBillEditorBinding
 import ru.iandreyshev.payfriends.databinding.ItemBillEditorPaymentBinding
@@ -42,6 +40,18 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
     private val costWatchers = mutableSetOf<TextWatcher>()
     private val descriptionWatchers = mutableSetOf<TextWatcher>()
 
+    private val commonBillCostWatcher by uiLazy {
+        binding.producerView.commonBillCost.doAfterTextChanged {
+            viewModel(Intent.OnCommonBillCostChanged(it.toString().ifEmpty { "0" }.toInt()))
+        }
+    }
+    private val commonSwitchListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
+        viewModel(Intent.OnCommonBillToggle(isChecked))
+    }
+    private val commonSwitchForUserListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
+        viewModel(Intent.OnCommonBillForUserToggle(isChecked))
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -49,28 +59,26 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
         initGestures()
         initTextFields()
         initTitle()
-
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.state
-                .onEach(::render)
-                .launchIn(this)
-            viewModel.labels
-                .onEach(::handleLabel)
-                .launchIn(this)
-        }
+        initCommonBillSwitches()
 
         if (savedInstanceState == null) {
-            val args = navArgs<BillEditorFragmentArgs>().value
-            val computationId = ComputationId(args.paymentId)
-            val billId = args.billId?.let { BillId(it) }
-            viewModel.onViewCreated(computationId, billId)
-            binding.title.titleField.showKeyboard()
+            initFirstOpen()
         }
+
+        viewModel.state.onEach(viewLifecycleOwner.lifecycle, ::render)
+        viewModel.labels.onEach(viewLifecycleOwner.lifecycle, ::handleLabel)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         alertDialog.dismissOnDestroy()
+    }
+
+    private fun initFirstOpen() {
+        val args = navArgs<BillEditorFragmentArgs>().value
+        val computationId = ComputationId(args.paymentId)
+        val billId = args.billId?.let { BillId(it) }
+        viewModel.onViewCreated(computationId, billId)
     }
 
     private fun initGestures() {
@@ -99,21 +107,28 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
     }
 
     private fun initTitle() {
-        binding.title.titleField.doAfterTextChanged {
+        binding.title1.titleField.doAfterTextChanged {
             viewModel(Intent.OnTitleChanged(it.toString()))
         }
     }
 
+    private fun initCommonBillSwitches() {
+        binding.producerView.commonBillSwitch.setOnCheckedChangeListener(commonSwitchListener)
+        binding.producerView.commonBillSwitchForUser.setOnCheckedChangeListener(commonSwitchForUserListener)
+    }
+
     private fun render(state: State) {
-        renderBackerField(
-            item = BackerFieldItem(
-                backer = state.backerField.backer,
-                cost = state.backerField.cost,
-                suggestions = state.backerField.suggestions,
-                candidateQuery = state.backerField.candidateQuery,
-                candidate = state.backerField.candidate,
-                isPaymentsEmptyViewVisible = state.payments.isEmpty()
-            )
+        renderProducerField(
+            item = ProducerFieldItem(
+                producer = state.producerField.producer,
+                cost = state.producerField.cost,
+                suggestions = state.producerField.suggestions,
+                candidateQuery = state.producerField.candidateQuery,
+                candidate = state.producerField.candidate,
+                isPaymentsEmptyViewVisible = state.payments.isEmpty() && !state.isCommonBill,
+                commonBill = state.commonBill
+            ),
+            paymentsCount = state.payments.count()
         )
 
         renderPayments(payments = state.payments.map { payment ->
@@ -124,10 +139,12 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
             )
         })
 
-        binding.toolbar.title = when {
+        val emptyTitle = when {
             state.title.isBlank() -> getDefaultTitle(state.number)
             else -> state.title
         }
+        binding.toolbar.title = emptyTitle
+        binding.title1.titleField.hint = emptyTitle
 
         if (state.receiverField.isEnabled) {
             renderReceiverField(
@@ -140,17 +157,17 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
         }
     }
 
-    private fun renderBackerField(item: BackerFieldItem) {
+    private fun renderProducerField(item: ProducerFieldItem, paymentsCount: Int) {
         val binding = binding.producerView
 
-        binding.backer.isVisible = item.backer != null
-        binding.backer.setState(name = item.backer?.name.orEmpty()) {
+        binding.producer.isVisible = item.producer != null
+        binding.producer.setState(name = item.producer?.name.orEmpty()) {
             viewModel(Intent.OnRemoveProducer)
         }
 
-        binding.producerField.isVisible = item.backer == null
+        binding.producerField.isVisible = item.producer == null
 
-        binding.suggestions.isVisible = item.backer == null && item.hasSuggestions
+        binding.suggestions.isVisible = item.producer == null && item.hasSuggestions
         val adapter = binding.suggestions.adapter as? MembersAdapter ?: run {
             val newAdapter = MembersAdapter(
                 onMemberClick = { member, _ ->
@@ -160,7 +177,7 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
             newAdapter.submitList(item.suggestions)
             binding.suggestions.adapter = newAdapter
             binding.suggestions.itemAnimator = null
-            val itemDecoration = BackerCandidatesItemDecoration(binding.root.resources)
+            val itemDecoration = ProducerCandidatesItemDecoration(binding.root.resources)
             binding.suggestions.addItemDecoration(itemDecoration)
             newAdapter
         }
@@ -168,7 +185,7 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
             binding.suggestions.scrollToPosition(0)
         }
 
-        binding.addMemberButton.isVisible = item.backer == null && item.candidate.isNotEmpty()
+        binding.addMemberButton.isVisible = item.producer == null && item.candidate.isNotEmpty()
         binding.addMemberButton.setState(name = item.candidate) {
             binding.producerField.text.toString()
             viewModel(Intent.OnProducerCandidateSelected(binding.producerField.text.toString()))
@@ -176,8 +193,57 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
 
         binding.paymentsEmptyView.isVisible = item.isPaymentsEmptyViewVisible
 
-        binding.cost.isInvisible = item.backer == null
+        binding.cost.isInvisible = item.producer == null
         binding.cost.text = getString(R.string.bill_editor_cost, item.cost)
+
+        renderCommonBill(item.commonBill, paymentsCount)
+    }
+
+    private fun renderCommonBill(state: CommonBillState, paymentsCount: Int) {
+        val binding = binding.producerView
+
+        binding.commonBillSwitch.isEnabled = state.isEnabled
+        binding.commonBillSwitch.setCheckedSilent(state.isTurnedOn, commonSwitchListener)
+
+        binding.commonBillSwitchForUserGroup.isVisible = state.isTurnedOn
+        binding.commonBillSwitchForUser.setCheckedSilent(state.isUserInBill, commonSwitchForUserListener)
+
+        binding.commonBillCost.isVisible = state.isTurnedOn
+        binding.commonBillCost.removeTextChangedListener(commonBillCostWatcher)
+        when (state.cost > 0) {
+            true -> binding.commonBillCost.setTextIfChanged(state.cost.toString())
+            else -> binding.commonBillCost.text.clear()
+        }
+        binding.commonBillCost.addTextChangedListener(commonBillCostWatcher)
+
+        binding.commonBillMembers.isVisible = state.isTurnedOn
+        val adapter = binding.commonBillMembers.adapter as? MembersAdapter ?: run {
+            val newAdapter = MembersAdapter(
+                onRemoveMemberClick = { member, _ ->
+                }
+            )
+            newAdapter.submitList(state.members)
+            val layoutManager = FlexboxLayoutManager(context)
+            layoutManager.flexDirection = FlexDirection.ROW
+            layoutManager.justifyContent = JustifyContent.FLEX_START
+            binding.commonBillMembers.layoutManager = layoutManager
+            binding.commonBillMembers.adapter = newAdapter
+            binding.commonBillMembers.itemAnimator = null
+            val itemDecoration = ReceiverCandidatesItemDecoration(binding.root.resources)
+            binding.commonBillMembers.addItemDecoration(itemDecoration)
+            newAdapter
+        }
+        adapter.submitList(state.members) {
+            binding.commonBillMembers.scrollToPosition(0)
+        }
+
+        when (paymentsCount) {
+            0 -> binding.commonBillCostPerUser.text = ""
+            else -> {
+                val costPerUser = state.cost / paymentsCount
+                binding.commonBillCostPerUser.text = "($costPerUser₽ с каждого)"
+            }
+        }
     }
 
     private fun renderReceiverField(item: ReceiverFieldItem) {
@@ -212,6 +278,7 @@ class BillEditorFragment : Fragment(R.layout.fragment_bill_editor) {
     }
 
     private fun renderPayments(payments: List<PaymentItem>) {
+        val binding = binding.producerView
         val viewCount = binding.payments.childCount
         val countDiff = abs(payments.count() - viewCount)
 
